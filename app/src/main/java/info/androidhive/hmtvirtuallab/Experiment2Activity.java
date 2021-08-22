@@ -9,6 +9,6 @@ public class Experiment2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_experiment3);
+        setContentView(R.layout.activity_experiment2);
     }
 }
