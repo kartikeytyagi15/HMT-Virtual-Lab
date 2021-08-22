@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HMTVirtualLab">
-        <activity android:name=".Experiment2Activity"></activity>
+        <activity android:name="Experiment2Activity"></activity>
         <activity android:name=".ThermalConductivityOfLiquids" />
         <activity android:name=".MainActivity">
             <intent-filter>

@@ -1,11 +1,10 @@
 package info.androidhive.hmtvirtuallab;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import io.github.sidvenu.mathjaxview.MathJaxView;
 
