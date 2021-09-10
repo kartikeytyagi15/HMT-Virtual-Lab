@@ -2,6 +2,8 @@ package info.androidhive.hmtvirtuallab;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +16,13 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     TextView aim_tv;
     MathJaxView intro_tv;
     MathJaxView theory_tv;
+
+    ImageView simulation_iv;
+    View powerBtn;
+    boolean POWER_ON = false;
+    TextView temp_title_tv;
+    TextView set_value_title_tv;
+    TextView set_value_tv;
 
     String tex = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
             "Inline formula:" +
@@ -50,6 +59,36 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         theory_tv.setText(theory_text);
     }
 
+    public void turnOnHeater(View v)
+    {
+//        Log.v("LOGGED MESSAGE", "POWER BUTTON CLICKED");
+        if(!POWER_ON)
+        {
+            POWER_ON = true;
+            simulation_iv.setImageResource(R.drawable.tcl_green_black);
+            temp_title_tv.setVisibility(View.VISIBLE);
+            set_value_title_tv.setVisibility(View.VISIBLE);
+            set_value_tv.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            POWER_ON = false;
+            simulation_iv.setImageResource(R.drawable.tcl_red);
+            temp_title_tv.setVisibility(View.INVISIBLE);
+            set_value_title_tv.setVisibility(View.INVISIBLE);
+            set_value_tv.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    void openSimulation()
+    {
+        simulation_iv = findViewById(R.id.simul_setup);
+        powerBtn = findViewById(R.id.power_button);
+        temp_title_tv = findViewById(R.id.temperature_title_tv);
+        set_value_title_tv = findViewById(R.id.set_value_title_tv);
+        set_value_tv = findViewById(R.id.set_value_tv);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +106,12 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         {
             setTitle("About Setup");
             setContentView(R.layout.about_setup_layout);
+        }
+        else if(viewClicked != null && viewClicked.equals("simulation"))
+        {
+            setTitle("Simulation");
+            setContentView(R.layout.simulation_layout);
+            openSimulation();
         }
     }
 }
