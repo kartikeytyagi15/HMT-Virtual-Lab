@@ -1,13 +1,21 @@
 package info.androidhive.hmtvirtuallab;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Locale;
 
 import io.github.sidvenu.mathjaxview.MathJaxView;
 
@@ -25,6 +33,13 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     TextView set_value_title_tv;
     TextView set_value_tv;
     int i=0;
+
+    TextView timer_tv;
+    FloatingActionButton startBtn, pauseBtn, resetBtn;
+    Handler customHandler = new Handler();
+    long startTime = 0L, timeInMillis = 0L, updateTime = 0L, millisPassed = 0L;
+    boolean isRunning;
+    boolean wasRunning;
 
     String tex = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
             "Inline formula:" +
@@ -71,8 +86,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             temp_title_tv.setVisibility(View.VISIBLE);
             set_value_title_tv.setVisibility(View.VISIBLE);
             set_value_tv.setVisibility(View.VISIBLE);
-
-
         }
         else
         {
@@ -85,36 +98,44 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     }
     public void change_temp(View v)
     {
-
-        if(POWER_ON)
-        {
-            if(i==0)
-            {
-                temp_title_tv.setText("T1");
+        if(POWER_ON) {
+            i++;
+            if(i==0) {
+                temp_title_tv.setText("Temperature T1:");
                 temp_title_tv.setVisibility(View.VISIBLE);
-                i++;
             }
-            else if(i==1)
-            {
-                temp_title_tv.setText("T2");
+            else if(i==1) {
+                temp_title_tv.setText("Temperature T2:");
                 temp_title_tv.setVisibility(View.VISIBLE);
-                i++;
             }
-            else if(i==2)
-            {
-                temp_title_tv.setText("T3");
+            else if(i==2) {
+                temp_title_tv.setText("Temperature T3:");
                 temp_title_tv.setVisibility(View.VISIBLE);
-                i++;
             }
-            else
-            {
-                temp_title_tv.setText("T4");
+            else {
+                temp_title_tv.setText("Temperature T4:");
                 temp_title_tv.setVisibility(View.VISIBLE);
-                i=0;
+                i = -1;
             }
        }
-
     }
+
+    Runnable updateTimerThread = new Runnable() {
+        @Override
+        public void run() {
+            timeInMillis = SystemClock.uptimeMillis() - startTime;
+            updateTime = timeInMillis + millisPassed;
+            int secs = (int)(updateTime/1000);
+            int mins = secs/60;
+            secs %= 60;
+            int millis = (int)(updateTime%1000);
+            millis /= 10;
+            String dispTime = ""+mins+":"+String.format(Locale.getDefault(), "%02d",secs) + ":" +
+                                                            String.format(Locale.getDefault(), "%02d", millis);
+            timer_tv.setText(dispTime);
+            customHandler.postDelayed(this, 0);
+        }
+    };
 
     void openSimulation()
     {
@@ -123,7 +144,45 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         temp_title_tv = findViewById(R.id.temperature_title_tv);
         set_value_title_tv = findViewById(R.id.set_value_title_tv);
         set_value_tv = findViewById(R.id.set_value_tv);
+        timer_tv = findViewById(R.id.timer_tv);
+        startBtn = findViewById(R.id.start_btn);
+        pauseBtn = findViewById(R.id.pause_btn);
+        resetBtn = findViewById(R.id.reset_btn);
 
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isRunning) {
+                    isRunning = true;
+                    startTime = SystemClock.uptimeMillis();
+                    customHandler.postDelayed(updateTimerThread, 0);
+                }
+            }
+        });
+        pauseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                wasRunning = isRunning;
+                isRunning = false;
+                Log.v("LOGGED MESSAGE", ""+millisPassed);
+                if(wasRunning)
+                    millisPassed = updateTime;
+
+                customHandler.removeCallbacks(updateTimerThread);
+            }
+        });
+
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isRunning = false;
+                wasRunning = false;
+                millisPassed = 0L;
+                String def = "0:00:00";
+                timer_tv.setText(def);
+                customHandler.removeCallbacks(updateTimerThread);
+            }
+        });
     }
 
     @Override

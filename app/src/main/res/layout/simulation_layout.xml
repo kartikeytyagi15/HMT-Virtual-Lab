@@ -10,9 +10,9 @@
         android:id="@+id/simul_setup"
         android:layout_width="396dp"
         android:layout_height="235dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.466"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/tcl_red" />
@@ -33,7 +33,7 @@
         android:id="@+id/temperature_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="T1"
+        android:text="Temperature T1:"
         android:textColor="#2B2B2B"
         android:textSize="10sp"
         android:visibility="invisible"
@@ -77,12 +77,65 @@
         android:id="@+id/Temp_record_button"
         android:layout_width="15dp"
         android:layout_height="47dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:backgroundTint="@color/black"
         android:onClick="change_temp"
         app:layout_constraintEnd_toStartOf="@+id/power_button"
-        app:layout_constraintHorizontal_bias="0.904"
+        app:layout_constraintHorizontal_bias="0.9"
         app:layout_constraintStart_toStartOf="@+id/simul_setup"
         app:layout_constraintTop_toBottomOf="@+id/temperature_title_tv" />
+
+    <TextView
+        android:id="@+id/timer_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="0:00:00"
+        android:textSize="42sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/simul_setup" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/pause_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:layout_marginTop="44dp"
+        android:clickable="true"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_tv"
+        app:srcCompat="@drawable/ic_stop"
+        android:contentDescription="Pause Timer" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/start_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/reset_btn"
+        app:layout_constraintStart_toEndOf="@+id/pause_btn"
+        app:layout_constraintTop_toBottomOf="@+id/timer_tv"
+        app:layout_constraintVertical_bias="0.004"
+        app:srcCompat="@drawable/ic_play"
+        android:contentDescription="Start Timer" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/reset_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_tv"
+        app:srcCompat="@drawable/ic_reset"
+        android:contentDescription="Reset Timer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
