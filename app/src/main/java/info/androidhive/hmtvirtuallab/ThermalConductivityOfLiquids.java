@@ -15,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.w3c.dom.Text;
+
 import java.util.Locale;
 
 import io.github.sidvenu.mathjaxview.MathJaxView;
@@ -63,6 +65,21 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             "takes place, the thermal conductivity of the sample can be calculated using Fourier's law of heat conduction.\n</br>" +
             "$$q = kA\\frac{T_h - T_c}{\\Delta X}$$\n" +
             "$$k = \\frac{q\\times\\Delta X}{A\\times(T_h - T_c)}$$";
+
+    String equipment_reqd = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
+            "$\\bullet$ Electricity Supply: Single Phase, 220 V AC, 50 Hz, 5-15 Amp combined socket with earth connection.\n<br>" +
+            "<br>$\\bullet$ Water Supply: Continuous @ 2 LPM at 1 Bar.\n</br>" +
+            "<br>$\\bullet$ Floor drain required.\n</br>" +
+            "<br>$\\bullet$ Bench area required: 1 m x 1 m.\n</br>" +
+            "<br>$\\bullet$ Glycerin: 250 ml.\n</br>" +
+            "<br>$\\bullet$ Stop watch.\n</br>";
+
+    String apparatus_desc = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
+            "$\\bullet$ The apparatus consists of a heater; it heats a thin layer of liquid. A cooling plate removes heat through the liquid layer, ensuring unidirectional heat flow.\n<br>" +
+            "<br>$\\bullet$ A PID controller is provided for varying the input to the heater and measurement of input power is carried out by a digital energy meter and stopwatch. \n</br>" +
+            "<br>$\\bullet$ Funnel is provided with a valve to fill the liquid. Overflow pipe is given to maintain the liquid level. Plate is for circulation of water. A valve is provided to control the flow of water. \n</br>" +
+            "<br>$\\bullet$ Four temperature sensors are provided to measure the temperature across the liquid layer.\n</br>";
+
 
     void openTheory() {
         obj_tv = findViewById(R.id.objective_text_tv);
@@ -185,6 +202,16 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         });
     }
 
+    private void openAboutSetup()
+    {
+        MathJaxView equipment_tv = findViewById(R.id.equipment_tv);
+        MathJaxView apparatus_tv = findViewById(R.id.apparatus_tv);
+        ImageView apparatus_iv =findViewById(R.id.apparatus_image_iv);
+
+        equipment_tv.setText(equipment_reqd);
+        apparatus_tv.setText(apparatus_desc);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,6 +229,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         {
             setTitle("About Setup");
             setContentView(R.layout.about_setup_layout);
+            openAboutSetup();
         }
         else if(viewClicked != null && viewClicked.equals("simulation"))
         {
@@ -210,4 +238,5 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             openSimulation();
         }
     }
+
 }
