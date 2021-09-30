@@ -28,6 +28,9 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     MathJaxView intro_tv;
     MathJaxView theory_tv;
 
+    TextView start_procedure;
+    TextView close_procedure;
+
     ImageView simulation_iv;
     View powerBtn;
     boolean POWER_ON = false;
@@ -80,7 +83,26 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             "<br>$\\bullet$ Funnel is provided with a valve to fill the liquid. Overflow pipe is given to maintain the liquid level. Plate is for circulation of water. A valve is provided to control the flow of water. \n</br>" +
             "<br>$\\bullet$ Four temperature sensors are provided to measure the temperature across the liquid layer.\n</br>";
 
-
+    String start_procedure_text="1.1 Close the valves V1-V2.\n" +
+            "1.2 Connect continuous water supply to the inlet of water chamber.\n" +
+            "1.3 Connect outlet of chamber to drain.\n" +
+            "1.4 Open the valve V2.\n" +
+            "1.5 Fill the liquid (whose thermal conductivity have to be measure) through funnel till the liquid retain in funnel.\n" +
+            "1.6 Extra liquid will overflow from another given pipe to keep the liquid at axis level.\n" +
+            "1.7 Ensure that mains ON/OFF switch given on the panel are at OFF position.\n" +
+            "1.8 Connect electric supply to the set up.\n" +
+            "1.9 Switch ON the mains ON / OFF switch.\n" +
+            "1.10 Start the water supply and adjust the flow of water by valve V1. \n" +
+            "1.11 Note down the ambient temperature readings.\n" +
+            "1.12 Set the input for heater by PID, Set Value (SV) is in the range 40o to 80 oC.\n" +
+            "1.13 After 1.5 hrs. Note down the reading of pulses and temperature sensors in the observation table after every 10 minutes interval till observing change in consecutive readings of temperatures (± 0.2 oC).\n" +
+            "1.14 Repeat the experiment for different liquids. \n" +
+            "1.15 Perform the experiment at different Set Value (SV)\n" +
+            "1.16 Repeat the experiment with different flow rate. ";
+    String close_procedure_text="2.1 When experiment is over switch OFF the heater switch.\n" +
+            "2.2 Switch OFF the mains ON/OFF switch.\n" +
+            "2.3 Switch OFF electric supply to the set up.\n" +
+            "2.4 Stop flow of water by closing the valve V1";
     void openTheory() {
         obj_tv = findViewById(R.id.objective_text_tv);
         aim_tv = findViewById(R.id.aim_text_tv);
@@ -92,6 +114,15 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         intro_tv.setText(intro_text);
         theory_tv.setText(theory_text);
     }
+    void openProcedure() {
+
+        start_procedure = findViewById(R.id.start);
+        close_procedure = findViewById(R.id.close);
+        start_procedure.setText(start_procedure_text);
+        close_procedure.setText(close_procedure_text);
+
+    }
+
 
     public void turnOnHeater(View v)
     {
@@ -236,6 +267,12 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             setTitle("Simulation");
             setContentView(R.layout.simulation_layout);
             openSimulation();
+        }
+        else if(viewClicked != null && viewClicked.equals("procedure"))
+        {
+            setTitle("Procedure");
+            setContentView(R.layout.procedure_layout);
+            openProcedure();
         }
     }
 
