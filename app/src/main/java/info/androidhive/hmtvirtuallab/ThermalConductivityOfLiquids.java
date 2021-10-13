@@ -1,21 +1,18 @@
 package info.androidhive.hmtvirtuallab;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
 
 import java.util.Locale;
 
@@ -37,7 +34,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     TextView temp_title_tv;
     TextView set_value_title_tv;
     TextView set_value_tv;
-    int i=0;
+    int thermocouple_number = 0;
 
     TextView timer_tv;
     FloatingActionButton startBtn, pauseBtn, resetBtn;
@@ -45,6 +42,14 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     long startTime = 0L, timeInMillis = 0L, updateTime = 0L, millisPassed = 0L;
     boolean isRunning;
     boolean wasRunning;
+
+    TextView temperature_tv;
+    CountDownTimer countDown = null;
+    double thermocouple_1 = 29.30;
+    double thermocouple_2 = 30.4;
+    double thermocouple_3 = 30.6;
+    double thermocouple_4 = 30.1;
+    int time_elapsed = 0;
 
     String tex = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
             "Inline formula:" +
@@ -103,6 +108,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             "2.2 Switch OFF the mains ON/OFF switch.\n" +
             "2.3 Switch OFF electric supply to the set up.\n" +
             "2.4 Stop flow of water by closing the valve V1";
+
     void openTheory() {
         obj_tv = findViewById(R.id.objective_text_tv);
         aim_tv = findViewById(R.id.aim_text_tv);
@@ -115,56 +121,129 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         theory_tv.setText(theory_text);
     }
     void openProcedure() {
-
         start_procedure = findViewById(R.id.start);
         close_procedure = findViewById(R.id.close);
         start_procedure.setText(start_procedure_text);
         close_procedure.setText(close_procedure_text);
-
     }
 
+    public double calculateTemp1(double time)
+    {
+        double temp = -2.08648972851097E-05*Math.pow(time,4) + 2.23147779876687E-03*Math.pow(time,3) -
+                                        8.28851482252020E-02*time*time + 1.27507832940478E+00*time + 2.94202396330543E+01;
+        return temp;
+    }
+    public double calculateTemp2(double time)
+    {
+        double temp = -1.29260809317161E-05*Math.pow(time,4) + 1.39416210149346E-03*Math.pow(time,3) -
+                        5.26402023596546E-02*time*time + 8.39101752575061E-01*time + 3.05444908761908E+01;
+        return temp;
+    }
+    public double calculateTemp3(double time)
+    {
+        double temp = -1.46274811305622E-05*Math.pow(time,4) + 1.68042637439569E-03*Math.pow(time,3) -
+            6.86649136093251E-02*time*time + 1.19281005038874E+00*time + 3.07688267375543E+01;
+        return temp;
+    }
+    public double calculateTemp4(double time)
+    {
+        double temp = -1.55656292610759E-05*Math.pow(time,4) + 1.72549996510618E-03*Math.pow(time,3) -
+                    6.71408402782134E-02*time*time + 1.09657322125850E+00*time + 3.02488660476099E+01;
+        return temp;
+    }
+
+    public void setTemperature_tv(){
+        if(thermocouple_number == 0) {
+            temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
+        }
+        else if(thermocouple_number ==1) {
+            temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_2));
+        }
+        else if(thermocouple_number ==2) {
+            temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_3));
+        }
+        else {
+            temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_4));
+            thermocouple_number = -1;
+        }
+    }
 
     public void turnOnHeater(View v)
     {
 //        Log.v("LOGGED MESSAGE", "POWER BUTTON CLICKED");
         if(!POWER_ON)
-        {
+        {  //Power on
             POWER_ON = true;
             simulation_iv.setImageResource(R.drawable.tcl_green_black);
             temp_title_tv.setVisibility(View.VISIBLE);
             set_value_title_tv.setVisibility(View.VISIBLE);
             set_value_tv.setVisibility(View.VISIBLE);
+            temperature_tv.setVisibility(View.VISIBLE);
+
+            setTemperature_tv();
+
+            time_elapsed = 0;
+            countDown = new CountDownTimer(2400000, 1000){  //45 minutes count down, updates every second
+                @Override
+                public void onTick(long millisUntilFinished) {
+//                    Log.v("Temp","Temperature T1 :"+thermocouple_1);
+//                    Log.v("Temp","Temperature T2 :"+thermocouple_2);
+//                    Log.v("Temp","Temperature T3 :"+thermocouple_3);
+//                    Log.v("Temp","Temperature T4 :"+thermocouple_4);
+                    setTemperature_tv();
+                    time_elapsed++;
+                    thermocouple_1 = calculateTemp1(time_elapsed/60.0);
+                    thermocouple_2 = calculateTemp2(time_elapsed/60.0);
+                    thermocouple_3 = calculateTemp3(time_elapsed/60.0);
+                    thermocouple_4 = calculateTemp4(time_elapsed/60.0);
+                }
+
+                @Override
+                public void onFinish() {
+                    Log.v("Temp","bleh bleh khatam :"+thermocouple_1);
+                }
+            }.start();
+
         }
         else
-        {
+        {   //Power off
             POWER_ON = false;
+            time_elapsed = 0;
+            countDown.cancel();
             simulation_iv.setImageResource(R.drawable.tcl_red);
             temp_title_tv.setVisibility(View.INVISIBLE);
             set_value_title_tv.setVisibility(View.INVISIBLE);
             set_value_tv.setVisibility(View.INVISIBLE);
+            temperature_tv.setVisibility(View.INVISIBLE);
+            thermocouple_1 = 29.30;
+            thermocouple_2 = 30.4;
+            thermocouple_3 = 30.6;
+            thermocouple_4 = 30.1;
         }
     }
     public void change_temp(View v)
     {
         if(POWER_ON) {
-            i++;
-            if(i==0) {
-                temp_title_tv.setText("Temperature T1:");
-                temp_title_tv.setVisibility(View.VISIBLE);
+            thermocouple_number++;
+            if(thermocouple_number == 0) {
+                temp_title_tv.setText("T1 in "+(char) 0x00B0+"C");
+                temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
             }
-            else if(i==1) {
-                temp_title_tv.setText("Temperature T2:");
-                temp_title_tv.setVisibility(View.VISIBLE);
+            else if(thermocouple_number ==1) {
+                temp_title_tv.setText("T2 in "+ (char) 0x00B0+"C");
+                temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_2));
             }
-            else if(i==2) {
-                temp_title_tv.setText("Temperature T3:");
-                temp_title_tv.setVisibility(View.VISIBLE);
+            else if(thermocouple_number ==2) {
+                temp_title_tv.setText("T3 in "+ (char) 0x00B0+"C");
+                temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_3));
             }
             else {
-                temp_title_tv.setText("Temperature T4:");
-                temp_title_tv.setVisibility(View.VISIBLE);
-                i = -1;
+                temp_title_tv.setText("T4 in "+ (char) 0x00B0+"C");
+                temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_4));
+                thermocouple_number = -1;
             }
+            temp_title_tv.setVisibility(View.VISIBLE);
+            temperature_tv.setVisibility(View.VISIBLE);
        }
     }
 
@@ -196,6 +275,8 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         startBtn = findViewById(R.id.start_btn);
         pauseBtn = findViewById(R.id.pause_btn);
         resetBtn = findViewById(R.id.reset_btn);
+        temperature_tv = findViewById(R.id.temperature_tv);
+
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override

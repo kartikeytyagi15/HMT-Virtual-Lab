@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -33,16 +32,16 @@
         android:id="@+id/temperature_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Temperature T1:"
+        android:text="T1 in &#176;C"
         android:textColor="#2B2B2B"
-        android:textSize="10sp"
+        android:textSize="12sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/simul_setup"
         app:layout_constraintEnd_toEndOf="@+id/simul_setup"
         app:layout_constraintHorizontal_bias="0.628"
         app:layout_constraintStart_toStartOf="@+id/simul_setup"
         app:layout_constraintTop_toTopOf="@+id/simul_setup"
-        app:layout_constraintVertical_bias="0.09" />
+        app:layout_constraintVertical_bias="0.081" />
 
     <TextView
         android:id="@+id/set_value_title_tv"
@@ -73,7 +72,7 @@
         app:layout_constraintTop_toTopOf="@+id/simul_setup"
         app:layout_constraintVertical_bias="0.324" />
 
-    <Button
+    <View
         android:id="@+id/Temp_record_button"
         android:layout_width="15dp"
         android:layout_height="47dp"
@@ -106,10 +105,10 @@
         android:layout_marginTop="44dp"
         android:clickable="true"
 
+        android:contentDescription="Pause Timer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timer_tv"
-        app:srcCompat="@drawable/ic_stop"
-        android:contentDescription="Pause Timer" />
+        app:srcCompat="@drawable/ic_stop" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/start_btn"
@@ -117,13 +116,13 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:clickable="true"
+        android:contentDescription="Start Timer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/reset_btn"
         app:layout_constraintStart_toEndOf="@+id/pause_btn"
         app:layout_constraintTop_toBottomOf="@+id/timer_tv"
         app:layout_constraintVertical_bias="0.004"
-        app:srcCompat="@drawable/ic_play"
-        android:contentDescription="Start Timer" />
+        app:srcCompat="@drawable/ic_play" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/reset_btn"
@@ -133,9 +132,24 @@
         android:layout_marginEnd="64dp"
         android:layout_marginRight="64dp"
         android:clickable="true"
+        android:contentDescription="Reset Timer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timer_tv"
-        app:srcCompat="@drawable/ic_reset"
-        android:contentDescription="Reset Timer" />
+        app:srcCompat="@drawable/ic_reset" />
+
+    <TextView
+        android:id="@+id/temperature_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:visibility="invisible"
+        android:text="00.00"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toEndOf="@+id/simul_setup"
+        app:layout_constraintHorizontal_bias="0.64"
+        app:layout_constraintStart_toStartOf="@+id/simul_setup"
+        app:layout_constraintTop_toTopOf="@+id/simul_setup" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
