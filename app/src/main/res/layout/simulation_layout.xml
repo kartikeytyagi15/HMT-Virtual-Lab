@@ -18,7 +18,7 @@
 
     <View
         android:id="@+id/power_button"
-        android:layout_width="23dp"
+        android:layout_width="30dp"
         android:layout_height="29dp"
         android:onClick="turnOnHeater"
         app:layout_constraintBottom_toBottomOf="@+id/simul_setup"
@@ -33,7 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="T1 in &#176;C"
-        android:textColor="#2B2B2B"
+        android:textColor="#000000"
         android:textSize="12sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/simul_setup"
@@ -74,13 +74,13 @@
 
     <View
         android:id="@+id/Temp_record_button"
-        android:layout_width="15dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="19dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="44dp"
         android:backgroundTint="@color/black"
         android:onClick="change_temp"
         app:layout_constraintEnd_toStartOf="@+id/power_button"
-        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintHorizontal_bias="0.924"
         app:layout_constraintStart_toStartOf="@+id/simul_setup"
         app:layout_constraintTop_toBottomOf="@+id/temperature_title_tv" />
 
@@ -88,11 +88,11 @@
         android:id="@+id/timer_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="30dp"
         android:text="0:00:00"
         android:textSize="42sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/simul_setup" />
 
@@ -100,9 +100,9 @@
         android:id="@+id/pause_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginTop="36dp"
         android:clickable="true"
 
         android:contentDescription="Pause Timer"
@@ -114,23 +114,24 @@
         android:id="@+id/start_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="36dp"
         android:clickable="true"
         android:contentDescription="Start Timer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/reset_btn"
+        app:layout_constraintHorizontal_bias="0.477"
         app:layout_constraintStart_toEndOf="@+id/pause_btn"
         app:layout_constraintTop_toBottomOf="@+id/timer_tv"
-        app:layout_constraintVertical_bias="0.004"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_play" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/reset_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginRight="64dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginRight="68dp"
         android:clickable="true"
         android:contentDescription="Reset Timer"
         app:layout_constraintEnd_toEndOf="parent"
@@ -149,6 +150,34 @@
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="@+id/simul_setup"
         app:layout_constraintHorizontal_bias="0.64"
+        app:layout_constraintStart_toStartOf="@+id/simul_setup"
+        app:layout_constraintTop_toTopOf="@+id/simul_setup" />
+
+    <TextView
+        android:id="@+id/surface_temp_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:gravity="center_horizontal"
+        android:text="00.00"
+        android:textSize="22sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/simul_setup"
+        app:layout_constraintHorizontal_bias="0.870"
+        app:layout_constraintStart_toStartOf="@+id/simul_setup"
+        app:layout_constraintTop_toTopOf="@+id/simul_setup" />
+
+    <TextView
+        android:id="@+id/surface_temp_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:text="T(s) in &#176;C"
+        android:textColor="#000000"
+        android:textSize="9sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@+id/simul_setup"
+        app:layout_constraintHorizontal_bias="0.852"
         app:layout_constraintStart_toStartOf="@+id/simul_setup"
         app:layout_constraintTop_toTopOf="@+id/simul_setup" />
 

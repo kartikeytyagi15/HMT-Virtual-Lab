@@ -49,7 +49,16 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     double thermocouple_2 = 30.4;
     double thermocouple_3 = 30.6;
     double thermocouple_4 = 30.1;
-    int time_elapsed = 0;
+    double surface_temp = 29.0;
+    double time_elapsed = 0;
+
+    TextView  surf_temp_tv;
+    TextView surf_temp_title_tv;
+
+    int LED_count = 0;
+    boolean LED_ON = false;
+    double LED_time = 0;
+    double LED_interval = 0;
 
     String tex = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
             "Inline formula:" +
@@ -129,27 +138,33 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 
     public double calculateTemp1(double time)
     {
-        double temp = -2.08648972851097E-05*Math.pow(time,4) + 2.23147779876687E-03*Math.pow(time,3) -
+        return -2.08648972851097E-05*Math.pow(time,4) + 2.23147779876687E-03*Math.pow(time,3) -
                                         8.28851482252020E-02*time*time + 1.27507832940478E+00*time + 2.94202396330543E+01;
-        return temp;
     }
     public double calculateTemp2(double time)
     {
-        double temp = -1.29260809317161E-05*Math.pow(time,4) + 1.39416210149346E-03*Math.pow(time,3) -
+        return -1.29260809317161E-05*Math.pow(time,4) + 1.39416210149346E-03*Math.pow(time,3) -
                         5.26402023596546E-02*time*time + 8.39101752575061E-01*time + 3.05444908761908E+01;
-        return temp;
     }
     public double calculateTemp3(double time)
     {
-        double temp = -1.46274811305622E-05*Math.pow(time,4) + 1.68042637439569E-03*Math.pow(time,3) -
+        return -1.46274811305622E-05*Math.pow(time,4) + 1.68042637439569E-03*Math.pow(time,3) -
             6.86649136093251E-02*time*time + 1.19281005038874E+00*time + 3.07688267375543E+01;
-        return temp;
     }
     public double calculateTemp4(double time)
     {
-        double temp = -1.55656292610759E-05*Math.pow(time,4) + 1.72549996510618E-03*Math.pow(time,3) -
+        return -1.55656292610759E-05*Math.pow(time,4) + 1.72549996510618E-03*Math.pow(time,3) -
                     6.71408402782134E-02*time*time + 1.09657322125850E+00*time + 3.02488660476099E+01;
-        return temp;
+    }
+
+    public double calculatePulses(double time){
+        return 3.41253344420811E-05*Math.pow(time,4) - 3.92624735874136E-03*Math.pow(time,3) +
+                1.64034123337430E-01*time*time - 3.04057480429492E+00*time + 6.08993773891020E+01;
+    }
+
+    public double calculateSurfaceTemp(double time){
+        return -0.000009164195484*Math.pow(time,4) +0.00177864349*Math.pow(time,3) -
+                0.116357812741*time*time + 3.161911615294*time +28.98745141703;
     }
 
     public void setTemperature_tv(){
@@ -179,31 +194,60 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             set_value_title_tv.setVisibility(View.VISIBLE);
             set_value_tv.setVisibility(View.VISIBLE);
             temperature_tv.setVisibility(View.VISIBLE);
+            surf_temp_title_tv.setVisibility(View.VISIBLE);
+            surf_temp_tv.setVisibility(View.VISIBLE);
 
             setTemperature_tv();
 
             time_elapsed = 0;
-            countDown = new CountDownTimer(2400000, 1000){  //45 minutes count down, updates every second
+            countDown = new CountDownTimer(2400000, 500) {  //40 minutes count down, updates every half second
                 @Override
                 public void onTick(long millisUntilFinished) {
-//                    Log.v("Temp","Temperature T1 :"+thermocouple_1);
-//                    Log.v("Temp","Temperature T2 :"+thermocouple_2);
-//                    Log.v("Temp","Temperature T3 :"+thermocouple_3);
-//                    Log.v("Temp","Temperature T4 :"+thermocouple_4);
+                    time_elapsed += 0.5;
                     setTemperature_tv();
-                    time_elapsed++;
-                    thermocouple_1 = calculateTemp1(time_elapsed/60.0);
-                    thermocouple_2 = calculateTemp2(time_elapsed/60.0);
-                    thermocouple_3 = calculateTemp3(time_elapsed/60.0);
-                    thermocouple_4 = calculateTemp4(time_elapsed/60.0);
+                    surf_temp_tv.setText(String.format(Locale.getDefault(),"%.2f", surface_temp));
+                    thermocouple_1 = calculateTemp1(time_elapsed / 60.0);
+                    thermocouple_2 = calculateTemp2(time_elapsed / 60.0);
+                    thermocouple_3 = calculateTemp3(time_elapsed / 60.0);
+                    thermocouple_4 = calculateTemp4(time_elapsed / 60.0);
+                    surface_temp = calculateSurfaceTemp(time_elapsed/60.0);
+
+                    LED_time += 0.5;
+                    if (LED_ON) {
+                        LED_ON = false;
+                        simulation_iv.setImageResource(R.drawable.tcl_green_black);
+                        LED_time = 0.5;
+                    } else {
+                        if (LED_count == 0) {
+                            LED_interval = calculatePulses(time_elapsed / 60.0) / 3;
+                            LED_count++;
+                        } else if (LED_count == 1) {
+                            if (LED_time >= LED_interval) {
+                                simulation_iv.setImageResource(R.drawable.tcl_green_red);
+                                LED_ON = true;
+                                LED_count++;
+                            }
+                        } else if (LED_count == 2) {
+                            if (LED_time >= LED_interval) {
+                                simulation_iv.setImageResource(R.drawable.tcl_green_red);
+                                LED_ON = true;
+                                LED_count++;
+                            }
+                        } else {
+                            if (LED_time >= LED_interval) {
+                                simulation_iv.setImageResource(R.drawable.tcl_green_red);
+                                LED_ON = true;
+                                LED_count = 0;
+                            }
+                        }
+                    }
                 }
 
                 @Override
                 public void onFinish() {
-                    Log.v("Temp","bleh bleh khatam :"+thermocouple_1);
+                    Log.v("Temp","time khatam :"+thermocouple_1);
                 }
             }.start();
-
         }
         else
         {   //Power off
@@ -215,10 +259,17 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             set_value_title_tv.setVisibility(View.INVISIBLE);
             set_value_tv.setVisibility(View.INVISIBLE);
             temperature_tv.setVisibility(View.INVISIBLE);
+            surf_temp_title_tv.setVisibility(View.INVISIBLE);
+            surf_temp_tv.setVisibility(View.INVISIBLE);
             thermocouple_1 = 29.30;
             thermocouple_2 = 30.4;
             thermocouple_3 = 30.6;
             thermocouple_4 = 30.1;
+            surface_temp = 29.0;
+            LED_count = 0;
+            LED_ON = false;
+            LED_time = 0;
+            LED_interval = 0;
         }
     }
     public void change_temp(View v)
@@ -276,6 +327,8 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         pauseBtn = findViewById(R.id.pause_btn);
         resetBtn = findViewById(R.id.reset_btn);
         temperature_tv = findViewById(R.id.temperature_tv);
+        surf_temp_tv = findViewById(R.id.surface_temp_tv);
+        surf_temp_title_tv = findViewById(R.id.surface_temp_title_tv);
 
 
         startBtn.setOnClickListener(new View.OnClickListener() {
