@@ -1,21 +1,31 @@
 package info.androidhive.hmtvirtuallab;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.ArrayList;
 import java.util.Locale;
-
 import io.github.sidvenu.mathjaxview.MathJaxView;
 
 public class ThermalConductivityOfLiquids extends AppCompatActivity {
@@ -54,17 +64,26 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 
     TextView  surf_temp_tv;
     TextView surf_temp_title_tv;
+    EditText num_pulses;
+    int pulses = 4;
 
     int LED_count = 0;
     boolean LED_ON = false;
     double LED_time = 0;
     double LED_interval = 0;
 
-    String tex = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
-            "Inline formula:" +
-            " $ax^2 + bx + c = 0$ " +
-            "or displayed formula: $$\\sum_{i=0}^n i^2 = \\frac{(n^2+n)(2n+1)}{6}$$"+
-            "</p>\n";
+    SQLiteDatabase db;
+    TableLayout table;
+    int numReadings = 0;
+    TextView numReadings_tv;
+
+    SharedPreferences sharedPref;
+
+//    String tex = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
+//            "Inline formula:" +
+//            " $ax^2 + bx + c = 0$ " +
+//            "or displayed formula: $$\\sum_{i=0}^n i^2 = \\frac{(n^2+n)(2n+1)}{6}$$"+
+//            "</p>\n";
     String objective_text = "To study the heat transfer through liquids.";
     String aim_text = "To calculate the thermal conductivity of a liquid.";
     String intro_text = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
@@ -167,7 +186,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
                 0.116357812741*time*time + 3.161911615294*time +28.98745141703;
     }
 
-    public void setTemperature_tv(){
+    public void setTemperature_tv() {
         if(thermocouple_number == 0) {
             temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
         }
@@ -196,6 +215,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             temperature_tv.setVisibility(View.VISIBLE);
             surf_temp_title_tv.setVisibility(View.VISIBLE);
             surf_temp_tv.setVisibility(View.VISIBLE);
+            num_pulses.setEnabled(false);
 
             setTemperature_tv();
 
@@ -261,6 +281,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             temperature_tv.setVisibility(View.INVISIBLE);
             surf_temp_title_tv.setVisibility(View.INVISIBLE);
             surf_temp_tv.setVisibility(View.INVISIBLE);
+            num_pulses.setEnabled(true);
             thermocouple_1 = 29.30;
             thermocouple_2 = 30.4;
             thermocouple_3 = 30.6;
@@ -315,6 +336,98 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         }
     };
 
+    public void onRecordBtnClicked(View v)
+    {
+//        db.execSQL("INSERT INTO "
+//                + "TCLTable"
+//                + "(Temp1, Temp2, Temp3, Temp4)"
+//                + " VALUES (55.5, 22.3, 34.4, 223.23);");
+        numReadings++;
+        String input_txt = num_pulses.getText().toString();
+        pulses = Integer.parseInt(input_txt);
+        numReadings_tv.setText(String.valueOf(numReadings));
+        Log.v("Temp",""+pulses);
+        Log.v("Temp", ""+updateTime);
+
+        db.execSQL("INSERT INTO "
+                + "TCLTable"
+                + "(Sno, Pulses, PulseTime, TempSurf, Temp1, Temp2, Temp3, Temp4)"
+                + " VALUES (" +
+                    String.format(Locale.US, "%d, %d, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f",
+                            numReadings, pulses, updateTime/1000.0, surface_temp, thermocouple_1, thermocouple_2, thermocouple_3, thermocouple_4)
+                + ");");
+//        Toast.makeText(getApplicationContext(),"Data Saved!",Toast.LENGTH_SHORT).show();
+        sharedPref.edit().putInt("numReadings",numReadings).apply();
+    }
+
+    public void onDeleteBtnClicked(View v)
+    {
+        numReadings = sharedPref.getInt("numReadings",0);
+        Log.v("Temp","Num read: "+ numReadings);
+        if(numReadings > 0)
+        {
+            db.execSQL("DELETE FROM TCLTable WHERE Sno = " + numReadings);
+            numReadings--;
+            sharedPref.edit().putInt("numReadings",numReadings).apply();
+            numReadings_tv.setText(String.valueOf(numReadings));
+        }
+    }
+
+    public void onResetBtnClicked(View v)
+    {
+        db.execSQL("DELETE FROM TCLTable");
+        sharedPref.edit().putInt("SerialNo", 0).apply();
+        sharedPref.edit().putInt("numReadings", 0).apply();
+        int count = table.getChildCount();
+        for (int i = 1; i < count; i++) {
+            View child = table.getChildAt(i);
+            if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
+        }
+    }
+
+    public void openObservation()
+    {
+        table = findViewById(R.id.observationTable);
+        try {
+            Cursor c = db.rawQuery("SELECT * FROM " + "TCLTable", null);
+            ArrayList<Integer> indexArr = new ArrayList<>();
+            indexArr.add(c.getColumnIndex("Sno"));
+            indexArr.add(c.getColumnIndex("Pulses"));
+            indexArr.add(c.getColumnIndex("PulseTime"));
+            indexArr.add(c.getColumnIndex("TempSurf"));
+            indexArr.add(c.getColumnIndex("Temp1"));
+            indexArr.add(c.getColumnIndex("Temp2"));
+            indexArr.add(c.getColumnIndex("Temp3"));
+            indexArr.add(c.getColumnIndex("Temp4"));
+
+            c.moveToFirst();
+            while(!c.isAfterLast()){
+                TableRow tableRow = new TableRow(this);
+                for(int itr = 0; itr<indexArr.size(); itr++)
+                {
+                    String value;
+                    if(itr <= 1)
+                        value =  String.valueOf(c.getInt(indexArr.get(itr)));
+                    else
+                        value = String.valueOf(c.getFloat(indexArr.get(itr)));
+                    TextView tv = new TextView(this);
+                    tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
+                            TableRow.LayoutParams.WRAP_CONTENT, 1f));
+                    tv.setText(value);
+                    tv.setTextSize(18);
+                    tv.setGravity(Gravity.CENTER);
+                    tableRow.addView(tv);
+                }
+                table.addView(tableRow);
+                c.moveToNext();
+            }
+            c.close();
+        }
+        catch(Exception e) {
+            Log.e("Error", "Error", e);
+        };
+    }
+
     void openSimulation()
     {
         simulation_iv = findViewById(R.id.simul_setup);
@@ -329,7 +442,10 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         temperature_tv = findViewById(R.id.temperature_tv);
         surf_temp_tv = findViewById(R.id.surface_temp_tv);
         surf_temp_title_tv = findViewById(R.id.surface_temp_title_tv);
+        num_pulses = findViewById(R.id.num_pulses_id);
+        numReadings_tv = findViewById(R.id.numReadings_id);
 
+        numReadings_tv.setText(String.valueOf(numReadings));
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -360,6 +476,8 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
                 isRunning = false;
                 wasRunning = false;
                 millisPassed = 0L;
+                updateTime = 0;
+                timeInMillis = 0;
                 String def = "0:00:00";
                 timer_tv.setText(def);
                 customHandler.removeCallbacks(updateTimerThread);
@@ -381,6 +499,19 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thermal_conductivity_of_liquids);
+
+        try {
+            db = this.openOrCreateDatabase("TCLDB", MODE_PRIVATE, null);
+            db.execSQL("CREATE TABLE IF NOT EXISTS "
+                    + "TCLTable"
+                    + " (Sno INT, Pulses INT, PulseTime FLOAT, TempSurf FLOAT,Temp1 FLOAT,Temp2 FLOAT,Temp3 FLOAT, Temp4 FLOAT);");
+        }
+        catch(Exception e) {
+            Log.e("Error", "Error", e);
+        }
+
+        sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        numReadings = sharedPref.getInt("numReadings",0);
 
         Intent intent = getIntent();
         String viewClicked = intent.getStringExtra("clickedViewTag");
@@ -407,6 +538,12 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             setTitle("Procedure");
             setContentView(R.layout.procedure_layout);
             openProcedure();
+        }
+        else if(viewClicked != null && viewClicked.equals("observationTable"))
+        {
+            setTitle("Observation Table");
+            setContentView(R.layout.observation_layout);
+            openObservation();
         }
     }
 

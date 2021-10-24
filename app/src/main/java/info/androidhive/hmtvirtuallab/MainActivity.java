@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     Button experiment_3;
     Button experiment_4;
     Button experiment_5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         experiment_3= findViewById(R.id.exp3);
         experiment_4 = findViewById(R.id.exp4);
         experiment_5 = findViewById(R.id.exp5);
+
         liquids_th.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
