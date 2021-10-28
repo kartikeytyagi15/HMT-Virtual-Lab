@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,16 +16,17 @@ public class MainActivity extends AppCompatActivity {
     int EXP_4_TAG = 4;
     int EXP_5_TAG = 5;
 
-    Button liquids_th;
-    Button experiment_2;
-    Button experiment_3;
-    Button experiment_4;
-    Button experiment_5;
+    CardView liquids_th;
+    CardView experiment_2;
+    CardView experiment_3;
+    CardView experiment_4;
+    CardView experiment_5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        setContentView(R.layout.temporary_layout);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         liquids_th = findViewById(R.id.thermalConductivityLiquids);

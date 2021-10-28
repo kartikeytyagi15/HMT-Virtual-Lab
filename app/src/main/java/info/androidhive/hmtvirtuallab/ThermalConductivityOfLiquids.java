@@ -96,8 +96,8 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             "$$q = -kA\\frac{\\Delta T}{\\Delta X}$$\n" +
             "Where $q$ is the amount of heat transfer and $\\frac{\\Delta T}{\\Delta X}$ is the temperature gradient in the direction of heat flow. The constant $k$ is called thermal conductivity of the material.\n";
     String theory_text= "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
-            "$\\bullet$For thermal conductivity of liquids using Fourier's law, the heat flow through the liquid from hot fluid to cold fluid is the heat transfer through conductive fluid medium.\n<br>" +
-            "<br>$\\bullet$At steady state, the average face temperatures are recorded ($T_h$ and $Tc$) along with the amount of heat transfer ($q$) knowing, the heat transfer area ($A$) and the thickness of the sample ($\\Delta X$) across which the heat transfer " +
+            "$\\bullet$ For thermal conductivity of liquids using Fourier's law, the heat flow through the liquid from hot fluid to cold fluid is the heat transfer through conductive fluid medium.\n<br>" +
+            "<br>$\\bullet$ At steady state, the average face temperatures are recorded ($T_h$ and $Tc$) along with the amount of heat transfer ($q$) knowing, the heat transfer area ($A$) and the thickness of the sample ($\\Delta X$) across which the heat transfer " +
             "takes place, the thermal conductivity of the sample can be calculated using Fourier's law of heat conduction.\n</br>" +
             "$$q = kA\\frac{T_h - T_c}{\\Delta X}$$\n" +
             "$$k = \\frac{q\\times\\Delta X}{A\\times(T_h - T_c)}$$";
@@ -116,26 +116,26 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             "<br>$\\bullet$ Funnel is provided with a valve to fill the liquid. Overflow pipe is given to maintain the liquid level. Plate is for circulation of water. A valve is provided to control the flow of water. \n</br>" +
             "<br>$\\bullet$ Four temperature sensors are provided to measure the temperature across the liquid layer.\n</br>";
 
-    String start_procedure_text="1.1 Close the valves V1-V2.\n" +
-            "1.2 Connect continuous water supply to the inlet of water chamber.\n" +
-            "1.3 Connect outlet of chamber to drain.\n" +
-            "1.4 Open the valve V2.\n" +
-            "1.5 Fill the liquid (whose thermal conductivity have to be measure) through funnel till the liquid retain in funnel.\n" +
-            "1.6 Extra liquid will overflow from another given pipe to keep the liquid at axis level.\n" +
-            "1.7 Ensure that mains ON/OFF switch given on the panel are at OFF position.\n" +
-            "1.8 Connect electric supply to the set up.\n" +
-            "1.9 Switch ON the mains ON / OFF switch.\n" +
-            "1.10 Start the water supply and adjust the flow of water by valve V1. \n" +
-            "1.11 Note down the ambient temperature readings.\n" +
-            "1.12 Set the input for heater by PID, Set Value (SV) is in the range 40o to 80 oC.\n" +
-            "1.13 After 1.5 hrs. Note down the reading of pulses and temperature sensors in the observation table after every 10 minutes interval till observing change in consecutive readings of temperatures (± 0.2 oC).\n" +
-            "1.14 Repeat the experiment for different liquids. \n" +
-            "1.15 Perform the experiment at different Set Value (SV)\n" +
-            "1.16 Repeat the experiment with different flow rate. ";
-    String close_procedure_text="2.1 When experiment is over switch OFF the heater switch.\n" +
-            "2.2 Switch OFF the mains ON/OFF switch.\n" +
-            "2.3 Switch OFF electric supply to the set up.\n" +
-            "2.4 Stop flow of water by closing the valve V1";
+    String start_procedure_text="1. Close the valves V1-V2.\n\n" +
+            "2. Connect continuous water supply to the inlet of water chamber.\n\n" +
+            "3. Connect outlet of chamber to drain.\n\n" +
+            "4. Open the valve V2.\n\n" +
+            "5. Fill the liquid (whose thermal conductivity have to be measure) through funnel till the liquid retain in funnel.\n\n" +
+            "6. Extra liquid will overflow from another given pipe to keep the liquid at axis level.\n\n" +
+            "7. Ensure that mains ON/OFF switch given on the panel are at OFF position.\n\n" +
+            "8. Connect electric supply to the set up.\n\n" +
+            "9. Switch ON the mains ON / OFF switch.\n\n" +
+            "10. Start the water supply and adjust the flow of water by valve V1. \n\n" +
+            "11. Note down the ambient temperature readings.\n\n" +
+            "12. Set the input for heater by PID, Set Value (SV) is in the range 40"+ (char) 0x00B0+"C "+ "to 80"+ (char) 0x00B0+"C " +"\n\n" +
+            "13. After 1.5 hrs. Note down the reading of pulses and temperature sensors in the observation table after every 10 minutes interval till observing change in consecutive readings of temperatures (± 0.2" + (char) 0x00B0+"C)."+"\n\n" +
+            "14. Repeat the experiment for different liquids. \n\n" +
+            "15. Perform the experiment at different Set Value (SV)\n\n" +
+            "16. Repeat the experiment with different flow rate. ";
+    String close_procedure_text="1. When experiment is over switch OFF the heater switch.\n\n" +
+            "2. Switch OFF the mains ON/OFF switch.\n\n" +
+            "3. Switch OFF electric supply to the set up.\n\n" +
+            "4. Stop flow of water by closing the valve V1";
 
     void openTheory() {
         obj_tv = findViewById(R.id.objective_text_tv);

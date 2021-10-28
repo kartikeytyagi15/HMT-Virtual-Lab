@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
-    app:layoutDescription="@xml/activity_main_scene">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/thermalConductivityLiquids"
@@ -118,7 +117,7 @@
         app:cardElevation="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/thermalConductivityLiquids">
+        app:layout_constraintTop_toBottomOf="@id/thermalConductivityLiquids" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint"
@@ -133,14 +132,14 @@
                 android:layout_marginTop="34dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_android_24" />
+                app:srcCompat="@drawable/tcl_red" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Experiment 2"
+                android:text="Thermal Conductivity of Liquids"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView"
@@ -155,7 +154,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Aim of experiment"
+                android:text="Determine the thermal\nconductivity of glycerine"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -209,6 +208,7 @@
     </androidx.cardview.widget.CardView>
 
 
+
     <androidx.cardview.widget.CardView
         android:id="@+id/exp3"
         android:layout_width="350dp"
@@ -220,7 +220,7 @@
         app:cardElevation="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/exp2">
+        app:layout_constraintTop_toBottomOf="@id/exp2" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint"
@@ -235,15 +235,14 @@
                 android:layout_marginTop="34dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_android_24"
-                 />
+                app:srcCompat="@drawable/tcl_red" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Experiment 3"
+                android:text="Thermal Conductivity of Liquids"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView"
@@ -258,7 +257,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Aim of experiment"
+                android:text="Determine the thermal\nconductivity of glycerine"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -322,7 +321,7 @@
         app:cardElevation="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/exp3">
+        app:layout_constraintTop_toBottomOf="@id/exp3" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint"
@@ -337,14 +336,14 @@
                 android:layout_marginTop="34dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_android_24" />
+                app:srcCompat="@drawable/tcl_red" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Experiment 4"
+                android:text="Thermal Conductivity of Liquids"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView"
@@ -359,7 +358,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Aim of experiment"
+                android:text="Determine the thermal\nconductivity of glycerine"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -423,7 +422,7 @@
         app:cardElevation="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/exp4">
+        app:layout_constraintTop_toBottomOf="@id/exp4" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint"
@@ -438,14 +437,14 @@
                 android:layout_marginTop="34dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_android_24" />
+                app:srcCompat="@drawable/tcl_red" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Experiment 5"
+                android:text="Thermal Conductivity of Liquids"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView"
@@ -460,7 +459,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Aim of experiment"
+                android:text="Determine the thermal\nconductivity of glycerine"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -514,4 +513,4 @@
     </androidx.cardview.widget.CardView>
 
 
-</androidx.constraintlayout.motion.widget.MotionLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
