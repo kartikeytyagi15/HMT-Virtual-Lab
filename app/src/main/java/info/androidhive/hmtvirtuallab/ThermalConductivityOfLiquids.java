@@ -1,6 +1,7 @@
 package info.androidhive.hmtvirtuallab;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -18,8 +19,8 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -270,28 +271,44 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             }.start();
         }
         else
-        {   //Power off
-            POWER_ON = false;
-            time_elapsed = 0;
-            countDown.cancel();
-            simulation_iv.setImageResource(R.drawable.tcl_red);
-            temp_title_tv.setVisibility(View.INVISIBLE);
-            set_value_title_tv.setVisibility(View.INVISIBLE);
-            set_value_tv.setVisibility(View.INVISIBLE);
-            temperature_tv.setVisibility(View.INVISIBLE);
-            surf_temp_title_tv.setVisibility(View.INVISIBLE);
-            surf_temp_tv.setVisibility(View.INVISIBLE);
-            num_pulses.setEnabled(true);
-            thermocouple_1 = 29.30;
-            thermocouple_2 = 30.4;
-            thermocouple_3 = 30.6;
-            thermocouple_4 = 30.1;
-            surface_temp = 29.0;
-            LED_count = 0;
-            LED_ON = false;
-            LED_time = 0;
-            LED_interval = 0;
+        {
+            //Power off
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Warning!")
+                    .setMessage("Are you sure you want to turn off the setup?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            powerOff();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
         }
+    }
+    public void powerOff()
+    {
+        POWER_ON = false;
+        time_elapsed = 0;
+        countDown.cancel();
+        simulation_iv.setImageResource(R.drawable.tcl_red);
+        temp_title_tv.setVisibility(View.INVISIBLE);
+        set_value_title_tv.setVisibility(View.INVISIBLE);
+        set_value_tv.setVisibility(View.INVISIBLE);
+        temperature_tv.setVisibility(View.INVISIBLE);
+        surf_temp_title_tv.setVisibility(View.INVISIBLE);
+        surf_temp_tv.setVisibility(View.INVISIBLE);
+        num_pulses.setEnabled(true);
+        thermocouple_1 = 29.30;
+        thermocouple_2 = 30.4;
+        thermocouple_3 = 30.6;
+        thermocouple_4 = 30.1;
+        surface_temp = 29.0;
+        LED_count = 0;
+        LED_ON = false;
+        LED_time = 0;
+        LED_interval = 0;
     }
     public void change_temp(View v)
     {
@@ -375,6 +392,23 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 
     public void onResetBtnClicked(View v)
     {
+        if(numReadings > 0) {
+            new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Warning!")
+                    .setMessage("Are you sure you want to reset the table?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            resetTable();
+                        }
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+        }
+    }
+    public void resetTable()
+    {
         db.execSQL("DELETE FROM TCLTable");
         sharedPref.edit().putInt("SerialNo", 0).apply();
         sharedPref.edit().putInt("numReadings", 0).apply();
@@ -384,7 +418,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
         }
     }
-
     public void openObservation()
     {
         table = findViewById(R.id.observationTable);

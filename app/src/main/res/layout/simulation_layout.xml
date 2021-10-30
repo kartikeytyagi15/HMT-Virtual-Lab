@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_constrainedHeight="true"
+    app:layout_constraintVertical_chainStyle="spread">
 
     <ImageView
         android:id="@+id/simul_setup"
@@ -88,7 +90,6 @@
         android:id="@+id/timer_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="0:00:00"
         android:textSize="42sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -102,40 +103,38 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="68dp"
         android:layout_marginLeft="68dp"
-        android:layout_marginTop="24dp"
         android:clickable="true"
 
         android:contentDescription="Pause Timer"
+        app:layout_constraintBottom_toBottomOf="@+id/start_btn"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timer_tv"
+        app:layout_constraintTop_toTopOf="@+id/start_btn"
         app:srcCompat="@drawable/ic_stop" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/start_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:clickable="true"
         android:contentDescription="Start Timer"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/reset_btn"
-        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/pause_btn"
         app:layout_constraintTop_toBottomOf="@+id/timer_tv"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_play" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/reset_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:layout_marginEnd="68dp"
         android:layout_marginRight="68dp"
         android:clickable="true"
         android:contentDescription="Reset Timer"
+        app:layout_constraintBottom_toBottomOf="@+id/start_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timer_tv"
+        app:layout_constraintTop_toTopOf="@+id/start_btn"
         app:srcCompat="@drawable/ic_reset" />
 
     <TextView
@@ -145,9 +144,9 @@
         android:layout_marginTop="32dp"
         android:gravity="center_vertical"
         android:includeFontPadding="false"
-        android:visibility="invisible"
         android:text="00.00"
         android:textSize="30sp"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="@+id/simul_setup"
         app:layout_constraintHorizontal_bias="0.64"
         app:layout_constraintStart_toStartOf="@+id/simul_setup"
@@ -187,7 +186,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="52dp"
         android:layout_marginLeft="52dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginBottom="24dp"
         android:onClick="onRecordBtnClicked"
         android:text="Record"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -199,13 +198,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="36dp"
         android:ems="10"
         android:inputType="numberSigned"
         android:text="4"
         android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView6"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/start_btn" />
+        app:layout_constraintTop_toTopOf="@+id/textView6" />
 
     <TextView
         android:id="@+id/textView6"
@@ -213,11 +212,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:layout_marginLeft="80dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="36dp"
         android:text="Number of Pulses:"
         android:textSize="22sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pause_btn" />
+        app:layout_constraintTop_toBottomOf="@+id/pause_btn"
+        app:layout_constraintVertical_chainStyle="spread_inside" />
 
     <Button
         android:id="@+id/delete_btn_id"
@@ -225,9 +226,9 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="52dp"
         android:layout_marginRight="52dp"
-        android:layout_marginBottom="48dp"
-        android:text="Delete"
+        android:layout_marginBottom="24dp"
         android:onClick="onDeleteBtnClicked"
+        android:text="Delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -237,11 +238,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
         android:layout_marginLeft="112dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="16dp"
         android:text="Readings Taken: "
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/record_btn_id"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
         android:id="@+id/numReadings_id"
@@ -249,10 +251,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginBottom="36dp"
         android:text="0"
         android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/delete_btn_id"
-        app:layout_constraintStart_toEndOf="@+id/textView7" />
+        app:layout_constraintBottom_toBottomOf="@+id/textView7"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
