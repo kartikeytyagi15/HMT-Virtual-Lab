@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
@@ -19,12 +20,20 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 import io.github.sidvenu.mathjaxview.MathJaxView;
@@ -409,6 +418,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     }
     public void resetTable()
     {
+        numReadings = 0;
         db.execSQL("DELETE FROM TCLTable");
         sharedPref.edit().putInt("SerialNo", 0).apply();
         sharedPref.edit().putInt("numReadings", 0).apply();
@@ -418,6 +428,97 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
         }
     }
+
+    public void downloadExcel(View v)
+    {
+//        String destPath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
+//        File filePath = new File(destPath+ "/TestingApp/TCL Table.xlsx");
+        File filePath = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+File.separator+"/HMT Virtual Lab/TCL Table.xlsx");
+        }
+
+        if(numReadings == 0)
+        {
+            Toast.makeText(getApplicationContext(),"No readings to save!",Toast.LENGTH_LONG).show();
+            return;
+        }
+        Toast.makeText(getApplicationContext(),"Excel file named 'TCL Table' is saved to device internal storage.",Toast.LENGTH_LONG).show();
+
+        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+        HSSFSheet hssfSheet = hssfWorkbook.createSheet();
+
+        HSSFRow hssfRow = hssfSheet.createRow(0);
+        HSSFCell hssfCell = hssfRow.createCell(0);
+        hssfCell.setCellValue("S.No.");
+        HSSFCell hssfCell1 = hssfRow.createCell(1);
+        hssfCell1.setCellValue("P");
+        HSSFCell hssfCell2 = hssfRow.createCell(2);
+        hssfCell2.setCellValue("t(p)");
+        HSSFCell hssfCell3 = hssfRow.createCell(3);
+        hssfCell3.setCellValue("T(S)");
+        HSSFCell hssfCell4 = hssfRow.createCell(4);
+        hssfCell4.setCellValue("T1");
+        HSSFCell hssfCell5 = hssfRow.createCell(5);
+        hssfCell5.setCellValue("T2");
+        HSSFCell hssfCell6 = hssfRow.createCell(6);
+        hssfCell6.setCellValue("T3");
+        HSSFCell hssfCell7 = hssfRow.createCell(7);
+        hssfCell7.setCellValue("T4");
+
+
+        try {
+            Cursor c = db.rawQuery("SELECT * FROM " + "TCLTable", null);
+            ArrayList<Integer> indexArr = new ArrayList<>();
+            indexArr.add(c.getColumnIndex("Sno"));
+            indexArr.add(c.getColumnIndex("Pulses"));
+            indexArr.add(c.getColumnIndex("PulseTime"));
+            indexArr.add(c.getColumnIndex("TempSurf"));
+            indexArr.add(c.getColumnIndex("Temp1"));
+            indexArr.add(c.getColumnIndex("Temp2"));
+            indexArr.add(c.getColumnIndex("Temp3"));
+            indexArr.add(c.getColumnIndex("Temp4"));
+
+            c.moveToFirst();
+            int rowNum = 1;
+            while(!c.isAfterLast()){
+                HSSFRow row = hssfSheet.createRow(rowNum);
+                for(int itr = 0; itr<indexArr.size(); itr++)
+                {
+                    String value;
+                    if(itr <= 1)
+                        value =  String.valueOf(c.getInt(indexArr.get(itr)));
+                    else
+                        value = String.valueOf(c.getFloat(indexArr.get(itr)));
+                    HSSFCell cell = row.createCell(itr);
+                    cell.setCellValue(value);
+                }
+                c.moveToNext();
+                rowNum++;
+            }
+            c.close();
+        }
+        catch(Exception e) {
+            Log.e("Error", "Error", e);
+        }
+
+        try {
+            if (!filePath.exists()){
+                filePath.createNewFile();
+            }
+
+            FileOutputStream fileOutputStream= new FileOutputStream(filePath);
+            hssfWorkbook.write(fileOutputStream);
+
+            if (fileOutputStream!=null){
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void openObservation()
     {
         table = findViewById(R.id.observationTable);
@@ -458,7 +559,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         }
         catch(Exception e) {
             Log.e("Error", "Error", e);
-        };
+        }
     }
 
     void openSimulation()
