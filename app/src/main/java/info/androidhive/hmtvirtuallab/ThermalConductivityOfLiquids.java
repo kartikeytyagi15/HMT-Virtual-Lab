@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -25,6 +26,19 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.charts.Pie;
+import com.anychart.core.cartesian.series.Line;
+import com.anychart.data.Mapping;
+import com.anychart.data.Set;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.MarkerType;
+import com.anychart.enums.TooltipPositionMode;
+import com.anychart.graphics.vector.Stroke;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -35,6 +49,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import io.github.sidvenu.mathjaxview.MathJaxView;
 
@@ -466,7 +481,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         HSSFCell hssfCell7 = hssfRow.createCell(7);
         hssfCell7.setCellValue("T4");
 
-
         try {
             Cursor c = db.rawQuery("SELECT * FROM " + "TCLTable", null);
             ArrayList<Integer> indexArr = new ArrayList<>();
@@ -629,6 +643,111 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         apparatus_tv.setText(apparatus_desc);
     }
 
+    private class CustomDataEntry extends ValueDataEntry {
+
+        CustomDataEntry(String x, Number value, Number value2, Number value3, Number value4) {
+            super(x, value);
+            setValue("value2", value2);
+            setValue("value3", value3);
+            setValue("value4", value4);
+        }
+
+    }
+
+    private void openGraphs() {
+        AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+        anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+
+        Cartesian cartesian = AnyChart.line();
+
+        cartesian.animation(true);
+
+        cartesian.padding(10d, 20d, 10d, 20d);
+
+        cartesian.crosshair().enabled(true);
+        cartesian.crosshair()
+                .yLabel(true)
+                // TODO ystroke
+                .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+        cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
+        cartesian.xAxis(0).title("time in minutes");
+//        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+
+        List<DataEntry> seriesData = new ArrayList<>();
+        seriesData.add(new CustomDataEntry("0", 29.3, 30.4, 30.6,30.1));
+        seriesData.add(new CustomDataEntry("5", 34.3, 34, 35.7, 34.67));
+        seriesData.add(new CustomDataEntry("10", 35.8, 34.7, 37.1,35.87));
+        seriesData.add(new CustomDataEntry("15", 36.2, 35.2, 37.9,36.43));
+        seriesData.add(new CustomDataEntry("20", 36.2, 35.3, 38.3,36.6));
+        seriesData.add(new CustomDataEntry("25", 36.3, 35.5, 38.4,36.73));
+        seriesData.add(new CustomDataEntry("30", 36.7, 35.7, 38.4,36.93));
+        seriesData.add(new CustomDataEntry("37", 36.8, 35.7, 38.4,36.96));
+        seriesData.add(new CustomDataEntry("45", 36.8, 35.8, 38.6,37.07));
+
+        Set set = Set.instantiate();
+        set.data(seriesData);
+        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+        Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+        Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+        Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
+
+        Line series1 = cartesian.line(series1Mapping);
+        series1.name("Temperature 1");
+        series1.hovered().markers().enabled(true);
+        series1.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series1.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(0d)
+                .offsetY(5d);
+
+        Line series2 = cartesian.line(series2Mapping);
+        series2.name("Temperature 2");
+        series2.hovered().markers().enabled(true);
+        series2.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series2.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(0d)
+                .offsetY(5d);
+
+        Line series3 = cartesian.line(series3Mapping);
+        series3.name("Temperature 3");
+        series3.hovered().markers().enabled(true);
+        series3.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series3.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(0d)
+                .offsetY(5d);
+
+        Line series4 = cartesian.line(series4Mapping);
+        series4.name("Temperature 4");
+        series4.hovered().markers().enabled(true);
+        series4.hovered().markers()
+                .type(MarkerType.CIRCLE)
+                .size(4d);
+        series4.tooltip()
+                .position("right")
+                .anchor(Anchor.LEFT_CENTER)
+                .offsetX(0d)
+                .offsetY(5d);
+
+        cartesian.legend().enabled(true);
+        cartesian.legend().fontSize(15d);
+        cartesian.legend().padding(0d, 0d, 10d, 0d);
+        anyChartView.setChart(cartesian);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -639,46 +758,39 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             db.execSQL("CREATE TABLE IF NOT EXISTS "
                     + "TCLTable"
                     + " (Sno INT, Pulses INT, PulseTime FLOAT, TempSurf FLOAT,Temp1 FLOAT,Temp2 FLOAT,Temp3 FLOAT, Temp4 FLOAT);");
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             Log.e("Error", "Error", e);
         }
 
         sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-        numReadings = sharedPref.getInt("numReadings",0);
+        numReadings = sharedPref.getInt("numReadings", 0);
 
         Intent intent = getIntent();
         String viewClicked = intent.getStringExtra("clickedViewTag");
-        if(viewClicked!= null && viewClicked.equals("theory"))
-        {
+        if (viewClicked != null && viewClicked.equals("theory")) {
             setTitle("Theory");
             setContentView(R.layout.theory_layout);
             openTheory();
-        }
-        else if(viewClicked != null && viewClicked.equals("aboutSetup"))
-        {
+        } else if (viewClicked != null && viewClicked.equals("aboutSetup")) {
             setTitle("About Setup");
             setContentView(R.layout.about_setup_layout);
             openAboutSetup();
-        }
-        else if(viewClicked != null && viewClicked.equals("simulation"))
-        {
+        } else if (viewClicked != null && viewClicked.equals("simulation")) {
             setTitle("Simulation");
             setContentView(R.layout.simulation_layout);
             openSimulation();
-        }
-        else if(viewClicked != null && viewClicked.equals("procedure"))
-        {
+        } else if (viewClicked != null && viewClicked.equals("procedure")) {
             setTitle("Procedure");
             setContentView(R.layout.procedure_layout);
             openProcedure();
-        }
-        else if(viewClicked != null && viewClicked.equals("observationTable"))
-        {
+        } else if (viewClicked != null && viewClicked.equals("observationTable")) {
             setTitle("Observation Table");
             setContentView(R.layout.observation_layout);
             openObservation();
+        } else if (viewClicked != null && viewClicked.equals("graphs")) {
+            setTitle("Graphs");
+            setContentView(R.layout.graphs_layout);
+            openGraphs();
         }
     }
-
 }

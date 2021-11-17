@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
 }
-
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
@@ -9,7 +8,8 @@ android {
     defaultConfig {
         applicationId "info.androidhive.hmtvirtuallab"
         vectorDrawables.useSupportLibrary = true
-        minSdkVersion 16
+        multiDexEnabled true
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -43,5 +43,8 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //Dependency to create and download excel file
     implementation 'org.apache.poi:poi:3.17'
+    //AnyCharts dependency
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
 }

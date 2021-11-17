@@ -31,6 +31,7 @@ public class DetailsFragment extends BottomSheetDialogFragment implements View.O
     TextView procedure_btn;
     TextView simulation_btn;
     TextView observation_table_btn;
+    TextView graphs_btn;
     TextView quiz_btn;
 
 
@@ -68,11 +69,15 @@ public class DetailsFragment extends BottomSheetDialogFragment implements View.O
         quiz_btn = view.findViewById(R.id.quiz);
         quiz_btn.setOnClickListener(this);
 
+        graphs_btn = view.findViewById(R.id.graphs);
+        graphs_btn.setOnClickListener(this);
+
         views.add(theory_btn);
         views.add(about_setup_btn);
         views.add(procedure_btn);
         views.add(simulation_btn);
         views.add(observation_table_btn);
+        views.add(graphs_btn);
         views.add(quiz_btn);
 
         return view;
@@ -143,6 +148,10 @@ public class DetailsFragment extends BottomSheetDialogFragment implements View.O
         else if (observation_table_btn.equals(clickedView)) {
             //Log.v("LOGGED MESSAGE", "ABOUT SETUP BUTTON WAS CLICKED!");
             viewClicked = "observationTable";
+        }
+        else if (graphs_btn.equals(clickedView)) {
+            //Log.v("LOGGED MESSAGE", "ABOUT SETUP BUTTON WAS CLICKED!");
+            viewClicked = "graphs";
         }
         else if (quiz_btn.equals(clickedView)) {
             //Log.v("LOGGED MESSAGE", "ABOUT SETUP BUTTON WAS CLICKED!");
