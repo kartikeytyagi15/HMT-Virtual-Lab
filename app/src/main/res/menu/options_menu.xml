@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    android:id="@+id/menu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/pulses_menu_item_id"
+        android:title="Pulses"
+        app:showAsAction="never"
+        >
+
+        <menu>
+            <item
+                android:id="@+id/three_id"
+                android:title="Three"
+                />
+            <item
+                android:id="@+id/four_id"
+                android:title="Four"
+                />
+            <item
+                android:id="@+id/five_id"
+                android:title="Five"
+                />
+            <item
+                android:id="@+id/six_id"
+                android:title="Six"
+                />
+        </menu>
+
+    </item>
+</menu>

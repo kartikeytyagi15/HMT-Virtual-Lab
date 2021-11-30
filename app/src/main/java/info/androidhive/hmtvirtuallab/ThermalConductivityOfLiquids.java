@@ -14,6 +14,9 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -23,6 +26,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,7 +35,6 @@ import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Cartesian;
-import com.anychart.charts.Pie;
 import com.anychart.core.cartesian.series.Line;
 import com.anychart.data.Mapping;
 import com.anychart.data.Set;
@@ -51,6 +54,8 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
+
 import io.github.sidvenu.mathjaxview.MathJaxView;
 
 public class ThermalConductivityOfLiquids extends AppCompatActivity {
@@ -59,9 +64,11 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     TextView aim_tv;
     MathJaxView intro_tv;
     MathJaxView theory_tv;
+    MathJaxView rayleigh_tv;
 
     TextView start_procedure;
     TextView close_procedure;
+    TextView simul_procedure;
 
     ImageView simulation_iv;
     View powerBtn;
@@ -89,7 +96,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 
     TextView  surf_temp_tv;
     TextView surf_temp_title_tv;
-    EditText num_pulses;
     int pulses = 4;
 
     int LED_count = 0;
@@ -104,11 +110,9 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 
     SharedPreferences sharedPref;
 
-//    String tex = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
-//            "Inline formula:" +
-//            " $ax^2 + bx + c = 0$ " +
-//            "or displayed formula: $$\\sum_{i=0}^n i^2 = \\frac{(n^2+n)(2n+1)}{6}$$"+
-//            "</p>\n";
+    Menu menu;
+    boolean menuVisible;
+
     String objective_text = "To study the heat transfer through liquids.";
     String aim_text = "To calculate the thermal conductivity of a liquid.";
     String intro_text = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
@@ -126,6 +130,36 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             "takes place, the thermal conductivity of the sample can be calculated using Fourier's law of heat conduction.\n</br>" +
             "$$q = kA\\frac{T_h - T_c}{\\Delta X}$$\n" +
             "$$k = \\frac{q\\times\\Delta X}{A\\times(T_h - T_c)}$$";
+
+    String rayleigh = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
+            "$\\bullet$ In our experimental setup, there may be a density gradient in the direction of gravity, leading to formation of convection cells. This is not desired in our experiment as we want to consider only conduction heat transfer.\n<br>" +
+            "<br>$\\bullet$ The gravitational force acting downwards is countered by the viscous damping forces in the fluid. The balance of the two forces is expressed by the Rayleigh Number, a dimensionless parameter.\n</br>" +
+            "Rayleigh Number is defined as: \n" +
+            "$$Ra_L = \\frac{g\\beta(T_h - T_c)L^3}{\\upsilon \\alpha}$$\n" +
+            "where,<br>"+
+            "$T_c$ is the temperature of the top plate\n<br>"+
+            "$T_h$ is the temperature of the bottom plate\n<br>"+
+            "$\\beta$ is the thermal expansion coefficient\n<br>"+
+            "$\\alpha$ is the thermal diffusivity\n<br>"+
+            "$\\upsilon$ is the kinematic viscosity\n<br>"+
+            "$L$ is the height of container\n<br>"+
+            "<br>$\\bullet$ Gravitational force dominates for large Rayleigh Number and beyond a critical value (1708), convection cells start to generate.\n</br>" +
+            "<br>$\\bullet$ Therefore, in our experiment, the dimensions and the fluid chosen (Glycerin) are such that the Rayleigh Number is less than the critical value, ensuring that the heat transferred is only due to conduction.\n</br>"+
+            "<br>$\\bullet$ Now let's calculate the value of Rayleigh Number,<br>"+
+            "<br>We will measure all the values at mean steady state temperature i.e. at $\\frac{T_h + T_c}{2} = 321.6K$</br>"+
+            "<br>$T_c = 310.3 K $<br>"+
+            "$T_h = 333.15 K$<br>"+
+            "$\\beta = 0.51\\times 10^{-3} K^{-1}$<br>"+
+            "$\\alpha = 0.897\\times 10^{-7} \\frac{m^2}{s}$<br>"+
+            "$\\upsilon = 1.51\\times 10^{-4} \\frac{m^2}{s}$<br>"+
+            "$L = 0.001m$<br>"+
+            "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 13px; font-style:bold; font-weight: 400;color:#707070\">\n"+
+            "$$Ra_L = \\frac{9.81\\times 0.51\\times 10^{-3} (333.15 - 310.3)0.001^3}{0.51\\times 10^{-4}\\times 0.897\\times 10^{-7}}$$\n" +
+            "</p>"+
+            "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
+            "$$Ra_L = 7.97$$" +
+            "Hence, we can say that there is no effect of convection in our experiment.\n";
+
 
     String equipment_reqd = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
             "$\\bullet$ Electricity Supply: Single Phase, 220 V AC, 50 Hz, 5-15 Amp combined socket with earth connection.\n<br>" +
@@ -162,43 +196,82 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             "3. Switch OFF electric supply to the set up.\n\n" +
             "4. Stop flow of water by closing the valve V1";
 
+    String simulation_procedure = "In this simulation, it is assumed that Glycerin is already filled in, and the water supply turns on automatically by switching on the ‘Heater ON/OFF Switch’. Also, the set value of the heater is set to 60" + (char) 0x00B0+"C "+ "and cannot be changed.\n\n" +
+            "1. First of all, click on the three dots on the top right to open Pulses Menu. Select the number of pulses you want to count while performing the experiment. \n" +
+            "(In case you skip this step, by default, number of pulses reflected in the Observation Table will be 4)\n\n" +
+            "2. Turn on the heater by clicking on the ‘Heater ON/OFF Switch’.\n" +
+            "(Notice that the Mains Indicator turns green indicating that the experiment has begun, and the water supply is started)\n\n" +
+            "3. Note down the ambient temperature readings.\n\n" +
+            "4. To switch between thermocouple temperatures, click on the ‘Multi Switch Channel’ button.\n\n" +
+            "5. Now, to note down the readings, keep an eye on the ‘Energy Meter’ and wait for a red blink.\n\n" +
+            "6. As soon as a blink is seen, start the timer by pressing on the play button. \n\n" +
+            "7. Count the number of blinks you want to (preferably 3 or 4) and stop the timer when you see the last blink.\n\n" +
+            "8. Once you stop the timer, click on the ‘RECORD’ button to record the reading in the Observation Table.\n" +
+            "(Note that the number of readings taken count increases by one)\n\n" +
+            "9. In about 10 minutes, repeat steps 5-8 for recording more readings.\n\n" +
+            "10. When the observed change in consecutive readings is ±0.1, you can assume that the steady state is reached. \n\n" +
+            "11. Now, you can go back from the Simulation and open Observation Table to view the readings that were recorded. Optionally, you can download the data in form of an excel file(.xlsx) to analyze by yourself.\n\n" +
+            "The downloaded file goes in your Android Device’s internal storage with the following path:\n" +
+            "Internal Storage->Documents->HMT Virtual Lab->TCL Table\n";
+
+
     void openTheory() {
         obj_tv = findViewById(R.id.objective_text_tv);
         aim_tv = findViewById(R.id.aim_text_tv);
         intro_tv = findViewById(R.id.intro_text_tv);
         theory_tv = findViewById(R.id.theory_text_tv);
+        rayleigh_tv = findViewById(R.id.rayleigh_tv_id);
 
         obj_tv.setText(objective_text);
         aim_tv.setText(aim_text);
         intro_tv.setText(intro_text);
         theory_tv.setText(theory_text);
+        rayleigh_tv.setText(rayleigh);
     }
     void openProcedure() {
         start_procedure = findViewById(R.id.start);
         close_procedure = findViewById(R.id.close);
+        simul_procedure = findViewById(R.id.simulation_procedure_id);
         start_procedure.setText(start_procedure_text);
         close_procedure.setText(close_procedure_text);
+        simul_procedure.setText(simulation_procedure);
     }
 
     public double calculateTemp1(double time)
     {
+        Random rand = new Random();
+        double value = rand.nextDouble() / 2.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
         return -2.08648972851097E-05*Math.pow(time,4) + 2.23147779876687E-03*Math.pow(time,3) -
-                                        8.28851482252020E-02*time*time + 1.27507832940478E+00*time + 2.94202396330543E+01;
+                                        8.28851482252020E-02*time*time + 1.27507832940478E+00*time + 2.94202396330543E+01 + value;
     }
     public double calculateTemp2(double time)
     {
+        Random rand = new Random();
+        double value = rand.nextDouble() / 2.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
         return -1.29260809317161E-05*Math.pow(time,4) + 1.39416210149346E-03*Math.pow(time,3) -
-                        5.26402023596546E-02*time*time + 8.39101752575061E-01*time + 3.05444908761908E+01;
+                        5.26402023596546E-02*time*time + 8.39101752575061E-01*time + 3.05444908761908E+01 + value;
     }
     public double calculateTemp3(double time)
     {
+        Random rand = new Random();
+        double value = rand.nextDouble() / 2.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
         return -1.46274811305622E-05*Math.pow(time,4) + 1.68042637439569E-03*Math.pow(time,3) -
-            6.86649136093251E-02*time*time + 1.19281005038874E+00*time + 3.07688267375543E+01;
+            6.86649136093251E-02*time*time + 1.19281005038874E+00*time + 3.07688267375543E+01 + value;
     }
     public double calculateTemp4(double time)
     {
+        Random rand = new Random();
+        double value = rand.nextDouble() / 2.0;  //random value generated between 0 and 0.5 (about 1.5% of 35)
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
         return -1.55656292610759E-05*Math.pow(time,4) + 1.72549996510618E-03*Math.pow(time,3) -
-                    6.71408402782134E-02*time*time + 1.09657322125850E+00*time + 3.02488660476099E+01;
+                    6.71408402782134E-02*time*time + 1.09657322125850E+00*time + 3.02488660476099E+01 + value;
     }
 
     public double calculatePulses(double time){
@@ -240,7 +313,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             temperature_tv.setVisibility(View.VISIBLE);
             surf_temp_title_tv.setVisibility(View.VISIBLE);
             surf_temp_tv.setVisibility(View.VISIBLE);
-            num_pulses.setEnabled(false);
+
 
             setTemperature_tv();
 
@@ -323,7 +396,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         temperature_tv.setVisibility(View.INVISIBLE);
         surf_temp_title_tv.setVisibility(View.INVISIBLE);
         surf_temp_tv.setVisibility(View.INVISIBLE);
-        num_pulses.setEnabled(true);
         thermocouple_1 = 29.30;
         thermocouple_2 = 30.4;
         thermocouple_3 = 30.6;
@@ -384,8 +456,8 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 //                + "(Temp1, Temp2, Temp3, Temp4)"
 //                + " VALUES (55.5, 22.3, 34.4, 223.23);");
         numReadings++;
-        String input_txt = num_pulses.getText().toString();
-        pulses = Integer.parseInt(input_txt);
+//        String input_txt = num_pulses.getText().toString();
+//        pulses = Integer.parseInt(input_txt);
         numReadings_tv.setText(String.valueOf(numReadings));
         Log.v("Temp",""+pulses);
         Log.v("Temp", ""+updateTime);
@@ -578,6 +650,11 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 
     void openSimulation()
     {
+//        MenuItem item = menu.findItem(R.id.pulses_menu_item_id);
+//        item.setVisible(true);
+        menuVisible = true;
+        invalidateOptionsMenu();
+
         simulation_iv = findViewById(R.id.simul_setup);
         powerBtn = findViewById(R.id.power_button);
         temp_title_tv = findViewById(R.id.temperature_title_tv);
@@ -590,7 +667,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         temperature_tv = findViewById(R.id.temperature_tv);
         surf_temp_tv = findViewById(R.id.surface_temp_tv);
         surf_temp_title_tv = findViewById(R.id.surface_temp_title_tv);
-        num_pulses = findViewById(R.id.num_pulses_id);
         numReadings_tv = findViewById(R.id.numReadings_id);
 
         numReadings_tv.setText(String.valueOf(numReadings));
@@ -667,7 +743,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         cartesian.crosshair().enabled(true);
         cartesian.crosshair()
                 .yLabel(true)
-                // TODO ystroke
                 .yStroke((Stroke) null, null, null, (String) null, (String) null);
 
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
@@ -749,9 +824,48 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu_) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu_);
+        if (!menuVisible)
+        {
+            for (int i = 0; i < menu_.size(); i++)
+                menu_.getItem(i).setVisible(false);
+        }
+        menu = menu_;
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.three_id) {
+            Toast.makeText(this, "Number of Pulses set to Three", Toast.LENGTH_SHORT).show();
+            pulses = 3;
+            return true;
+        } else if (itemId == R.id.four_id) {
+            Toast.makeText(this, "Number of Pulses set to Four", Toast.LENGTH_SHORT).show();
+            pulses = 4;
+            return true;
+        } else if (itemId == R.id.five_id) {
+            Toast.makeText(this, "Number of Pulses set to Five", Toast.LENGTH_SHORT).show();
+            pulses = 5;
+            return true;
+        } else if (itemId == R.id.six_id) {
+            Toast.makeText(this, "Number of Pulses set to Six", Toast.LENGTH_SHORT).show();
+            pulses = 6;
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thermal_conductivity_of_liquids);
+
+        menuVisible = false;
+        pulses = 4;
 
         try {
             db = this.openOrCreateDatabase("TCLDB", MODE_PRIVATE, null);

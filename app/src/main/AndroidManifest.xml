@@ -20,18 +20,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HMTVirtualLab">
 
+        <activity android:name=".SplashScreen"   android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".Experiment2Activity" />
         <activity android:name=".ThermalConductivityOfLiquids" />
         <activity android:name=".Experiment3Activity" />
         <activity android:name=".Experiment4Activity" />
         <activity android:name=".Experiment5Activity" />
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".MainActivity"/>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
     </application>
 
 </manifest>

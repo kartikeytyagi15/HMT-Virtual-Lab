@@ -90,6 +90,7 @@
         android:id="@+id/timer_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="0:00:00"
         android:textSize="42sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -192,34 +193,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
-        android:id="@+id/num_pulses_id"
-        android:layout_width="24dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:ems="10"
-        android:inputType="numberSigned"
-        android:text="4"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView6"
-        app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toTopOf="@+id/textView6" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginTop="36dp"
-        android:text="Number of Pulses:"
-        android:textSize="22sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView7"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pause_btn"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
-
     <Button
         android:id="@+id/delete_btn_id"
         android:layout_width="wrap_content"
@@ -237,13 +210,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="112dp"
-        android:layout_marginLeft="112dp"
         android:layout_marginBottom="16dp"
         android:text="Readings Taken: "
         android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/record_btn_id"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/numReadings_id"
