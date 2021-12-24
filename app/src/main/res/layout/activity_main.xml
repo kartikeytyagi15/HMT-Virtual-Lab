@@ -218,7 +218,7 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/exp3"
+        android:id="@+id/naturalConvection"
         android:layout_width="350dp"
         android:layout_height="120dp"
         android:layout_gravity="center_horizontal"
@@ -240,18 +240,18 @@
                 android:id="@+id/imageView"
                 android:layout_width="189dp"
                 android:layout_height="95dp"
-                android:layout_marginTop="34dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="32dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_android_24"
-                 />
+                app:srcCompat="@drawable/ic_baseline_android_24" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Experiment 3"
+                android:text="Natural Convection"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView"
@@ -266,7 +266,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Aim of experiment"
+                android:text="Determine the heat transfer coefficient in free convection for a vertical heated tube"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -330,7 +330,7 @@
         app:cardElevation="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/exp3">
+        app:layout_constraintTop_toBottomOf="@id/naturalConvection">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraint"

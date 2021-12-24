@@ -7,15 +7,18 @@
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_experiment3.xml" value="0.2" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_experiment4.xml" value="0.176" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_experiment5.xml" value="0.264" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_splash.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_thermal_conductivity_of_liquids.xml" value="0.19610507246376813" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/fragment_details.xml" value="0.1" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/observation_layout.xml" value="0.152" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/procedure_layout.xml" value="0.264" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/simulation_layout.xml" value="0.6" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/theory_layout.xml" value="0.536" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

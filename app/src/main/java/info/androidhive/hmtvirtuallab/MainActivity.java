@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     CardView liquids_th;
     CardView experiment_2;
-    CardView experiment_3;
+    CardView natural_convection;
     CardView experiment_4;
     CardView experiment_5;
 
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         liquids_th = findViewById(R.id.thermalConductivityLiquids);
         experiment_2 = findViewById(R.id.exp2);
-        experiment_3= findViewById(R.id.exp3);
+        natural_convection= findViewById(R.id.naturalConvection);
         experiment_4 = findViewById(R.id.exp4);
         experiment_5 = findViewById(R.id.exp5);
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 detailsFragment.show(getSupportFragmentManager(), detailsFragment.getTag());
             }
         });
-        experiment_3.setOnClickListener(new View.OnClickListener() {
+        natural_convection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();

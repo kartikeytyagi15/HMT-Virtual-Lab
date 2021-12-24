@@ -117,12 +117,11 @@
             app:layout_constraintTop_toBottomOf="@+id/theory_title_tv" />
 
         <TextView
-            android:id="@+id/textView17"
+            android:id="@+id/rayleigh_title_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
-            android:text="Rayleigh–Bénard Instability:"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/theory_text_tv" />
@@ -135,11 +134,10 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="24dp"
-            android:text="TextView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView17" />
+            app:layout_constraintTop_toBottomOf="@+id/rayleigh_title_id" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

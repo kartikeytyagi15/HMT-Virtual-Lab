@@ -99,7 +99,7 @@ public class DetailsFragment extends BottomSheetDialogFragment implements View.O
         }
         else if(EXPERIMENT_NUMBER == 3)
         {
-            Intent intent = new Intent(getActivity(), Experiment3Activity.class);
+            Intent intent = new Intent(getActivity(), NaturalConvection.class);
             intent.putExtra("clickedViewTag",viewClicked);
             startActivity(intent);
         }

@@ -65,6 +65,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     MathJaxView intro_tv;
     MathJaxView theory_tv;
     MathJaxView rayleigh_tv;
+    TextView rayleigh_title;
 
     TextView start_procedure;
     TextView close_procedure;
@@ -76,6 +77,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
     TextView temp_title_tv;
     TextView set_value_title_tv;
     TextView set_value_tv;
+
     int thermocouple_number = 0;
 
     TextView timer_tv;
@@ -221,12 +223,14 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         intro_tv = findViewById(R.id.intro_text_tv);
         theory_tv = findViewById(R.id.theory_text_tv);
         rayleigh_tv = findViewById(R.id.rayleigh_tv_id);
+        rayleigh_title = findViewById(R.id.rayleigh_title_id);
 
         obj_tv.setText(objective_text);
         aim_tv.setText(aim_text);
         intro_tv.setText(intro_text);
         theory_tv.setText(theory_text);
         rayleigh_tv.setText(rayleigh);
+        rayleigh_title.setText("RAYLEIGH BENARD INSTABILITY:");
     }
     void openProcedure() {
         start_procedure = findViewById(R.id.start);
