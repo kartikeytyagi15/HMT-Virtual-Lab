@@ -117,17 +117,18 @@
             app:layout_constraintTop_toBottomOf="@+id/theory_title_tv" />
 
         <TextView
-            android:id="@+id/rayleigh_title_id"
+            android:id="@+id/thoery2_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
+            android:text="Theory 2"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/theory_text_tv" />
 
         <io.github.sidvenu.mathjaxview.MathJaxView
-            android:id="@+id/rayleigh_tv_id"
+            android:id="@+id/theory2_tv_id"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -137,7 +138,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rayleigh_title_id" />
+            app:layout_constraintTop_toBottomOf="@+id/thoery2_title_tv" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

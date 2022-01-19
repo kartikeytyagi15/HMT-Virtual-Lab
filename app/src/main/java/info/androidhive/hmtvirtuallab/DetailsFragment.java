@@ -93,7 +93,7 @@ public class DetailsFragment extends BottomSheetDialogFragment implements View.O
         }
         else if(EXPERIMENT_NUMBER == 2)
         {
-            Intent intent = new Intent(getActivity(), Experiment2Activity.class);
+            Intent intent = new Intent(getActivity(), ForcedConvection.class);
             intent.putExtra("clickedViewTag",viewClicked);
             startActivity(intent);
         }

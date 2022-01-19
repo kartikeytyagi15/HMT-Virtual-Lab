@@ -19,7 +19,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -222,8 +221,8 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         aim_tv = findViewById(R.id.aim_text_tv);
         intro_tv = findViewById(R.id.intro_text_tv);
         theory_tv = findViewById(R.id.theory_text_tv);
-        rayleigh_tv = findViewById(R.id.rayleigh_tv_id);
-        rayleigh_title = findViewById(R.id.rayleigh_title_id);
+        rayleigh_tv = findViewById(R.id.theory2_tv_id);
+        rayleigh_title = findViewById(R.id.thoery2_title_tv);
 
         obj_tv.setText(objective_text);
         aim_tv.setText(aim_text);

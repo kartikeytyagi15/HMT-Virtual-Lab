@@ -1,26 +1,17 @@
 package info.androidhive.hmtvirtuallab;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     int EXP_5_TAG = 5;
 
     CardView liquids_th;
-    CardView experiment_2;
+    CardView forced_convection;
     CardView natural_convection;
     CardView experiment_4;
     CardView experiment_5;
@@ -52,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         filePath.mkdirs();
 
         liquids_th = findViewById(R.id.thermalConductivityLiquids);
-        experiment_2 = findViewById(R.id.exp2);
+        forced_convection = findViewById(R.id.exp2);
         natural_convection= findViewById(R.id.naturalConvection);
         experiment_4 = findViewById(R.id.exp4);
         experiment_5 = findViewById(R.id.exp5);
@@ -68,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        experiment_2.setOnClickListener(new View.OnClickListener() {
+        forced_convection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();

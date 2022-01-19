@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Experiment2Activity" />
+        <activity android:name=".ForcedConvection" />
         <activity android:name=".ThermalConductivityOfLiquids" />
         <activity android:name=".NaturalConvection" />
         <activity android:name=".Experiment4Activity" />
