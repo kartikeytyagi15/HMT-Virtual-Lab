@@ -57,6 +57,8 @@ import java.util.Random;
 
 import io.github.sidvenu.mathjaxview.MathJaxView;
 
+import static android.content.Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP;
+
 public class ThermalConductivityOfLiquids extends AppCompatActivity {
 
     TextView obj_tv;
@@ -79,6 +81,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 
     int thermocouple_number = 0;
 
+    //Timer
     TextView timer_tv;
     FloatingActionButton startBtn, pauseBtn, resetBtn;
     Handler customHandler = new Handler();
@@ -317,7 +320,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             surf_temp_title_tv.setVisibility(View.VISIBLE);
             surf_temp_tv.setVisibility(View.VISIBLE);
 
-
             setTemperature_tv();
 
             time_elapsed = 0;
@@ -432,7 +434,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             }
             temp_title_tv.setVisibility(View.VISIBLE);
             temperature_tv.setVisibility(View.VISIBLE);
-       }
+        }
     }
 
     Runnable updateTimerThread = new Runnable() {
@@ -663,10 +665,13 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
         temp_title_tv = findViewById(R.id.temperature_title_tv);
         set_value_title_tv = findViewById(R.id.set_value_title_tv);
         set_value_tv = findViewById(R.id.set_value_tv);
+
+        //Timer
         timer_tv = findViewById(R.id.timer_tv);
         startBtn = findViewById(R.id.start_btn);
         pauseBtn = findViewById(R.id.pause_btn);
         resetBtn = findViewById(R.id.reset_btn);
+
         temperature_tv = findViewById(R.id.temperature_tv);
         surf_temp_tv = findViewById(R.id.surface_temp_tv);
         surf_temp_title_tv = findViewById(R.id.surface_temp_title_tv);
@@ -730,7 +735,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             setValue("value3", value3);
             setValue("value4", value4);
         }
-
     }
 
     private void openGraphs() {
@@ -908,6 +912,13 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
             setTitle("Graphs");
             setContentView(R.layout.graphs_layout);
             openGraphs();
+        } else if (viewClicked != null && viewClicked.equals("quiz")) {
+            setTitle("Quiz");
+            Intent intent1 = new Intent(ThermalConductivityOfLiquids.this, DashboardActivity.class);
+            intent1.putExtra("exp", 1);
+            startActivity(intent1);
+            finish();
         }
+
     }
 }

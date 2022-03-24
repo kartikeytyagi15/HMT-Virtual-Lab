@@ -47,4 +47,11 @@ dependencies {
     implementation 'org.apache.poi:poi:3.17'
     //AnyCharts dependency
     implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
+
+    implementation 'com.sasank.roundedhorizontalprogress:roundedhorizontalprogress:1.0.1'
+    implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
+
+    //Lottie
+    def lottieVersion = "5.0.3"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }

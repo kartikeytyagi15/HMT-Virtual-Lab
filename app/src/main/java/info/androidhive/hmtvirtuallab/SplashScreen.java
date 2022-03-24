@@ -3,16 +3,11 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.widget.VideoView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
-import info.androidhive.hmtvirtuallab.MainActivity;
-import info.androidhive.hmtvirtuallab.R;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -27,7 +22,7 @@ public class SplashScreen extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         Window window = getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this,R.color.purple_500));
+        window.setStatusBarColor(ContextCompat.getColor(this,R.color.primary_color));
 
         VideoView vView = findViewById(R.id.splash);
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/"

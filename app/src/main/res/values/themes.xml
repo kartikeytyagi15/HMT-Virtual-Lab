@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.HMTVirtualLab" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
 
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryVariant">@color/primary_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -24,6 +24,13 @@
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_rounded</item>
+    </style>
+
+    <style name="DialogueStyle">
+        <item name="android:windowBackground">@drawable/empty_bac</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowMinWidthMajor">80%</item>
     </style>
 
 </resources>

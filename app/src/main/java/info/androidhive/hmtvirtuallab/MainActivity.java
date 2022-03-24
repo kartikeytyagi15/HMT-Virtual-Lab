@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.Display;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
     CardView experiment_4;
     CardView experiment_5;
 
+    public static ArrayList<ModelClass> exp1_list;
+    public static ArrayList<ModelClass> exp2_list;
+    public static ArrayList<ModelClass> exp3_list;
+    public static ArrayList<ModelClass> exp4_list;
+    public static ArrayList<ModelClass> exp5_list;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.READ_EXTERNAL_STORAGE}, PackageManager.PERMISSION_GRANTED);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
+        initializeQuestionsList();
 
         File filePath = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
@@ -100,5 +111,69 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void initializeQuestionsList() {
+        exp1_list = new ArrayList<>();
+        exp1_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("kjbkvjb aiubfi aoiahe oa aoaf","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("qvjawbvkjabvt iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("aeff qwekjbekwjv t iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("f fefrgqwffaert uohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("jiahfi aifbi efbqwertyuiiu a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("faiubfia  iab uytr qwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("aefkqwertyu uahrfi iauh iert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("ai oaih aqwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+
+
+        exp2_list = new ArrayList<>();
+        exp2_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp2_list.add(new ModelClass("kjbkvjb aiubfi aoiahe oa aoaf","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp2_list.add(new ModelClass("qvjawbvkjabvt iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp2_list.add(new ModelClass("aeff qwekjbekwjv t iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp2_list.add(new ModelClass("f fefrgqwffaert uohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp2_list.add(new ModelClass("jiahfi aifbi efbqwertyuiiu a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp2_list.add(new ModelClass("faiubfia  iab uytr qwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp2_list.add(new ModelClass("aefkqwertyu uahrfi iauh iert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp2_list.add(new ModelClass("ai oaih aqwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp2_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+
+
+        exp3_list = new ArrayList<>();
+        exp3_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp3_list.add(new ModelClass("kjbkvjb aiubfi aoiahe oa aoaf","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp3_list.add(new ModelClass("qvjawbvkjabvt iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp3_list.add(new ModelClass("aeff qwekjbekwjv t iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp3_list.add(new ModelClass("f fefrgqwffaert uohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp3_list.add(new ModelClass("jiahfi aifbi efbqwertyuiiu a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp3_list.add(new ModelClass("faiubfia  iab uytr qwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp3_list.add(new ModelClass("aefkqwertyu uahrfi iauh iert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp3_list.add(new ModelClass("ai oaih aqwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp3_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+
+        exp4_list = new ArrayList<>();
+        exp4_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp4_list.add(new ModelClass("kjbkvjb aiubfi aoiahe oa aoaf","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp4_list.add(new ModelClass("qvjawbvkjabvt iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp4_list.add(new ModelClass("aeff qwekjbekwjv t iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp4_list.add(new ModelClass("f fefrgqwffaert uohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp4_list.add(new ModelClass("jiahfi aifbi efbqwertyuiiu a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp4_list.add(new ModelClass("faiubfia  iab uytr qwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp4_list.add(new ModelClass("aefkqwertyu uahrfi iauh iert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp4_list.add(new ModelClass("ai oaih aqwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp4_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+
+        exp5_list = new ArrayList<>();
+        exp5_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp5_list.add(new ModelClass("kjbkvjb aiubfi aoiahe oa aoaf","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp5_list.add(new ModelClass("qvjawbvkjabvt iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp5_list.add(new ModelClass("aeff qwekjbekwjv t iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp5_list.add(new ModelClass("f fefrgqwffaert uohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp5_list.add(new ModelClass("jiahfi aifbi efbqwertyuiiu a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp5_list.add(new ModelClass("faiubfia  iab uytr qwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp5_list.add(new ModelClass("aefkqwertyu uahrfi iauh iert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp5_list.add(new ModelClass("ai oaih aqwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp5_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
     }
 }

@@ -15,15 +15,15 @@
         android:scrollbarStyle="outsideInset"
         android:scrollbars="horizontal|vertical"
         app:layout_constraintBottom_toTopOf="@id/button2"
-        tools:layout_editor_absoluteX="0dp">
+        tools:layout_editor_absoluteX="-73dp">
 
         <HorizontalScrollView
             android:id="@+id/horizontalView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dip"
-            app:layout_constraintBottom_toTopOf="@id/button2"
-            android:scrollbars="horizontal|vertical">
+            android:scrollbars="horizontal|vertical"
+            app:layout_constraintBottom_toTopOf="@id/button2">
 
             <TableLayout
                 android:id="@+id/observationTable"
@@ -39,6 +39,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TableRow
+                    android:id="@+id/rowZero"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -52,8 +53,8 @@
                     <TextView
                         android:layout_width="50dp"
                         android:layout_weight="1"
-                        android:text="P"
                         android:gravity="center"
+                        android:text="P"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
@@ -68,39 +69,39 @@
                     <TextView
                         android:layout_width="80dp"
                         android:layout_weight="1"
-                        android:text="T(S)"
                         android:gravity="center"
+                        android:text="T(S)"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="80dp"
-                        android:gravity="center"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="T1"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="80dp"
-                        android:gravity="center"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="T2"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="80dp"
-                        android:gravity="center"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="T3"
                         android:textSize="20sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="80dp"
-                        android:gravity="center"
                         android:layout_weight="1"
+                        android:gravity="center"
                         android:text="T4"
                         android:textSize="20sp"
                         android:textStyle="bold" />
