@@ -308,7 +308,7 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 
     public void turnOnHeater(View v)
     {
-//        Log.v("LOGGED MESSAGE", "POWER BUTTON CLICKED");
+       Log.v("LOGGED MESSAGE", "POWER BUTTON CLICKED");
         if(!POWER_ON)
         {  //Power on
             POWER_ON = true;
@@ -659,7 +659,6 @@ public class ThermalConductivityOfLiquids extends AppCompatActivity {
 //        item.setVisible(true);
         menuVisible = true;
         invalidateOptionsMenu();
-
         simulation_iv = findViewById(R.id.simul_setup);
         powerBtn = findViewById(R.id.power_button);
         temp_title_tv = findViewById(R.id.temperature_title_tv);
