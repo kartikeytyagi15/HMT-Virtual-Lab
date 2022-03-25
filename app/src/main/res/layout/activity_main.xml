@@ -240,11 +240,10 @@
                 android:id="@+id/imageView"
                 android:layout_width="189dp"
                 android:layout_height="95dp"
-                android:layout_marginStart="4dp"
                 android:layout_marginTop="32dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_android_24" />
+                app:srcCompat="@drawable/nc_logo" />
 
             <TextView
                 android:id="@+id/textView10"
@@ -264,9 +263,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginEnd="12dp"
                 android:layout_marginRight="8dp"
-                android:text="Determine the heat transfer coefficient in free convection for a vertical heated tube"
+                android:text="Determine the heat transfer\ncoefficient in free convection\nin vertical heated tube"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -287,7 +286,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:text="15 min"
+                android:text="20 min"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView5"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
@@ -310,7 +309,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 android:layout_marginLeft="4dp"
-                android:text="45 min"
+                android:text="90 min"
                 android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView6"
                 app:layout_constraintStart_toEndOf="@+id/imageView6"

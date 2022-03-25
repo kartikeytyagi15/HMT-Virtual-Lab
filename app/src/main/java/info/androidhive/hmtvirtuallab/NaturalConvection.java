@@ -1,5 +1,6 @@
 package info.androidhive.hmtvirtuallab;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,43 +65,50 @@ public class NaturalConvection extends AppCompatActivity {
     TextView aim_tv;
     MathJaxView intro_tv;
     MathJaxView theory_tv;
+    TextView theory_tv2 ;
 
     TextView start_procedure;
     TextView close_procedure;
     TextView simul_procedure;
 
     ImageView simulation_iv;
-    View powerBtn;
+    TextView powerBtn;
     boolean POWER_ON = false;
     TextView temp_title_tv;
-    TextView set_value_title_tv;
-    TextView set_value_tv;
+    TextView temp_tv;
+    TextView voltage_tv;
+    TextView current_tv;
     int thermocouple_number = 0;
-
     TextView timer_tv;
     FloatingActionButton startBtn, pauseBtn, resetBtn;
     Handler customHandler = new Handler();
     long startTime = 0L, timeInMillis = 0L, updateTime = 0L, millisPassed = 0L;
     boolean isRunning;
     boolean wasRunning;
+    boolean voltageFlag=true;
 
-    TextView temperature_tv;
     CountDownTimer countDown = null;
-    double thermocouple_1 = 29.30;
-    double thermocouple_2 = 30.4;
-    double thermocouple_3 = 30.6;
-    double thermocouple_4 = 30.1;
-    double surface_temp = 29.0;
-    double time_elapsed = 0;
+    double thermocouple_1 ;
+    double thermocouple_2 ;
+    double thermocouple_3 ;
+    double thermocouple_4 ;
+    double thermocouple_5 ;
+    double thermocouple_6 ;
+    double thermocouple_7 ;
+    double thermocouple_8 ;
 
-    TextView  surf_temp_tv;
-    TextView surf_temp_title_tv;
+
+    double avg_temp = 30.0;
+    double time_elapsed = 0;
     int pulses = 4;
+    double curr_voltage=50.0;
+    double curr_current=0.923;
 
     int LED_count = 0;
     boolean LED_ON = false;
     double LED_time = 0;
     double LED_interval = 0;
+    boolean graph_voltage=false;
 
     SQLiteDatabase db;
     TableLayout table;
@@ -193,11 +201,13 @@ public class NaturalConvection extends AppCompatActivity {
         aim_tv = findViewById(R.id.aim_text_tv);
         intro_tv = findViewById(R.id.intro_text_tv);
         theory_tv = findViewById(R.id.theory_text_tv);
+        theory_tv2=findViewById(R.id.thoery2_title_tv);
 
         obj_tv.setText(objective_text);
         aim_tv.setText(aim_text);
         intro_tv.setText(intro_text);
         theory_tv.setText(theory_text);
+        theory_tv2.setVisibility(View.GONE);
 
     }
     void openProcedure() {
@@ -215,8 +225,15 @@ public class NaturalConvection extends AppCompatActivity {
         double value = rand.nextDouble() / 2.0;
         if(rand.nextInt(2) == 0) //negative
             value *= -1;
-        return -2.08648972851097E-05*Math.pow(time,4) + 2.23147779876687E-03*Math.pow(time,3) -
-                8.28851482252020E-02*time*time + 1.27507832940478E+00*time + 2.94202396330543E+01 + value;
+        if(voltageFlag) {
+            return 0.00000067016317 * Math.pow(time, 4) - 0.00009459984460 * Math.pow(time, 3) -
+                    0.00204836829838 * time * time + 0.76482128982337 * time +  32.91841491837450 + value;
+        }
+        else
+        {
+            return -0.00000323426573 * Math.pow(time, 4) +  0.00051327376327 * Math.pow(time, 3)
+                    - 0.03172397047399 * time * time + 1.59047526547822 * time + 31.23387723382090 + value;
+        }
     }
     public double calculateTemp2(double time)
     {
@@ -224,8 +241,14 @@ public class NaturalConvection extends AppCompatActivity {
         double value = rand.nextDouble() / 2.0;
         if(rand.nextInt(2) == 0) //negative
             value *= -1;
-        return -1.29260809317161E-05*Math.pow(time,4) + 1.39416210149346E-03*Math.pow(time,3) -
-                5.26402023596546E-02*time*time + 8.39101752575061E-01*time + 3.05444908761908E+01 + value;
+        if(voltageFlag) {
+            return 0.00000081585082 * Math.pow(time, 4) - 0.00010865060865 * Math.pow(time, 3) -
+                    0.00158896658898 * time * time + 0.74062419062626 * time +  33.00388500384490 + value;
+        }
+        else
+        {
+            return -0.00000361305361* Math.pow(time, 4) + 0.00056293706294* Math.pow(time, 3) - 0.03370629370631* Math.pow(time, 2) + 1.59055944056232* Math.pow(time, 1) + 31.04195804190320+ value;
+        }
     }
     public double calculateTemp3(double time)
     {
@@ -233,8 +256,13 @@ public class NaturalConvection extends AppCompatActivity {
         double value = rand.nextDouble() / 2.0;
         if(rand.nextInt(2) == 0) //negative
             value *= -1;
-        return -1.46274811305622E-05*Math.pow(time,4) + 1.68042637439569E-03*Math.pow(time,3) -
-                6.86649136093251E-02*time*time + 1.19281005038874E+00*time + 3.07688267375543E+01 + value;
+        if(voltageFlag) {
+            return 0.00000046620047* Math.pow(time, 4) - 0.00004597254597* Math.pow(time, 3) - 0.00521173271174* Math.pow(time, 2) + 0.79948847449052* Math.pow(time, 1) + 32.90986790982830+value;
+        }
+        else
+        {
+            return -0.00000492424242* Math.pow(time, 4) + 0.00078703703704* Math.pow(time, 3) - 0.04614898989900* Math.pow(time, 2) + 1.80740740741022* Math.pow(time, 1) + 30.08080808075440+value;
+        }
     }
     public double calculateTemp4(double time)
     {
@@ -242,8 +270,69 @@ public class NaturalConvection extends AppCompatActivity {
         double value = rand.nextDouble() / 2.0;  //random value generated between 0 and 0.5 (about 1.5% of 35)
         if(rand.nextInt(2) == 0) //negative
             value *= -1;
-        return -1.55656292610759E-05*Math.pow(time,4) + 1.72549996510618E-03*Math.pow(time,3) -
-                6.71408402782134E-02*time*time + 1.09657322125850E+00*time + 3.02488660476099E+01 + value;
+        if(voltageFlag) {
+            return 0.00000072843823* Math.pow(time, 4) - 0.00010560735561* Math.pow(time, 3) - 0.00118783993785* Math.pow(time, 2) + 0.74921652421867* Math.pow(time, 1) + 33.94250194246030+value;
+        }
+        else
+        {
+            return -0.00000463286713* Math.pow(time, 4) + 0.00072358197358* Math.pow(time, 3) - 0.04288170163172* Math.pow(time, 2) + 1.85421522921823* Math.pow(time, 1) + 31.10023310017580+value;
+        }
+    }
+    public double calculateTemp5(double time)
+    {
+        Random rand = new Random();
+        double value = rand.nextDouble() / 2.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        if(voltageFlag) {
+            return -0.00000040792541* Math.pow(time, 4) + 0.00007705257705* Math.pow(time, 3) - 0.00496309246309* Math.pow(time, 2) + 0.12438487438592* Math.pow(time, 1) + 30.04351204349100+value;
+        }
+        else
+        {
+            return -0.00000014568765* Math.pow(time, 4) + 0.00002246827247* Math.pow(time, 3) - 0.00146950271951* Math.pow(time, 2) + 0.07133514633623* Math.pow(time, 1) + 30.10644910642740+value;
+        }
+    }
+    public double calculateTemp6(double time)
+    {
+        Random rand = new Random();
+        double value = rand.nextDouble() / 2.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        if(voltageFlag) {
+            return 0.00000032051282* Math.pow(time, 4) - 0.00002855477856* Math.pow(time, 3) - 0.00615093240094* Math.pow(time, 2) + 0.87360139860358* Math.pow(time, 1) + 33.98601398597170+value;
+        }
+        else
+        {
+            return -0.00000469114219* Math.pow(time, 4) + 0.00072617197617* Math.pow(time, 3) - 0.04265637140639* Math.pow(time, 2) + 1.87495467495775* Math.pow(time, 1) + 31.06604506598650+value;
+        }
+    }
+    public double calculateTemp7(double time)
+    {
+        Random rand = new Random();
+        double value = rand.nextDouble() / 2.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        if(voltageFlag) {
+            return 0.00000072843823* Math.pow(time, 4) - 0.00010560735561* Math.pow(time, 3) - 0.00118783993785* Math.pow(time, 2) + 0.74921652421867* Math.pow(time, 1) + 33.94250194246030+value;
+        }
+        else
+        {
+            return -0.00000230186480* Math.pow(time, 4) + 0.00036914011914* Math.pow(time, 3) - 0.02505147630149* Math.pow(time, 2) + 1.53886298886603* Math.pow(time, 1) + 31.06371406365620+value;
+        }
+    }
+    public double calculateTemp8(double time)
+    {
+        Random rand = new Random();
+        double value = rand.nextDouble() / 2.0;  //random value generated between 0 and 0.5 (about 1.5% of 35)
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        if(voltageFlag) {
+            return 0.00000046620047* Math.pow(time, 4) - 0.00005607355607* Math.pow(time, 3) - 0.00399961149962* Math.pow(time, 2) + 0.79292281792493* Math.pow(time, 1) + 32.87956487952400+value;
+        }
+        else
+        {
+            return -0.00000352564103* Math.pow(time, 4) + 0.00052790727791* Math.pow(time, 3) - 0.03019327894329* Math.pow(time, 2) + 1.48844858845147* Math.pow(time, 1) + 31.02253302247820+value;
+        }
     }
 
     public double calculatePulses(double time){
@@ -251,24 +340,87 @@ public class NaturalConvection extends AppCompatActivity {
                 1.64034123337430E-01*time*time - 3.04057480429492E+00*time + 6.08993773891020E+01;
     }
 
-    public double calculateSurfaceTemp(double time){
-        return -0.000009164195484*Math.pow(time,4) +0.00177864349*Math.pow(time,3) -
-                0.116357812741*time*time + 3.161911615294*time +28.98745141703;
-    }
 
     public void setTemperature_tv() {
         if(thermocouple_number == 0) {
-            temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
+            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
         }
         else if(thermocouple_number ==1) {
-            temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_2));
+            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_2));
         }
         else if(thermocouple_number ==2) {
-            temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_3));
+            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_3));
         }
+        else if(thermocouple_number ==3) {
+            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_4));
+        }
+        else if(thermocouple_number ==4) {
+            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_5));
+        }
+        else if(thermocouple_number ==5) {
+            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_6));
+        }
+        else if(thermocouple_number ==6) {
+            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_7));
+        }
+
         else {
-            temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_4));
+            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_8));
             thermocouple_number = -1;
+        }
+    }
+
+    public void setVoltage_tv() {
+            voltage_tv.setText(String.format(Locale.getDefault(),"%.0f", curr_voltage));
+    }
+    public void setCurrent_tv() { current_tv.setText(String.format(Locale.getDefault(),"%.3f", curr_current)); }
+    public void setInitialtemp(boolean flag)
+    {
+        if(flag)
+        {
+            //50V
+            thermocouple_1=33;
+            thermocouple_2=33;
+            thermocouple_3=33;
+            thermocouple_4=34;
+            thermocouple_5=30;
+            thermocouple_6=34;
+            thermocouple_7=34;
+            thermocouple_8=33;
+        }
+        else
+        {
+            //76V
+            thermocouple_1=31;
+            thermocouple_2=31;
+            thermocouple_3=30;
+            thermocouple_4=31;
+            thermocouple_5=30;
+            thermocouple_6=31;
+            thermocouple_7=31;
+            thermocouple_8=31;
+        }
+    }
+
+    public void setVoltage(View v)
+    {
+        if(!POWER_ON)
+        {
+            setInitialtemp(voltageFlag);
+            if(!voltageFlag)
+            {
+                curr_voltage=50;
+                curr_current=0.923;
+            }
+            else
+            {
+                curr_voltage=76;
+                curr_current=1.396;
+            }
+            setVoltage_tv();
+            setCurrent_tv();
+            voltageFlag=!voltageFlag;
+
         }
     }
 
@@ -278,59 +430,24 @@ public class NaturalConvection extends AppCompatActivity {
         if(!POWER_ON)
         {  //Power on
             POWER_ON = true;
-            simulation_iv.setImageResource(R.drawable.tcl_green_black);
+            simulation_iv.setImageResource(R.drawable.nc_green);
             temp_title_tv.setVisibility(View.VISIBLE);
-            set_value_title_tv.setVisibility(View.VISIBLE);
-            set_value_tv.setVisibility(View.VISIBLE);
-            temperature_tv.setVisibility(View.VISIBLE);
-            surf_temp_title_tv.setVisibility(View.VISIBLE);
-            surf_temp_tv.setVisibility(View.VISIBLE);
-
-
+            temp_tv.setVisibility(View.VISIBLE);
             setTemperature_tv();
-
             time_elapsed = 0;
-            countDown = new CountDownTimer(2400000, 500) {  //40 minutes count down, updates every half second
+            countDown = new CountDownTimer(4800000, 500) {  //80 minutes count down, updates every half second
                 @Override
                 public void onTick(long millisUntilFinished) {
                     time_elapsed += 0.5;
                     setTemperature_tv();
-                    surf_temp_tv.setText(String.format(Locale.getDefault(),"%.2f", surface_temp));
                     thermocouple_1 = calculateTemp1(time_elapsed / 60.0);
                     thermocouple_2 = calculateTemp2(time_elapsed / 60.0);
                     thermocouple_3 = calculateTemp3(time_elapsed / 60.0);
                     thermocouple_4 = calculateTemp4(time_elapsed / 60.0);
-                    surface_temp = calculateSurfaceTemp(time_elapsed/60.0);
-
-                    LED_time += 0.5;
-                    if (LED_ON) {
-                        LED_ON = false;
-                        simulation_iv.setImageResource(R.drawable.tcl_green_black);
-                        LED_time = 0.5;
-                    } else {
-                        if (LED_count == 0) {
-                            LED_interval = calculatePulses(time_elapsed / 60.0) / 3;
-                            LED_count++;
-                        } else if (LED_count == 1) {
-                            if (LED_time >= LED_interval) {
-                                simulation_iv.setImageResource(R.drawable.tcl_green_red);
-                                LED_ON = true;
-                                LED_count++;
-                            }
-                        } else if (LED_count == 2) {
-                            if (LED_time >= LED_interval) {
-                                simulation_iv.setImageResource(R.drawable.tcl_green_red);
-                                LED_ON = true;
-                                LED_count++;
-                            }
-                        } else {
-                            if (LED_time >= LED_interval) {
-                                simulation_iv.setImageResource(R.drawable.tcl_green_red);
-                                LED_ON = true;
-                                LED_count = 0;
-                            }
-                        }
-                    }
+                    thermocouple_5 = calculateTemp5(time_elapsed / 60.0);
+                    thermocouple_6 = calculateTemp6(time_elapsed / 60.0);
+                    thermocouple_7 = calculateTemp7(time_elapsed / 60.0);
+                    thermocouple_8 = calculateTemp8(time_elapsed / 60.0);
                 }
 
                 @Override
@@ -361,18 +478,12 @@ public class NaturalConvection extends AppCompatActivity {
         POWER_ON = false;
         time_elapsed = 0;
         countDown.cancel();
-        simulation_iv.setImageResource(R.drawable.tcl_red);
+        simulation_iv.setImageResource(R.drawable.nc_red);
         temp_title_tv.setVisibility(View.INVISIBLE);
-        set_value_title_tv.setVisibility(View.INVISIBLE);
-        set_value_tv.setVisibility(View.INVISIBLE);
-        temperature_tv.setVisibility(View.INVISIBLE);
-        surf_temp_title_tv.setVisibility(View.INVISIBLE);
-        surf_temp_tv.setVisibility(View.INVISIBLE);
-        thermocouple_1 = 29.30;
-        thermocouple_2 = 30.4;
-        thermocouple_3 = 30.6;
-        thermocouple_4 = 30.1;
-        surface_temp = 29.0;
+
+        temp_tv.setVisibility(View.INVISIBLE);
+        setInitialtemp(voltageFlag);
+        avg_temp = 29.0;
         LED_count = 0;
         LED_ON = false;
         LED_time = 0;
@@ -384,23 +495,39 @@ public class NaturalConvection extends AppCompatActivity {
             thermocouple_number++;
             if(thermocouple_number == 0) {
                 temp_title_tv.setText("T1 in "+(char) 0x00B0+"C");
-                temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
+                temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
             }
             else if(thermocouple_number ==1) {
                 temp_title_tv.setText("T2 in "+ (char) 0x00B0+"C");
-                temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_2));
+                temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_2));
             }
             else if(thermocouple_number ==2) {
                 temp_title_tv.setText("T3 in "+ (char) 0x00B0+"C");
-                temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_3));
+                temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_3));
+            }
+            else if(thermocouple_number ==3) {
+                temp_title_tv.setText("T4 in "+ (char) 0x00B0+"C");
+                temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_4));
+            }
+            else if(thermocouple_number ==4) {
+                temp_title_tv.setText("T5 in "+ (char) 0x00B0+"C");
+                temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_5));
+            }
+            else if(thermocouple_number ==5) {
+                temp_title_tv.setText("T6 in "+ (char) 0x00B0+"C");
+                temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_6));
+            }
+            else if(thermocouple_number ==6) {
+                temp_title_tv.setText("T7 in "+ (char) 0x00B0+"C");
+                temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_7));
             }
             else {
-                temp_title_tv.setText("T4 in "+ (char) 0x00B0+"C");
-                temperature_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_4));
+                temp_title_tv.setText("T8 in "+ (char) 0x00B0+"C");
+                temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_8));
                 thermocouple_number = -1;
             }
             temp_title_tv.setVisibility(View.VISIBLE);
-            temperature_tv.setVisibility(View.VISIBLE);
+            temp_tv.setVisibility(View.VISIBLE);
         }
     }
 
@@ -427,22 +554,31 @@ public class NaturalConvection extends AppCompatActivity {
 //                + "TCLTable"
 //                + "(Temp1, Temp2, Temp3, Temp4)"
 //                + " VALUES (55.5, 22.3, 34.4, 223.23);");
-        numReadings++;
+        try {
+            numReadings++;
 //        String input_txt = num_pulses.getText().toString();
 //        pulses = Integer.parseInt(input_txt);
-        numReadings_tv.setText(String.valueOf(numReadings));
-        Log.v("Temp",""+pulses);
-        Log.v("Temp", ""+updateTime);
+            numReadings_tv.setText(String.valueOf(numReadings));
+            Log.v("Temp",""+pulses);
+            Log.v("Temp", ""+updateTime);
 
-        db.execSQL("INSERT INTO "
-                + "TCLTable"
-                + "(Sno, Pulses, PulseTime, TempSurf, Temp1, Temp2, Temp3, Temp4)"
-                + " VALUES (" +
-                String.format(Locale.US, "%d, %d, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f",
-                        numReadings, pulses, updateTime/1000.0, surface_temp, thermocouple_1, thermocouple_2, thermocouple_3, thermocouple_4)
-                + ");");
+            db.execSQL("INSERT INTO "
+                    + "NCTable"
+                    + "(Sno, Volt, Time, Temp1, Temp2, Temp3, Temp4, Temp5, Temp6, Temp7, Temp8)"
+                    + " VALUES (" +
+                    String.format(Locale.US, "%d, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f, %.2f",
+                            numReadings,curr_voltage, time_elapsed, thermocouple_1, thermocouple_2, thermocouple_3, thermocouple_4, thermocouple_5, thermocouple_6, thermocouple_7, thermocouple_8)
+                    + ");");
 //        Toast.makeText(getApplicationContext(),"Data Saved!",Toast.LENGTH_SHORT).show();
-        sharedPref.edit().putInt("numReadings",numReadings).apply();
+            sharedPref.edit().putInt("numReadings",numReadings).apply();
+
+        }
+        catch (Exception e)
+        {
+            Log.v("this is error","message:"+e);
+            e.printStackTrace();
+        }
+
     }
 
     public void onDeleteBtnClicked(View v)
@@ -451,7 +587,7 @@ public class NaturalConvection extends AppCompatActivity {
         Log.v("Temp","Num read: "+ numReadings);
         if(numReadings > 0)
         {
-            db.execSQL("DELETE FROM TCLTable WHERE Sno = " + numReadings);
+            db.execSQL("DELETE FROM NCTable WHERE Sno = " + numReadings);
             numReadings--;
             sharedPref.edit().putInt("numReadings",numReadings).apply();
             numReadings_tv.setText(String.valueOf(numReadings));
@@ -478,7 +614,7 @@ public class NaturalConvection extends AppCompatActivity {
     public void resetTable()
     {
         numReadings = 0;
-        db.execSQL("DELETE FROM TCLTable");
+        db.execSQL("DELETE FROM NCTable");
         sharedPref.edit().putInt("SerialNo", 0).apply();
         sharedPref.edit().putInt("numReadings", 0).apply();
         int count = table.getChildCount();
@@ -494,7 +630,7 @@ public class NaturalConvection extends AppCompatActivity {
 //        File filePath = new File(destPath+ "/TestingApp/TCL Table.xlsx");
         File filePath = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+File.separator+"/HMT Virtual Lab/TCL Table.xlsx");
+            filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+File.separator+"/HMT Virtual Lab/NC Table.xlsx");
         }
 
         if(numReadings == 0)
@@ -502,7 +638,7 @@ public class NaturalConvection extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"No readings to save!",Toast.LENGTH_LONG).show();
             return;
         }
-        Toast.makeText(getApplicationContext(),"Excel file named 'TCL Table' is saved to device internal storage.",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Excel file named 'NC Table' is saved to device internal storage.",Toast.LENGTH_LONG).show();
 
         HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
         HSSFSheet hssfSheet = hssfWorkbook.createSheet();
@@ -511,31 +647,40 @@ public class NaturalConvection extends AppCompatActivity {
         HSSFCell hssfCell = hssfRow.createCell(0);
         hssfCell.setCellValue("S.No.");
         HSSFCell hssfCell1 = hssfRow.createCell(1);
-        hssfCell1.setCellValue("P");
+        hssfCell1.setCellValue("Voltage");
         HSSFCell hssfCell2 = hssfRow.createCell(2);
-        hssfCell2.setCellValue("t(p)");
+        hssfCell2.setCellValue("Time");
         HSSFCell hssfCell3 = hssfRow.createCell(3);
-        hssfCell3.setCellValue("T(S)");
+        hssfCell3.setCellValue("T1");
         HSSFCell hssfCell4 = hssfRow.createCell(4);
-        hssfCell4.setCellValue("T1");
+        hssfCell4.setCellValue("T2");
         HSSFCell hssfCell5 = hssfRow.createCell(5);
-        hssfCell5.setCellValue("T2");
+        hssfCell5.setCellValue("T3");
         HSSFCell hssfCell6 = hssfRow.createCell(6);
-        hssfCell6.setCellValue("T3");
+        hssfCell6.setCellValue("T4");
         HSSFCell hssfCell7 = hssfRow.createCell(7);
-        hssfCell7.setCellValue("T4");
+        hssfCell7.setCellValue("T5");
+        HSSFCell hssfCell8 = hssfRow.createCell(8);
+        hssfCell8.setCellValue("T6");
+        HSSFCell hssfCell9 = hssfRow.createCell(9);
+        hssfCell9.setCellValue("T7");
+        HSSFCell hssfCell10 = hssfRow.createCell(10);
+        hssfCell10.setCellValue("T8");
 
         try {
-            Cursor c = db.rawQuery("SELECT * FROM " + "TCLTable", null);
+            Cursor c = db.rawQuery("SELECT * FROM " + "NCTable", null);
             ArrayList<Integer> indexArr = new ArrayList<>();
             indexArr.add(c.getColumnIndex("Sno"));
-            indexArr.add(c.getColumnIndex("Pulses"));
-            indexArr.add(c.getColumnIndex("PulseTime"));
-            indexArr.add(c.getColumnIndex("TempSurf"));
+            indexArr.add(c.getColumnIndex("Volt"));
+            indexArr.add(c.getColumnIndex("Time"));
             indexArr.add(c.getColumnIndex("Temp1"));
             indexArr.add(c.getColumnIndex("Temp2"));
             indexArr.add(c.getColumnIndex("Temp3"));
             indexArr.add(c.getColumnIndex("Temp4"));
+            indexArr.add(c.getColumnIndex("Temp5"));
+            indexArr.add(c.getColumnIndex("Temp6"));
+            indexArr.add(c.getColumnIndex("Temp7"));
+            indexArr.add(c.getColumnIndex("Temp8"));
 
             c.moveToFirst();
             int rowNum = 1;
@@ -581,16 +726,19 @@ public class NaturalConvection extends AppCompatActivity {
     {
         table = findViewById(R.id.observationTable);
         try {
-            Cursor c = db.rawQuery("SELECT * FROM " + "TCLTable", null);
+            Cursor c = db.rawQuery("SELECT * FROM " + "NCTable", null);
             ArrayList<Integer> indexArr = new ArrayList<>();
             indexArr.add(c.getColumnIndex("Sno"));
-            indexArr.add(c.getColumnIndex("Pulses"));
-            indexArr.add(c.getColumnIndex("PulseTime"));
-            indexArr.add(c.getColumnIndex("TempSurf"));
+            indexArr.add(c.getColumnIndex("Volt"));
+            indexArr.add(c.getColumnIndex("Time"));
             indexArr.add(c.getColumnIndex("Temp1"));
             indexArr.add(c.getColumnIndex("Temp2"));
             indexArr.add(c.getColumnIndex("Temp3"));
             indexArr.add(c.getColumnIndex("Temp4"));
+            indexArr.add(c.getColumnIndex("Temp5"));
+            indexArr.add(c.getColumnIndex("Temp6"));
+            indexArr.add(c.getColumnIndex("Temp7"));
+            indexArr.add(c.getColumnIndex("Temp8"));
 
             c.moveToFirst();
             while(!c.isAfterLast()){
@@ -615,33 +763,34 @@ public class NaturalConvection extends AppCompatActivity {
             }
             c.close();
         }
-        catch(Exception e) {
-            Log.e("Error", "Error", e);
+        catch(Exception e) { Log.e("Error", "Error", e);
         }
     }
+
 
     void openSimulation()
     {
 //        MenuItem item = menu.findItem(R.id.pulses_menu_item_id);
 //        item.setVisible(true);
-        menuVisible = true;
-        invalidateOptionsMenu();
+      //  menuVisible =  ;
+       // invalidateOptionsMenu();
 
         simulation_iv = findViewById(R.id.simul_setup);
         powerBtn = findViewById(R.id.power_button);
-        temp_title_tv = findViewById(R.id.temperature_title_tv);
-        set_value_title_tv = findViewById(R.id.set_value_title_tv);
-        set_value_tv = findViewById(R.id.set_value_tv);
+        temp_title_tv = findViewById(R.id.temp_title_tv);
+        current_tv = findViewById(R.id.current_tv);
+        voltage_tv=findViewById(R.id.voltage_tv);
+        temp_tv=findViewById(R.id.temp_tv);
+
         timer_tv = findViewById(R.id.timer_tv);
         startBtn = findViewById(R.id.start_btn);
         pauseBtn = findViewById(R.id.pause_btn);
         resetBtn = findViewById(R.id.reset_btn);
-        temperature_tv = findViewById(R.id.temperature_tv);
-        surf_temp_tv = findViewById(R.id.surface_temp_tv);
-        surf_temp_title_tv = findViewById(R.id.surface_temp_title_tv);
+        temp_tv = findViewById(R.id.temp_tv);
         numReadings_tv = findViewById(R.id.numReadings_id);
 
         numReadings_tv.setText(String.valueOf(numReadings));
+//        simulation_iv.setImageResource(R.drawable.tcl_green_black);
 
         startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -693,112 +842,326 @@ public class NaturalConvection extends AppCompatActivity {
 
     private class CustomDataEntry extends ValueDataEntry {
 
-        CustomDataEntry(String x, Number value, Number value2, Number value3, Number value4) {
+        CustomDataEntry(String x, Number value, Number value2, Number value3, Number value4, Number value5, Number value6, Number value7,Number value8) {
             super(x, value);
             setValue("value2", value2);
             setValue("value3", value3);
             setValue("value4", value4);
+            setValue("value5", value5);
+            setValue("value6", value6);
+            setValue("value7", value7);
+            setValue("value8", value8);
+
         }
 
     }
 
     private void openGraphs() {
-        AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-        anyChartView.setProgressBar(findViewById(R.id.progress_bar));
 
-        Cartesian cartesian = AnyChart.line();
 
-        cartesian.animation(true);
 
-        cartesian.padding(10d, 20d, 10d, 20d);
+        if(graph_voltage)
+        {
+            menuVisible =true;
+            invalidateOptionsMenu();
+            AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+            anyChartView.setProgressBar(findViewById(R.id.progress_bar));
 
-        cartesian.crosshair().enabled(true);
-        cartesian.crosshair()
-                .yLabel(true)
-                .yStroke((Stroke) null, null, null, (String) null, (String) null);
+            Cartesian cartesian = AnyChart.line();
 
-        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+            cartesian.animation(true);
 
-        cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
-        cartesian.xAxis(0).title("time in minutes");
-//        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d);
+            cartesian.padding(10d, 20d, 10d, 20d);
 
-        List<DataEntry> seriesData = new ArrayList<>();
-        seriesData.add(new CustomDataEntry("0", 29.3, 30.4, 30.6,30.1));
-        seriesData.add(new CustomDataEntry("5", 34.3, 34, 35.7, 34.67));
-        seriesData.add(new CustomDataEntry("10", 35.8, 34.7, 37.1,35.87));
-        seriesData.add(new CustomDataEntry("15", 36.2, 35.2, 37.9,36.43));
-        seriesData.add(new CustomDataEntry("20", 36.2, 35.3, 38.3,36.6));
-        seriesData.add(new CustomDataEntry("25", 36.3, 35.5, 38.4,36.73));
-        seriesData.add(new CustomDataEntry("30", 36.7, 35.7, 38.4,36.93));
-        seriesData.add(new CustomDataEntry("37", 36.8, 35.7, 38.4,36.96));
-        seriesData.add(new CustomDataEntry("45", 36.8, 35.8, 38.6,37.07));
+            cartesian.crosshair().enabled(true);
+            cartesian.crosshair()
+                    .yLabel(true)
+                    .yStroke((Stroke) null, null, null, (String) null, (String) null);
 
-        Set set = Set.instantiate();
-        set.data(seriesData);
-        Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-        Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
-        Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
-        Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
+            cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
 
-        Line series1 = cartesian.line(series1Mapping);
-        series1.name("Temperature 1");
-        series1.hovered().markers().enabled(true);
-        series1.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series1.tooltip()
-                .position("right")
-                .anchor(Anchor.LEFT_CENTER)
-                .offsetX(0d)
-                .offsetY(5d);
+            cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
+            cartesian.xAxis(0).title("time in minutes");
+            cartesian.removeAllSeries();
+//        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d)
+            List<DataEntry> seriesData = new ArrayList<>();
+            seriesData.clear();
+            //seriesData.clear();
+            Toast.makeText(this, "inside if condition", Toast.LENGTH_SHORT).show();
+            seriesData.add(new CustomDataEntry("0", 33, 33, 33,34, 30, 34, 34,33));
+            seriesData.add(new CustomDataEntry("10", 40, 40, 40, 41, 31, 42, 41, 40));
+            seriesData.add(new CustomDataEntry("20", 47, 47, 47,48, 31, 49, 48,47));
+            seriesData.add(new CustomDataEntry("30", 52, 51, 51,53, 31, 54, 53,52));
+            seriesData.add(new CustomDataEntry("40", 56, 55, 55,57, 31, 58, 57,56));
+            seriesData.add(new CustomDataEntry("50", 58, 58, 57,60, 31, 61, 60,58));
+            seriesData.add(new CustomDataEntry("60", 60, 59, 58,61, 31, 62, 61,60));
+            seriesData.add(new CustomDataEntry("70", 60, 59, 59,62, 31, 63, 62,61));
+            seriesData.add(new CustomDataEntry("80", 60, 60, 59,62, 31, 63, 62,61));
+            Set set = Set.instantiate();
+            set.data(seriesData);
+            Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+            Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+            Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+            Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
+            Mapping series5Mapping = set.mapAs("{ x: 'x', value: 'value5' }");
+            Mapping series6Mapping = set.mapAs("{ x: 'x', value: 'value6' }");
+            Mapping series7Mapping = set.mapAs("{ x: 'x', value: 'value7' }");
+            Mapping series8Mapping = set.mapAs("{ x: 'x', value: 'value8' }");
+            Line series1 = cartesian.line(series1Mapping);
+            series1.name("Temperature 1");
+            series1.hovered().markers().enabled(true);
+            series1.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series1.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
 
-        Line series2 = cartesian.line(series2Mapping);
-        series2.name("Temperature 2");
-        series2.hovered().markers().enabled(true);
-        series2.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series2.tooltip()
-                .position("right")
-                .anchor(Anchor.LEFT_CENTER)
-                .offsetX(0d)
-                .offsetY(5d);
+            Line series2 = cartesian.line(series2Mapping);
+            series2.name("Temperature 2");
+            series2.hovered().markers().enabled(true);
+            series2.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series2.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
 
-        Line series3 = cartesian.line(series3Mapping);
-        series3.name("Temperature 3");
-        series3.hovered().markers().enabled(true);
-        series3.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series3.tooltip()
-                .position("right")
-                .anchor(Anchor.LEFT_CENTER)
-                .offsetX(0d)
-                .offsetY(5d);
+            Line series3 = cartesian.line(series3Mapping);
+            series3.name("Temperature 3");
+            series3.hovered().markers().enabled(true);
+            series3.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series3.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+            Line series4 = cartesian.line(series4Mapping);
+            series4.name("Temperature 4");
+            series4.hovered().markers().enabled(true);
+            series4.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series4.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
 
-        Line series4 = cartesian.line(series4Mapping);
-        series4.name("Temperature 4");
-        series4.hovered().markers().enabled(true);
-        series4.hovered().markers()
-                .type(MarkerType.CIRCLE)
-                .size(4d);
-        series4.tooltip()
-                .position("right")
-                .anchor(Anchor.LEFT_CENTER)
-                .offsetX(0d)
-                .offsetY(5d);
+            Line series5 = cartesian.line(series5Mapping);
+            series5.name("Temperature 5");
+            series5.hovered().markers().enabled(true);
+            series5.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series5.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
 
-        cartesian.legend().enabled(true);
-        cartesian.legend().fontSize(15d);
-        cartesian.legend().padding(0d, 0d, 10d, 0d);
-        anyChartView.setChart(cartesian);
+            Line series6 = cartesian.line(series6Mapping);
+            series6.name("Temperature 6");
+            series6.hovered().markers().enabled(true);
+            series6.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series6.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+
+            Line series7 = cartesian.line(series7Mapping);
+            series7.name("Temperature 7");
+            series7.hovered().markers().enabled(true);
+            series7.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series7.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+
+            Line series8 = cartesian.line(series8Mapping);
+            series8.name("Temperature 8");
+            series8.hovered().markers().enabled(true);
+            series8.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series8.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+            cartesian.legend().enabled(true);
+            cartesian.legend().fontSize(15d);
+            cartesian.legend().padding(0d, 0d, 10d, 0d);
+            anyChartView.setChart(cartesian);
+        }
+        else
+        {
+            menuVisible =true;
+            invalidateOptionsMenu();
+            AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+            anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+
+            Cartesian cartesian = AnyChart.line();
+
+            cartesian.animation(true);
+
+            cartesian.padding(10d, 20d, 10d, 20d);
+
+            cartesian.crosshair().enabled(true);
+            cartesian.crosshair()
+                    .yLabel(true)
+                    .yStroke((Stroke) null, null, null, (String) null, (String) null);
+
+            cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+
+            cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
+            cartesian.xAxis(0).title("time in minutes");
+            cartesian.removeAllSeries();
+//        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d)
+            Toast.makeText(this, "inside else condition", Toast.LENGTH_SHORT).show();
+            List<DataEntry> seriesData = new ArrayList<>();
+            seriesData.clear();
+            seriesData.add(new CustomDataEntry("0", 31, 31, 30,31, 30, 31, 31,31));
+            seriesData.add(new CustomDataEntry("10", 45, 44, 44, 46, 31, 46, 44,43));
+            seriesData.add(new CustomDataEntry("20", 54, 54, 55,57, 31, 58, 56,54));
+            seriesData.add(new CustomDataEntry("30", 61, 60, 58,63, 31, 63, 61,58));
+            seriesData.add(new CustomDataEntry("40", 68, 67, 66,70, 32, 72, 70,67));
+            seriesData.add(new CustomDataEntry("50", 77, 75, 74,80, 32, 81, 78,75));
+            seriesData.add(new CustomDataEntry("60", 81, 80, 79,84, 32, 86, 84,80));
+            seriesData.add(new CustomDataEntry("70", 85, 83, 81,87, 32, 89, 86,83));
+            seriesData.add(new CustomDataEntry("80", 86, 83, 81,86, 32, 88, 89,83));
+            Set set = Set.instantiate();
+            set.data(seriesData);
+            Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+            Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+            Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+            Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
+            Mapping series5Mapping = set.mapAs("{ x: 'x', value: 'value5' }");
+            Mapping series6Mapping = set.mapAs("{ x: 'x', value: 'value6' }");
+            Mapping series7Mapping = set.mapAs("{ x: 'x', value: 'value7' }");
+            Mapping series8Mapping = set.mapAs("{ x: 'x', value: 'value8' }");
+            Line series1 = cartesian.line(series1Mapping);
+            series1.name("Temperature 1");
+            series1.hovered().markers().enabled(true);
+            series1.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series1.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+
+            Line series2 = cartesian.line(series2Mapping);
+            series2.name("Temperature 2");
+            series2.hovered().markers().enabled(true);
+            series2.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series2.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+
+            Line series3 = cartesian.line(series3Mapping);
+            series3.name("Temperature 3");
+            series3.hovered().markers().enabled(true);
+            series3.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series3.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+            Line series4 = cartesian.line(series4Mapping);
+            series4.name("Temperature 4");
+            series4.hovered().markers().enabled(true);
+            series4.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series4.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+
+            Line series5 = cartesian.line(series5Mapping);
+            series5.name("Temperature 5");
+            series5.hovered().markers().enabled(true);
+            series5.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series5.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+
+            Line series6 = cartesian.line(series6Mapping);
+            series6.name("Temperature 6");
+            series6.hovered().markers().enabled(true);
+            series6.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series6.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+
+            Line series7 = cartesian.line(series7Mapping);
+            series7.name("Temperature 7");
+            series7.hovered().markers().enabled(true);
+            series7.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series7.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+
+            Line series8 = cartesian.line(series8Mapping);
+            series8.name("Temperature 8");
+            series8.hovered().markers().enabled(true);
+            series8.hovered().markers()
+                    .type(MarkerType.CIRCLE)
+                    .size(4d);
+            series8.tooltip()
+                    .position("right")
+                    .anchor(Anchor.LEFT_CENTER)
+                    .offsetX(0d)
+                    .offsetY(5d);
+            cartesian.legend().enabled(true);
+            cartesian.legend().fontSize(15d);
+            cartesian.legend().padding(0d, 0d, 10d, 0d);
+            anyChartView.setChart(cartesian);
+
+        }
+
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu_) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu_);
+        inflater.inflate(R.menu.voltage_menu, menu_);
         if (!menuVisible)
         {
             for (int i = 0; i < menu_.size(); i++)
@@ -808,24 +1171,19 @@ public class NaturalConvection extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.three_id) {
-            Toast.makeText(this, "Number of Pulses set to Three", Toast.LENGTH_SHORT).show();
-            pulses = 3;
+        if (itemId == R.id.fiftysix) {
+            Toast.makeText(this, "Graph For Voltage Set To 56V", Toast.LENGTH_SHORT).show();
+            graph_voltage = true;
+            openGraphs();
             return true;
-        } else if (itemId == R.id.four_id) {
-            Toast.makeText(this, "Number of Pulses set to Four", Toast.LENGTH_SHORT).show();
-            pulses = 4;
-            return true;
-        } else if (itemId == R.id.five_id) {
-            Toast.makeText(this, "Number of Pulses set to Five", Toast.LENGTH_SHORT).show();
-            pulses = 5;
-            return true;
-        } else if (itemId == R.id.six_id) {
-            Toast.makeText(this, "Number of Pulses set to Six", Toast.LENGTH_SHORT).show();
-            pulses = 6;
+        } else if (itemId == R.id.seventyone) {
+            Toast.makeText(this, "Graph For Voltage Set To 71V", Toast.LENGTH_SHORT).show();
+            graph_voltage = false;
+            openGraphs();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -834,16 +1192,13 @@ public class NaturalConvection extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thermal_conductivity_of_liquids);
-
-        menuVisible = false;
-        pulses = 4;
+        setContentView(R.layout.activity_natural_convection);
 
         try {
-            db = this.openOrCreateDatabase("TCLDB", MODE_PRIVATE, null);
+            db = this.openOrCreateDatabase("NCDB", MODE_PRIVATE, null);
             db.execSQL("CREATE TABLE IF NOT EXISTS "
-                    + "TCLTable"
-                    + " (Sno INT, Pulses INT, PulseTime FLOAT, TempSurf FLOAT,Temp1 FLOAT,Temp2 FLOAT,Temp3 FLOAT, Temp4 FLOAT);");
+                    + "NCTable"
+                    + " (Sno INT, Volt FLOAT,Time FLOAT, Temp1 FLOAT, Temp2 FLOAT,Temp3 FLOAT,Temp4 FLOAT,Temp5 FLOAT, Temp6 FLOAT,Temp7 FLOAT, Temp8 FLOAT );");
         } catch (Exception e) {
             Log.e("Error", "Error", e);
         }
@@ -856,7 +1211,6 @@ public class NaturalConvection extends AppCompatActivity {
         if (viewClicked != null && viewClicked.equals("theory")) {
             setTitle("Theory");
             setContentView(R.layout.theory_layout);
-
             openTheory();
         } else if (viewClicked != null && viewClicked.equals("aboutSetup")) {
             setTitle("About Setup");
@@ -864,7 +1218,7 @@ public class NaturalConvection extends AppCompatActivity {
             openAboutSetup();
         } else if (viewClicked != null && viewClicked.equals("simulation")) {
             setTitle("Simulation");
-            setContentView(R.layout.simulation_layout);
+            setContentView(R.layout.simulation_layout_nc);
             openSimulation();
         } else if (viewClicked != null && viewClicked.equals("procedure")) {
             setTitle("Procedure");
@@ -872,7 +1226,7 @@ public class NaturalConvection extends AppCompatActivity {
             openProcedure();
         } else if (viewClicked != null && viewClicked.equals("observationTable")) {
             setTitle("Observation Table");
-            setContentView(R.layout.observation_layout);
+            setContentView(R.layout.observation_layout_nc);
             openObservation();
         } else if (viewClicked != null && viewClicked.equals("graphs")) {
             setTitle("Graphs");
