@@ -1,13 +1,11 @@
 package info.androidhive.hmtvirtuallab;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
@@ -20,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -59,8 +56,7 @@ import java.util.Random;
 
 import io.github.sidvenu.mathjaxview.MathJaxView;
 
-public class NaturalConvection extends AppCompatActivity {
-
+public class DoublePipeHex extends AppCompatActivity {
     TextView obj_tv;
     TextView aim_tv;
     MathJaxView intro_tv;
@@ -120,65 +116,128 @@ public class NaturalConvection extends AppCompatActivity {
     Menu menu;
     boolean menuVisible;
 
-    String objective_text = "To study free convection heat transfer.";
-    String aim_text = "To calculate the heat transfer coefficient in free convection for a vertical heated tube.";
+    String objective_text = "To determine the heat exchanger effectiveness for parallel and counter flow arrangements.";
+    String aim_text = "To determine the overall heat transfer coefficient for parallel and counter flow heat exchangers using LMTD and \uD835\uDF16-NTU method. \n" ;
     String intro_text = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
-            "$\\bullet$ Convection heat transfer takes place between a solid surface and surrounded flowing fluid when the two are at different temperatures. \n"+"<br>"+
-            "<br>$\\bullet$ When flow of fluid is caused by external means such as pump or fan, the convection is called forced convection. Whereas,  if there is no any external means to cause the fluid flow, convection is called free or natural convection. \n</br>" +
-            "<br>$\\bullet$ In free convection, the fluid layer in contact with the heated surface gets heated, rises up due the decrease in its density and cold fluid rushes from the bottom side to fill up the void. \n<br>" +
-            "<br>$\\bullet$ Thus the motion of the fluid is induced by the buoyancy force. The process is continuous and the heat transfer takes place due to the motion of the fluid.  \n<br>";
+            "$\\bullet$ The experimental setup consists of two concentric tubes in which fluids pass.\n"+"<br>"+
+            "<br>$\\bullet$ The hot fluid is hot water, which is obtained from an electric geyser. \n</br>" +
+            "<br>$\\bullet$ Hot water flows through the inner tube, in one direction. The cold fluid is cold water, which flows through the annulus.\n<br>" +
+            "<br>$\\bullet$ Control valves are provided so that the direction of cold water can be kept parallel or opposite to that of hot water.  \n<br>"+
+            "<br>$\\bullet$ Thus, the heat exchanger can be operated either as a parallel or counterflow heat exchanger. \n<br>"+
+            "<br>$\\bullet$ The temperatures are measured with a thermometer  \n<br>"+
+            "<br>$\\bullet$ Thus, the heat transfer rate, heat transfer coefficient, LMTD and effectiveness of heat exchanger can be calculated for both parallel and counter flow.\n\n<br>";
 
     String theory_text= "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
-            "$\\bullet$ In this experiment, heat transfer coefficient is calculated for a heated vertical pipe, where heat is transferred from the external surface of the pipe by free convection.\n<br>" +
-            "<br>$\\bullet$ Regardless of the particular nature of the convection process, the heat transfer rate due to convection is calculated from $Newton’s$ $law$ $of$ $cooling$:\n</br>" +
-            "$$Q = hA(T_s - T_a)$$\n" +
-            "<br> Where $Q$ is the heat transfer rate ($W$)\n</br>"+
-            "<br> $A$ is the surface area perpendicular to the heat transfer direction ($m^2$)\n</br>"+
-            "<br> $T_s$ = Temperature of solid surface (K)\n</br>"+
-            "<br> $T_α$ = Temperature of Ambient Fluid (K)\n</br>"+
-            "<br> $h$ = Heat Transfer Coefficient (W/m^2 K)\n</br>";
+            "$\\bullet$ Heat exchangers are devices that transfer, or “exchange” heat between two flows (liquid\n" +
+            "or gas) via a conductive barrier without physically mixing them. The two fluids are at\n" +
+            "different temperatures and separated by a solid wall. Heat exchangers are classified\n" +
+            "according to flow arrangement and type of construction.\n" +"<br>"+
+            "<br>$\\bullet$ The simplest heat exchanger is\n" +
+            "one for which the hot and cold fluids move in the same or opposite directions in a\n" +
+            "concentric tube (or double-pipe) construction. In the parallel-flow arrangement the hot\n" +
+            "and cold fluids enter at the same end, flow in the same direction, and leave at the same\n" +
+            "end. In the counterflow arrangement, the fluids enter at opposite ends, flow in opposite\n" +
+            "directions, and leave at opposite ends. Another type is cross flow Heat Exchanger in which\n" +
+            "we have a perpendicular direction of flows. They can be finned and unfinned tubular heat\n" +
+            "exchangers. \n" +"<br>"+
+            " <br>$\\bullet$In order to increase the rate of heat transfer between working fluids, we can introduce  longitudinal fins in the inner tube. They are majorly used in Boilers and compressors,Refrigeration, etc.\n" +"<br>"+
+            " <br>$\\bullet$In our experiment we are using instant water heater to heat water, thermometers to measure temperatures, rotameter to measure flow rates. The hot water flows through\n" +
+            "inner concentric pipe and cool water flows in the annular region of concentric pipe.\n<br>"
+            +
+            " <br>$\\bullet$By operating 4 valves in a particular order, we are generating parallel and counter flows.\n" +
+            "Like if we open valve_1 ,valve_2 and close valve_3,valve_4 then parallel flow is generated and vice versa. \n<br>" +"<br>"+
+            "LMTD METHOD:-\n" +
+            "This method is used when the inlet and outlet temperatures of both hot and cold streams\n" +
+            "are known\n" +
+            "$$Q = UA\\Delta T{m}$$\n" +
+            "Where Q is the Heat Transferred between the hot and cold fluids U is the overall Heat\n" +
+            "Transfer Coefficient. A is the total area available for heat exchange ∆\uD835\uDC47m is the log mean\n" +
+            "temperature difference\n" +
+            "Now for parallel flow ,∆\uD835\uDC47m is given by\n" +
+            "$$\\Delta T{m} = \\frac{\\Delta T{1}- \\Delta T{2}}{ln\\frac{\\Delta T{1}}{\\Delta T{2}}}$$\n" +
+            "$$\\Delta T{1} = \\Delta T{h,i}- \\Delta T{c,i}\n$$" +
+            "$$\\Delta T{2} = \\Delta T{h,o}- \\Delta T{c,o}\n$$" +
+            "And for counter flow\n" +
+            "$$\\Delta T{m} = \\frac{\\Delta T{1}- \\Delta T{2}}{ln\\frac{\\Delta T{1}}{\\Delta T{2}}}\n$$" +
+            "$$\\Delta T{1} = \\Delta T{h,i}- \\Delta T{c,o}\n$$" +
+            "$$\\Delta T{2} = \\Delta T{h,o}- \\Delta T{c,i}\n$$" +
+            "Where \n, ∆Tℎ,\uD835\uDC56=Inlet Temperature of hot stream\n" +
+            "∆Tℎ,\uD835\uDC5C=Outlet Temperature of hot stream\n" +
+            "∆T\uD835\uDC50,\uD835\uDC56=Inlet Temperature of hot stream\n" +
+            "∆T\uD835\uDC50,\uD835\uDC5C=Outlet Temperature of hot stream\n" +
+            "And Overall Heat Transfer Coefficient (U) for Double Pipe Heat Exchanger is given by\n" +
+            "$$U = \\frac{1}{A{o}(\\frac{1}{h{i}A{i}} + \\frac{ln\\frac{r{o}}{r{i}}}{2{\\pi}kL} +\n" +
+            "\\frac{1}{h{o}A{o}})}$$\n" +
+            "With ro and ri being the outer and inner radii of the inner tube of the double pipe heat\n" +
+            "exchanger Ao is the outer surface area of the inner tube And L is the length of the inner\n" +
+            "tube.\n"+"<br>"+"<br>"+
+            "ε-NTU METHOD:-\n" +
+            "This method is used when only the inlet temperatures of the two streams are given Heat\n" +
+            "Exchanger Effectiveness is given by\n" +
+            "$$\\epsilon= \\frac{Q{actual}}{Q{maximum}}$$\n" +
+            "$$Q{actual}= C{h}(T{h,i} - T{h,o})$$\n" +
+            "$$Q{actual}= C{c}(T{c,o} - T{c,i})\n$$" +
+            "$$Q{maximum}= C{min}(T{h,i} - T{c,i})$$\n" +
+            "And after simplification Effectiveness can be written as\n" +
+            " For  parallel  flow  arrangement :\n" +
+            "$$\\epsilon= \\frac{1-exp[-NTU(1+C{r})]}{1+C{r}}$$\n" +
+            " For counter flow arrangement:\n" +
+            "$$\\epsilon= \\frac{1-exp[-NTU(1-C{r})]}{1-C{r}.exp[-NTU(1-C{r})]}$$\n" +
+            "Where C{r} = $$\\frac{C{min}}{C{max}}$$\n" +
+            "And NTU = $$\\frac{UA}{C{min}}$$"
+           ;
 
 
 
 
 
     String equipment_reqd = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
-            "$\\bullet$ Electricity Supply: Single Phase, 220 V AC, 50 Hz, 5-15 Amp combined socket with earth connection.\n<br>" +
-            "<br>$\\bullet$ Water Supply: Continuous @ 2 LPM at 1 Bar.\n</br>" +
-            "<br>$\\bullet$ Floor drain required.\n</br>" +
-            "<br>$\\bullet$ Bench area required: 1 m x 1 m.\n</br>" +
-            "<br>$\\bullet$ Glycerin: 250 ml.\n</br>" +
-            "<br>$\\bullet$ Stop watch.\n</br>";
+            "$\\bullet$ Double Pipe Heat Exchanger- Concentric Copper tubes.\n<br>" +
+            "<br>$\\bullet$ Instant Water Heater(Geyser).\n</br>" +
+            "<br>$\\bullet$ Thermometers - For measuring inlet and outlet temperature for hot and cold fluid.\n</br>" +
+            "<br>$\\bullet$ Rotameters - For controlling mass flow rate of hot and cold fluid.\n</br>" +
+            "<br>$\\bullet$ Pipe network with valves - For controlling type of flow arrangement (Parallel or Counter flow)..\n</br>" ;
 
     String apparatus_desc = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
             "$\\bullet$ The apparatus consists of a heater; it heats a thin layer of liquid. A cooling plate removes heat through the liquid layer, ensuring unidirectional heat flow.\n<br>" +
             "<br>$\\bullet$ A PID controller is provided for varying the input to the heater and measurement of input power is carried out by a digital energy meter and stopwatch. \n</br>" +
             "<br>$\\bullet$ Funnel is provided with a valve to fill the liquid. Overflow pipe is given to maintain the liquid level. Plate is for circulation of water. A valve is provided to control the flow of water. \n</br>" +
-            "<br>$\\bullet$ Four temperature sensors are provided to measure the temperature across the liquid layer.\n</br>";
+            "<br>$\\bullet$ Four temperature sensors are provided to measure the temperature across the liquid layer .\n</br>";
 
-    String start_procedure_text="1. Turn the heater switch to the 'on' position.\n\n" +
-            "2. Using the dimmerstat, set the heater's input power to a desired level (approximately 75 V).\n\n" +
-            "3. Write down the heater's voltage and current input power.\n\n" +
-            "4. Allow around 10 minutes for the pipe to fully heat up.\n\n" +
-            "5. Record the readings of all eight thermocouples at 5-minute intervals until the steady state is obtained.\n\n" +
-            "6. Repeat the experiment with a different heater input power value.\n\n" +
-            "7. Set the dimmerstat to zero and turn the heating switch to 'off'";
+    String start_procedure_text="1.Following experiment is performed for parallel and counter flow heat exchanger\n" +
+            "arrangements. Three readings are taken for each type of heat exchanger over three sets of\n" +
+            "mass flow rates (this mass flow rate is measured for cold water)\n" +
+            "2.. Flow rate of hot and cold water is set using rotameters R1 and R2. Before this valves V1\n" +
+            "and V2 are opened to set flow in pipes in case of parallel flow arrangement.\n\n" +
+            "3. geyser is switched to ON position..\n\n" +
+            "4. We now calculate temperatures of entering and leaving hot and cold streams at regular\n" +
+            "intervals. Three readings are taken for each case. Here we assume that at time of last entry\n" +
+            "steady state has been achieved.\n\n" +
+            "5. .Now we change flow rate of hot and cold steams two times. After that all above steps are\n" +
+            "repeated.\n\n\n" +
+            "6. .This same experimental procedure is repeated for counter flow arrangement. However,\n" +
+            "in this case instead of V1 and V2; V3 and V4 are opening while V1 and v2 are closed.\n\n";
     String close_procedure_text="1. When experiment is over switch OFF the heater switch.\n\n" +
             "2. Switch OFF the mains ON/OFF switch.\n\n" +
             "3. Switch OFF electric supply to the set up.";
 
-    String simulation_procedure = "In this simulation, it is assumed that no external device is running in surrounding which can alter the temperature of rod\n\n" +
-            "1. First of all, click on the set voltage button provided under the voltage digital meter. When you change the voltage, current will change )\n\n" +
+    String simulation_procedure = "In this simulation, it is assumed that no external device is running in surrounding which can alter the temperature\n\n" +
+            "1. First of all, click on the three dots on the top right to open Pulses Menu. Select the number of pulses you want to count while performing the experiment. \n" +
+            "(In case you skip this step, by default, number of pulses reflected in the Observation Table will be 4)\n\n" +
             "2. Turn on the heater by clicking on the ‘Heater ON/OFF Switch’.\n" +
-            "(Notice that the Mains Indicator turns green indicating that the experiment has begun, and rod temp. starts increasing as heater is running)\n\n" +
+            "(Notice that the Mains Indicator turns green indicating that the experiment has begun, and the water supply is started)\n\n" +
             "3. Note down the ambient temperature readings.\n\n" +
-            "4. To switch between thermocouple temperatures, click on the ‘Multi Switch Channel’ button. Note that Temp5 is surface temp of rod\n\n" +
-            "5. Start the timer provided .\n\n" +
-            "6. After every 10 minutes, record the data by pressing record button.\n\n" +
-            "7. When the observed change in consecutive readings is ±0.1, you can assume that the steady state is reached. \n\n" +
-            "8. Now, you can go back from the Simulation and open Observation Table to view the readings that were recorded. Optionally, you can download the data in form of an excel file(.xlsx) to analyze by yourself.\n\n" +
+            "4. To switch between thermocouple temperatures, click on the ‘Multi Switch Channel’ button.\n\n" +
+            "5. Now, to note down the readings, keep an eye on the ‘Energy Meter’ and wait for a red blink.\n\n" +
+            "6. As soon as a blink is seen, start the timer by pressing on the play button. \n\n" +
+            "7. Count the number of blinks you want to (preferably 3 or 4) and stop the timer when you see the last blink.\n\n" +
+            "8. Once you stop the timer, click on the ‘RECORD’ button to record the reading in the Observation Table.\n" +
+            "(Note that the number of readings taken count increases by one)\n\n" +
+            "9. In about 10 minutes, repeat steps 5-8 for recording more readings.\n\n" +
+            "10. When the observed change in consecutive readings is ±0.1, you can assume that the steady state is reached. \n\n" +
+            "11. Now, you can go back from the Simulation and open Observation Table to view the readings that were recorded. Optionally, you can download the data in form of an excel file(.xlsx) to analyze by yourself.\n\n" +
             "The downloaded file goes in your Android Device’s internal storage with the following path:\n" +
-            "Internal Storage->Documents->HMT Virtual Lab->NC Table\n";
+            "Internal Storage->Documents->HMT Virtual Lab->TCL Table\n";
 
 
     void openTheory() {
@@ -320,6 +379,12 @@ public class NaturalConvection extends AppCompatActivity {
         }
     }
 
+    public double calculatePulses(double time){
+        return 3.41253344420811E-05*Math.pow(time,4) - 3.92624735874136E-03*Math.pow(time,3) +
+                1.64034123337430E-01*time*time - 3.04057480429492E+00*time + 6.08993773891020E+01;
+    }
+
+
     public void setTemperature_tv() {
         if(thermocouple_number == 0) {
             temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
@@ -350,7 +415,7 @@ public class NaturalConvection extends AppCompatActivity {
     }
 
     public void setVoltage_tv() {
-            voltage_tv.setText(String.format(Locale.getDefault(),"%.0f", curr_voltage));
+        voltage_tv.setText(String.format(Locale.getDefault(),"%.0f", curr_voltage));
     }
     public void setCurrent_tv() { current_tv.setText(String.format(Locale.getDefault(),"%.3f", curr_current)); }
     public void setInitialtemp(boolean flag)
@@ -409,7 +474,7 @@ public class NaturalConvection extends AppCompatActivity {
         if(!POWER_ON)
         {  //Power on
             POWER_ON = true;
-            simulation_iv.setImageResource(R.drawable.nc_green);
+            simulation_iv.setImageResource(R.drawable.wateronhex);
             temp_title_tv.setVisibility(View.VISIBLE);
             temp_tv.setVisibility(View.VISIBLE);
             setTemperature_tv();
@@ -457,7 +522,7 @@ public class NaturalConvection extends AppCompatActivity {
         POWER_ON = false;
         time_elapsed = 0;
         countDown.cancel();
-        simulation_iv.setImageResource(R.drawable.nc_red);
+        simulation_iv.setImageResource(R.drawable.wateroffhex);
         temp_title_tv.setVisibility(View.INVISIBLE);
 
         temp_tv.setVisibility(View.INVISIBLE);
@@ -751,8 +816,8 @@ public class NaturalConvection extends AppCompatActivity {
     {
 //        MenuItem item = menu.findItem(R.id.pulses_menu_item_id);
 //        item.setVisible(true);
-      //  menuVisible =  ;
-       // invalidateOptionsMenu();
+        //  menuVisible =  ;
+        // invalidateOptionsMenu();
 
         simulation_iv = findViewById(R.id.simul_setup);
         powerBtn = findViewById(R.id.power_button);
@@ -835,304 +900,304 @@ public class NaturalConvection extends AppCompatActivity {
 
     }
 
-    private void openGraphs() {
-
-
-
-        if(graph_voltage)
-        {
-            menuVisible =true;
-            invalidateOptionsMenu();
-            AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-            anyChartView.setProgressBar(findViewById(R.id.progress_bar));
-
-            Cartesian cartesian = AnyChart.line();
-
-            cartesian.animation(true);
-
-            cartesian.padding(10d, 20d, 10d, 20d);
-
-            cartesian.crosshair().enabled(true);
-            cartesian.crosshair()
-                    .yLabel(true)
-                    .yStroke((Stroke) null, null, null, (String) null, (String) null);
-
-            cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-
-            cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
-            cartesian.xAxis(0).title("time in minutes");
-            cartesian.removeAllSeries();
-//        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d)
-            List<DataEntry> seriesData = new ArrayList<>();
-            seriesData.clear();
-            //seriesData.clear();
-            Toast.makeText(this, "inside if condition", Toast.LENGTH_SHORT).show();
-            seriesData.add(new CustomDataEntry("0", 33, 33, 33,34, 30, 34, 34,33));
-            seriesData.add(new CustomDataEntry("10", 40, 40, 40, 41, 31, 42, 41, 40));
-            seriesData.add(new CustomDataEntry("20", 47, 47, 47,48, 31, 49, 48,47));
-            seriesData.add(new CustomDataEntry("30", 52, 51, 51,53, 31, 54, 53,52));
-            seriesData.add(new CustomDataEntry("40", 56, 55, 55,57, 31, 58, 57,56));
-            seriesData.add(new CustomDataEntry("50", 58, 58, 57,60, 31, 61, 60,58));
-            seriesData.add(new CustomDataEntry("60", 60, 59, 58,61, 31, 62, 61,60));
-            seriesData.add(new CustomDataEntry("70", 60, 59, 59,62, 31, 63, 62,61));
-            seriesData.add(new CustomDataEntry("80", 60, 60, 59,62, 31, 63, 62,61));
-            Set set = Set.instantiate();
-            set.data(seriesData);
-            Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-            Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
-            Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
-            Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
-            Mapping series5Mapping = set.mapAs("{ x: 'x', value: 'value5' }");
-            Mapping series6Mapping = set.mapAs("{ x: 'x', value: 'value6' }");
-            Mapping series7Mapping = set.mapAs("{ x: 'x', value: 'value7' }");
-            Mapping series8Mapping = set.mapAs("{ x: 'x', value: 'value8' }");
-            Line series1 = cartesian.line(series1Mapping);
-            series1.name("Temperature 1");
-            series1.hovered().markers().enabled(true);
-            series1.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series1.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series2 = cartesian.line(series2Mapping);
-            series2.name("Temperature 2");
-            series2.hovered().markers().enabled(true);
-            series2.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series2.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series3 = cartesian.line(series3Mapping);
-            series3.name("Temperature 3");
-            series3.hovered().markers().enabled(true);
-            series3.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series3.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-            Line series4 = cartesian.line(series4Mapping);
-            series4.name("Temperature 4");
-            series4.hovered().markers().enabled(true);
-            series4.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series4.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series5 = cartesian.line(series5Mapping);
-            series5.name("Temperature 5");
-            series5.hovered().markers().enabled(true);
-            series5.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series5.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series6 = cartesian.line(series6Mapping);
-            series6.name("Temperature 6");
-            series6.hovered().markers().enabled(true);
-            series6.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series6.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series7 = cartesian.line(series7Mapping);
-            series7.name("Temperature 7");
-            series7.hovered().markers().enabled(true);
-            series7.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series7.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series8 = cartesian.line(series8Mapping);
-            series8.name("Temperature 8");
-            series8.hovered().markers().enabled(true);
-            series8.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series8.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-            cartesian.legend().enabled(true);
-            cartesian.legend().fontSize(15d);
-            cartesian.legend().padding(0d, 0d, 10d, 0d);
-            anyChartView.setChart(cartesian);
-        }
-        else
-        {
-            menuVisible =true;
-            invalidateOptionsMenu();
-            AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-            anyChartView.setProgressBar(findViewById(R.id.progress_bar));
-
-            Cartesian cartesian = AnyChart.line();
-
-            cartesian.animation(true);
-
-            cartesian.padding(10d, 20d, 10d, 20d);
-
-            cartesian.crosshair().enabled(true);
-            cartesian.crosshair()
-                    .yLabel(true)
-                    .yStroke((Stroke) null, null, null, (String) null, (String) null);
-
-            cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-
-            cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
-            cartesian.xAxis(0).title("time in minutes");
-            cartesian.removeAllSeries();
-//        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d)
-            Toast.makeText(this, "inside else condition", Toast.LENGTH_SHORT).show();
-            List<DataEntry> seriesData = new ArrayList<>();
-            seriesData.clear();
-            seriesData.add(new CustomDataEntry("0", 31, 31, 30,31, 30, 31, 31,31));
-            seriesData.add(new CustomDataEntry("10", 45, 44, 44, 46, 31, 46, 44,43));
-            seriesData.add(new CustomDataEntry("20", 54, 54, 55,57, 31, 58, 56,54));
-            seriesData.add(new CustomDataEntry("30", 61, 60, 58,63, 31, 63, 61,58));
-            seriesData.add(new CustomDataEntry("40", 68, 67, 66,70, 32, 72, 70,67));
-            seriesData.add(new CustomDataEntry("50", 77, 75, 74,80, 32, 81, 78,75));
-            seriesData.add(new CustomDataEntry("60", 81, 80, 79,84, 32, 86, 84,80));
-            seriesData.add(new CustomDataEntry("70", 85, 83, 81,87, 32, 89, 86,83));
-            seriesData.add(new CustomDataEntry("80", 86, 83, 81,86, 32, 88, 89,83));
-            Set set = Set.instantiate();
-            set.data(seriesData);
-            Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-            Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
-            Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
-            Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
-            Mapping series5Mapping = set.mapAs("{ x: 'x', value: 'value5' }");
-            Mapping series6Mapping = set.mapAs("{ x: 'x', value: 'value6' }");
-            Mapping series7Mapping = set.mapAs("{ x: 'x', value: 'value7' }");
-            Mapping series8Mapping = set.mapAs("{ x: 'x', value: 'value8' }");
-            Line series1 = cartesian.line(series1Mapping);
-            series1.name("Temperature 1");
-            series1.hovered().markers().enabled(true);
-            series1.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series1.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series2 = cartesian.line(series2Mapping);
-            series2.name("Temperature 2");
-            series2.hovered().markers().enabled(true);
-            series2.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series2.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series3 = cartesian.line(series3Mapping);
-            series3.name("Temperature 3");
-            series3.hovered().markers().enabled(true);
-            series3.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series3.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-            Line series4 = cartesian.line(series4Mapping);
-            series4.name("Temperature 4");
-            series4.hovered().markers().enabled(true);
-            series4.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series4.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series5 = cartesian.line(series5Mapping);
-            series5.name("Temperature 5");
-            series5.hovered().markers().enabled(true);
-            series5.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series5.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series6 = cartesian.line(series6Mapping);
-            series6.name("Temperature 6");
-            series6.hovered().markers().enabled(true);
-            series6.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series6.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series7 = cartesian.line(series7Mapping);
-            series7.name("Temperature 7");
-            series7.hovered().markers().enabled(true);
-            series7.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series7.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-
-            Line series8 = cartesian.line(series8Mapping);
-            series8.name("Temperature 8");
-            series8.hovered().markers().enabled(true);
-            series8.hovered().markers()
-                    .type(MarkerType.CIRCLE)
-                    .size(4d);
-            series8.tooltip()
-                    .position("right")
-                    .anchor(Anchor.LEFT_CENTER)
-                    .offsetX(0d)
-                    .offsetY(5d);
-            cartesian.legend().enabled(true);
-            cartesian.legend().fontSize(15d);
-            cartesian.legend().padding(0d, 0d, 10d, 0d);
-            anyChartView.setChart(cartesian);
-
-        }
-
-    }
+//    private void openGraphs() {
+//
+//
+//
+//        if(graph_voltage)
+//        {
+//            menuVisible =true;
+//            invalidateOptionsMenu();
+//            AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+//            anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+//
+//            Cartesian cartesian = AnyChart.line();
+//
+//            cartesian.animation(true);
+//
+//            cartesian.padding(10d, 20d, 10d, 20d);
+//
+//            cartesian.crosshair().enabled(true);
+//            cartesian.crosshair()
+//                    .yLabel(true)
+//                    .yStroke((Stroke) null, null, null, (String) null, (String) null);
+//
+//            cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+//
+//            cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
+//            cartesian.xAxis(0).title("time in minutes");
+//            cartesian.removeAllSeries();
+////        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d)
+//            List<DataEntry> seriesData = new ArrayList<>();
+//            seriesData.clear();
+//            //seriesData.clear();
+//            Toast.makeText(this, "inside if condition", Toast.LENGTH_SHORT).show();
+//            seriesData.add(new NaturalConvection.CustomDataEntry("0", 33, 33, 33,34, 30, 34, 34,33));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("10", 40, 40, 40, 41, 31, 42, 41, 40));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("20", 47, 47, 47,48, 31, 49, 48,47));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("30", 52, 51, 51,53, 31, 54, 53,52));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("40", 56, 55, 55,57, 31, 58, 57,56));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("50", 58, 58, 57,60, 31, 61, 60,58));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("60", 60, 59, 58,61, 31, 62, 61,60));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("70", 60, 59, 59,62, 31, 63, 62,61));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("80", 60, 60, 59,62, 31, 63, 62,61));
+//            Set set = Set.instantiate();
+//            set.data(seriesData);
+//            Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+//            Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+//            Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+//            Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
+//            Mapping series5Mapping = set.mapAs("{ x: 'x', value: 'value5' }");
+//            Mapping series6Mapping = set.mapAs("{ x: 'x', value: 'value6' }");
+//            Mapping series7Mapping = set.mapAs("{ x: 'x', value: 'value7' }");
+//            Mapping series8Mapping = set.mapAs("{ x: 'x', value: 'value8' }");
+//            Line series1 = cartesian.line(series1Mapping);
+//            series1.name("Temperature 1");
+//            series1.hovered().markers().enabled(true);
+//            series1.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series1.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series2 = cartesian.line(series2Mapping);
+//            series2.name("Temperature 2");
+//            series2.hovered().markers().enabled(true);
+//            series2.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series2.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series3 = cartesian.line(series3Mapping);
+//            series3.name("Temperature 3");
+//            series3.hovered().markers().enabled(true);
+//            series3.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series3.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//            Line series4 = cartesian.line(series4Mapping);
+//            series4.name("Temperature 4");
+//            series4.hovered().markers().enabled(true);
+//            series4.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series4.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series5 = cartesian.line(series5Mapping);
+//            series5.name("Temperature 5");
+//            series5.hovered().markers().enabled(true);
+//            series5.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series5.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series6 = cartesian.line(series6Mapping);
+//            series6.name("Temperature 6");
+//            series6.hovered().markers().enabled(true);
+//            series6.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series6.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series7 = cartesian.line(series7Mapping);
+//            series7.name("Temperature 7");
+//            series7.hovered().markers().enabled(true);
+//            series7.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series7.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series8 = cartesian.line(series8Mapping);
+//            series8.name("Temperature 8");
+//            series8.hovered().markers().enabled(true);
+//            series8.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series8.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//            cartesian.legend().enabled(true);
+//            cartesian.legend().fontSize(15d);
+//            cartesian.legend().padding(0d, 0d, 10d, 0d);
+//            anyChartView.setChart(cartesian);
+//        }
+//        else
+//        {
+//            menuVisible =true;
+//            invalidateOptionsMenu();
+//            AnyChartView anyChartView = findViewById(R.id.any_chart_view);
+//            anyChartView.setProgressBar(findViewById(R.id.progress_bar));
+//
+//            Cartesian cartesian = AnyChart.line();
+//
+//            cartesian.animation(true);
+//
+//            cartesian.padding(10d, 20d, 10d, 20d);
+//
+//            cartesian.crosshair().enabled(true);
+//            cartesian.crosshair()
+//                    .yLabel(true)
+//                    .yStroke((Stroke) null, null, null, (String) null, (String) null);
+//
+//            cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+//
+//            cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
+//            cartesian.xAxis(0).title("time in minutes");
+//            cartesian.removeAllSeries();
+////        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d)
+//            Toast.makeText(this, "inside else condition", Toast.LENGTH_SHORT).show();
+//            List<DataEntry> seriesData = new ArrayList<>();
+//            seriesData.clear();
+//            seriesData.add(new NaturalConvection.CustomDataEntry("0", 31, 31, 30,31, 30, 31, 31,31));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("10", 45, 44, 44, 46, 31, 46, 44,43));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("20", 54, 54, 55,57, 31, 58, 56,54));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("30", 61, 60, 58,63, 31, 63, 61,58));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("40", 68, 67, 66,70, 32, 72, 70,67));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("50", 77, 75, 74,80, 32, 81, 78,75));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("60", 81, 80, 79,84, 32, 86, 84,80));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("70", 85, 83, 81,87, 32, 89, 86,83));
+//            seriesData.add(new NaturalConvection.CustomDataEntry("80", 86, 83, 81,86, 32, 88, 89,83));
+//            Set set = Set.instantiate();
+//            set.data(seriesData);
+//            Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
+//            Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
+//            Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
+//            Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
+//            Mapping series5Mapping = set.mapAs("{ x: 'x', value: 'value5' }");
+//            Mapping series6Mapping = set.mapAs("{ x: 'x', value: 'value6' }");
+//            Mapping series7Mapping = set.mapAs("{ x: 'x', value: 'value7' }");
+//            Mapping series8Mapping = set.mapAs("{ x: 'x', value: 'value8' }");
+//            Line series1 = cartesian.line(series1Mapping);
+//            series1.name("Temperature 1");
+//            series1.hovered().markers().enabled(true);
+//            series1.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series1.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series2 = cartesian.line(series2Mapping);
+//            series2.name("Temperature 2");
+//            series2.hovered().markers().enabled(true);
+//            series2.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series2.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series3 = cartesian.line(series3Mapping);
+//            series3.name("Temperature 3");
+//            series3.hovered().markers().enabled(true);
+//            series3.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series3.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//            Line series4 = cartesian.line(series4Mapping);
+//            series4.name("Temperature 4");
+//            series4.hovered().markers().enabled(true);
+//            series4.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series4.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series5 = cartesian.line(series5Mapping);
+//            series5.name("Temperature 5");
+//            series5.hovered().markers().enabled(true);
+//            series5.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series5.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series6 = cartesian.line(series6Mapping);
+//            series6.name("Temperature 6");
+//            series6.hovered().markers().enabled(true);
+//            series6.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series6.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series7 = cartesian.line(series7Mapping);
+//            series7.name("Temperature 7");
+//            series7.hovered().markers().enabled(true);
+//            series7.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series7.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//
+//            Line series8 = cartesian.line(series8Mapping);
+//            series8.name("Temperature 8");
+//            series8.hovered().markers().enabled(true);
+//            series8.hovered().markers()
+//                    .type(MarkerType.CIRCLE)
+//                    .size(4d);
+//            series8.tooltip()
+//                    .position("right")
+//                    .anchor(Anchor.LEFT_CENTER)
+//                    .offsetX(0d)
+//                    .offsetY(5d);
+//            cartesian.legend().enabled(true);
+//            cartesian.legend().fontSize(15d);
+//            cartesian.legend().padding(0d, 0d, 10d, 0d);
+//            anyChartView.setChart(cartesian);
+//
+//        }
+//
+//    }
 
 
 
@@ -1157,12 +1222,12 @@ public class NaturalConvection extends AppCompatActivity {
         if (itemId == R.id.fiftysix) {
             Toast.makeText(this, "Graph For Voltage Set To 56V", Toast.LENGTH_SHORT).show();
             graph_voltage = true;
-            openGraphs();
+            //openGraphs();
             return true;
         } else if (itemId == R.id.seventyone) {
             Toast.makeText(this, "Graph For Voltage Set To 71V", Toast.LENGTH_SHORT).show();
             graph_voltage = false;
-            openGraphs();
+           // openGraphs();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -1193,11 +1258,11 @@ public class NaturalConvection extends AppCompatActivity {
             openTheory();
         } else if (viewClicked != null && viewClicked.equals("aboutSetup")) {
             setTitle("About Setup");
-            setContentView(R.layout.about_setup_nc);
+            setContentView(R.layout.about_setup_layout);
             openAboutSetup();
         } else if (viewClicked != null && viewClicked.equals("simulation")) {
             setTitle("Simulation");
-            setContentView(R.layout.simulation_layout_nc);
+            setContentView(R.layout.doublepipehexsimulation);
             openSimulation();
         } else if (viewClicked != null && viewClicked.equals("procedure")) {
             setTitle("Procedure");
@@ -1210,11 +1275,11 @@ public class NaturalConvection extends AppCompatActivity {
         } else if (viewClicked != null && viewClicked.equals("graphs")) {
             setTitle("Graphs");
             setContentView(R.layout.graphs_layout);
-            openGraphs();
+            //openGraphs();
         }
         else if (viewClicked != null && viewClicked.equals("quiz")) {
             setTitle("Quiz");
-            Intent intent1 = new Intent(NaturalConvection.this, DashboardActivity.class);
+            Intent intent1 = new Intent(DoublePipeHex.this, DashboardActivity.class);
             intent1.putExtra("exp", 3);
             startActivity(intent1);
             finish();

@@ -6,6 +6,8 @@
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/drawable/ic_baseline_android_24.xml" value="0.2484375" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2484375" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/drawable/ic_logo_background.xml" value="0.2484375" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/about_setup_layout.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/about_setup_nc.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_experiment2.xml" value="0.19610507246376813" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_experiment3.xml" value="0.2" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_experiment4.xml" value="0.176" />
@@ -14,6 +16,8 @@
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_natural_convection.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_splash.xml" value="0.23645833333333333" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/activity_thermal_conductivity_of_liquids.xml" value="0.19610507246376813" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/doublepipehex.xml" value="0.23229166666666667" />
+        <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/doublepipehexsimulation.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/fragment_details.xml" value="0.1" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/graphs_layout.xml" value="0.23229166666666667" />
         <entry key="..\:/Users/Asus/Documents/GitHub/HMT-Virtual-Lab/app/src/main/res/layout/observation_layout.xml" value="0.1" />
