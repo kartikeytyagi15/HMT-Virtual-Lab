@@ -105,7 +105,7 @@ public class DetailsFragment extends BottomSheetDialogFragment implements View.O
         }
         else if(EXPERIMENT_NUMBER == 4)
         {
-            Intent intent = new Intent(getActivity(), Experiment4Activity.class);
+            Intent intent = new Intent(getActivity(), DoublePipeHex.class);
             intent.putExtra("clickedViewTag",viewClicked);
             startActivity(intent);
         }
