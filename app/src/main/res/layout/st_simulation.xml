@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:id="@+id/setup_img"
+        android:layout_width="450dp"
+        android:layout_height="450dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/st_red" />
+
+    <View
+        android:id="@+id/start_btn"
+        android:layout_width="29dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="308dp"
+        android:layout_marginTop="160dp"
+        android:onClick="onStart"
+        app:layout_constraintStart_toStartOf="@+id/setup_img"
+        app:layout_constraintTop_toTopOf="@+id/setup_img" />
+
+    <View
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="356dp"
+        android:layout_marginTop="56dp"
+        android:onClick="change_temp"
+        app:layout_constraintStart_toStartOf="@+id/setup_img"
+        app:layout_constraintTop_toTopOf="@+id/setup_img" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/setup_img">
+
+        <TextView
+            android:id="@+id/hot_flow_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="m(hot) = 220lph"
+            android:textSize="20dp"
+            android:padding="10dp"
+            />
+        <TextView
+            android:id="@+id/cold_flow_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="20dp"
+            android:text="m(cold) = 200lph"
+            />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/temp_title_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:layout_marginRight="128dp"
+        android:text="T1(&#176;C)"
+        android:visibility="invisible"
+        app:layout_constraintRight_toRightOf="@+id/setup_img"
+        app:layout_constraintTop_toTopOf="@+id/setup_img" />
+
+    <TextView
+        android:id="@+id/temp_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:visibility="invisible"
+        android:layout_marginRight="125dp"
+        android:text="34.02"
+        android:textSize="20dp"
+        app:layout_constraintRight_toRightOf="@+id/setup_img"
+        app:layout_constraintTop_toTopOf="@+id/setup_img" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

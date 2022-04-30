@@ -8,17 +8,15 @@
         android:title="Voltage"
         app:showAsAction="never"
         >
-
         <menu>
             <item
                 android:id="@+id/fiftysix"
-                android:title="56"
+                android:title="56 Volts"
                 />
             <item
                 android:id="@+id/seventyone"
-                android:title="71"
+                android:title="71 Volts"
                 />
-
         </menu>
 
     </item>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/flow_rate_menu">
+    <item
+        android:id="@+id/menu_item_id"
+        android:title="Set Flow Rates"
+        app:showAsAction="never"
+        >
+
+        <menu>
+            <item
+                android:id="@+id/op1"
+                android:title="220 hot and 200 cold"
+                />
+            <item
+                android:id="@+id/op2"
+                android:title="100 hot and 150 cold"
+                />
+            <item
+                android:id="@+id/op3"
+                android:title="80 hot and 240 cold"
+                />
+        </menu>
+
+    </item>
+</menu>

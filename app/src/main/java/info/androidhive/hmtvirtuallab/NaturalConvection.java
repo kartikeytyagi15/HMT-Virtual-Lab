@@ -335,12 +335,6 @@ public class NaturalConvection extends AppCompatActivity {
         }
     }
 
-    public double calculatePulses(double time){
-        return 3.41253344420811E-05*Math.pow(time,4) - 3.92624735874136E-03*Math.pow(time,3) +
-                1.64034123337430E-01*time*time - 3.04057480429492E+00*time + 6.08993773891020E+01;
-    }
-
-
     public void setTemperature_tv() {
         if(thermocouple_number == 0) {
             temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
