@@ -32,13 +32,10 @@
         <activity android:name=".ForcedConvection" />
         <activity android:name=".ThermalConductivityOfLiquids" />
         <activity android:name=".NaturalConvection" />
-<<<<<<< HEAD
-        <activity android:name=".Experiment4Activity" />
+<!--        <activity android:name=".Experiment4Activity" />-->
         <activity android:name=".ShellAndTube" />
-=======
         <activity android:name=".DoublePipeHex" />
-        <activity android:name=".Experiment5Activity" />
->>>>>>> 72734f19a459afe3784aadc6bf2004a7240d1e44
+<!--        <activity android:name=".Experiment5Activity" />-->
         <activity android:name=".MainActivity" />
     </application>
 

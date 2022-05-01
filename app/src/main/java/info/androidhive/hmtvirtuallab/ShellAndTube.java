@@ -29,6 +29,12 @@ public class ShellAndTube extends AppCompatActivity {
     MathJaxView theory2_tv;
     MathJaxView intro_text_tv;
     MathJaxView theory_tv;
+    TextView starting_procedure;
+    TextView closing_procedure;
+    MathJaxView apparatus;
+    MathJaxView equipment;
+    ImageView appartus_setup;
+    ImageView internal;
 
     ImageView setup_img;
     View start_btn;
@@ -52,7 +58,106 @@ public class ShellAndTube extends AppCompatActivity {
 
     TextView temp_title;
     TextView temp;
+    String objective_text = "To determine the heat exchanger effectiveness for shell and tube heat exchanger";
+    String intro_text= "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
+            "$\\bullet$ Shell and Tube Heat Exchanger as the name proposed, are built around tubes mounted in a cylindrical\n" +
+            "shell, the tubes are parallel to the shell. One fluid flows inside the tubes is called the (Tube Side Fluid),\n" +
+            "while the other fluid flows across and along the axis of the exchanger in the shell side (Shell Side\n" +
+            "Fluid). Shell and Tube Heat Exchanger type exchangers are used in many process industries, as well as\n" +
+            "nuclear power stations as condensers, steam generators in pressurised water reactor power plants,\n" +
+            "and feed water heaters.";
+    String aim_text = "To determine the overall heat transfer coefficient for shell and tube heat exchangers using LMTD and \uD835\uDF16-NTU method. \n" ;
+    String theory_text= "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
 
+            "$\\bullet$ Baffles are usually installed to increase the convection coefficient of the shell-side fluid by inducing\n" +
+            "turbulence and a cross-flow velocity component. In addition, the baffles physically support the tubes,\n" +
+            "reducing flow-induced tube vibration \n" +"<br>"+
+            " <br>$\\bullet$In this experiment double-pass shell-and-tube heat exchanger. The known quantity of hot water from\n" +
+            "the geyser enters the bottom tubes, flows through the length of the heat exchanger (pass 1) and then\n" +
+            "returns from the upper tubes all through the heat exchanger length (pass 2) and finally goes out of the\n" +
+            "heat exchanger. As fluid goes through two passes such a heat exchanger is referred to as a double-pass\n" +
+            "shell and tube heat exchanger. Obviously, a double-pass heat exchanger is more effective then the\n" +
+            "single pass heat exchanger, the reason being that heat transfer area increases as the length gets\n" +
+            "doubled. The cold water (known quantity) from the bottom of the shell flows through a number of\n" +
+            "baffle plates and finally leaves the shell through its outlet.\n" +"<br>"+
+            " <br>$\\bullet$There are two methods to analyze heat exchanger i) LMTD Method ii) ε-NTU Method\n<br>"
+            +
+            "<br>"+
+            "$\\bullet$ LMTD METHOD:-\n" +
+            "This method is used when the inlet and outlet temperatures of both hot and cold streams\n" +
+            "are known\n" +
+            "$$Q = UA\\Delta T{m}$$\n" +
+            "Where Q is the Heat Transferred between the hot and cold fluids U is the overall Heat\n" +
+            "Transfer Coefficient. A is the total area available for heat exchange ∆\uD835\uDC47m is the log mean\n" +
+            "temperature difference\n" +
+            "Now for parallel flow ,∆\uD835\uDC47m is given by\n" +
+            "$$\\Delta T{m} = \\frac{\\Delta T{1}- \\Delta T{2}}{ln\\frac{\\Delta T{1}}{\\Delta T{2}}}$$\n" +
+            "$$\\Delta T{1} = \\Delta T{h,i}- \\Delta T{c,i}\n$$" +
+            "$$\\Delta T{2} = \\Delta T{h,o}- \\Delta T{c,o}\n$$" +
+            "And for counter flow\n" +
+            "$$\\Delta T{m} = \\frac{\\Delta T{1}- \\Delta T{2}}{ln\\frac{\\Delta T{1}}{\\Delta T{2}}}\n$$" +
+            "$$\\Delta T{1} = \\Delta T{h,i}- \\Delta T{c,o}\n$$" +
+            "$$\\Delta T{2} = \\Delta T{h,o}- \\Delta T{c,i}\n$$" +
+            "Where \n, ∆Tℎ,\uD835\uDC56=Inlet Temperature of hot stream\n" +
+            "∆Tℎ,\uD835\uDC5C=Outlet Temperature of hot stream\n" +
+            "∆T\uD835\uDC50,\uD835\uDC56=Inlet Temperature of hot stream\n" +
+            "∆T\uD835\uDC50,\uD835\uDC5C=Outlet Temperature of hot stream\n" +
+            "And Overall Heat Transfer Coefficient (U) for Double Pipe Heat Exchanger is given by\n" +
+            "$$U = \\frac{1}{A{o}(\\frac{1}{h{i}A{i}} + \\frac{ln\\frac{r{o}}{r{i}}}{2{\\pi}kL} +\n" +
+            "\\frac{1}{h{o}A{o}})}$$\n" +
+            "With ro and ri being the outer and inner radii of the inner tube of the double pipe heat\n" +
+            "exchanger Ao is the outer surface area of the inner tube And L is the length of the inner\n" +
+            "tube.\n"+"<br>"+"<br>"+
+            "ε-NTU METHOD:-\n" +
+            "This method is used when only the inlet temperatures of the two streams are given Heat\n" +
+            "Exchanger Effectiveness is given by\n" +
+            "$$\\epsilon= \\frac{Q{actual}}{Q{maximum}}$$\n" +
+            "$$Q{actual}= C{h}(T{h,i} - T{h,o})$$\n" +
+            "$$Q{actual}= C{c}(T{c,o} - T{c,i})\n$$" +
+            "$$Q{maximum}= C{min}(T{h,i} - T{c,i})$$\n" +
+            "And after simplification Effectiveness can be written as\n" +
+            " For  parallel  flow  arrangement :\n" +
+            "$$\\epsilon= \\frac{1-exp[-NTU(1+C{r})]}{1+C{r}}$$\n" +
+            " For counter flow arrangement:\n" +
+            "$$\\epsilon= \\frac{1-exp[-NTU(1-C{r})]}{1-C{r}.exp[-NTU(1-C{r})]}$$\n" +
+            "Where C{r} = $$\\frac{C{min}}{C{max}}$$\n" +
+            "And NTU = $$\\frac{UA}{C{min}}$$"
+            ;
+    String starting_procedure_text="● This experiment is done for three sets of mass flow rates of cold water and hot water" +
+            "flow rate is constant.\n\n" +
+            "● Flow of water through two pipes (in inner and outer pipe) is set by opening the valves" +
+            "V1 and V2.\n\n" +
+            "● Geyser is switched ON.\n\n" +
+            "● Using thermocouples, the temperature of entering and leaving cold as well as cold" +
+            "water is taken. Digital temperature indicator placed on the control panel is also used" +
+            "but only after steady state is reached.\n\n" +
+            "● Repeat the experiment for other flow rates of cold water.";
+    String close_procedure_text="1. When experiment is over switch OFF the heater switch.\n\n" +
+            "2. Switch OFF the mains ON/OFF switch.\n\n" +
+            "3. Switch OFF electric supply to the set up.";
+    String equipment_text="<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+"●Shell and tube set up\n<br>" +
+            "● Instant water heater (Geyser)<br>" +
+            "● Rotameters/Flowmeters<br>" +
+            "● Temperature sensor board to measure the corresponding temperatures.<br>" +
+            "● Thermocouples<br>";
+    String apparatus_text="<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+"1. " +
+            "Shell (Coldwater) - Mild steel Di= 210mm Do = 220 mm" +"<br>"+
+            "2. Tubes (Hot water) " +
+            "Copper " +
+            "(k=385W/m-k) " +
+            "di = 12.7mm " +
+            "do =13.95mm " +"<br>"+
+            "3. " +
+            "Length of the heat exchanger (L) "+
+            "0.5m\n" +"<br>"+
+            " 4. " +
+            "Number of passes (n)=" +
+            " 2" +"<br>"+
+            "    5.\n" +
+            "Number of tubes=\n" +
+            " \n" +
+            "32\n" +
+            "\n";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -98,6 +203,10 @@ public class ShellAndTube extends AppCompatActivity {
     }
 
     private void openProcedure() {
+        starting_procedure=findViewById(R.id.start);
+        starting_procedure.setText(starting_procedure_text);
+        closing_procedure=findViewById(R.id.close);
+        closing_procedure.setText(close_procedure_text);
 
     }
 
@@ -328,6 +437,17 @@ public class ShellAndTube extends AppCompatActivity {
     }
 
     private void openAboutSetup() {
+        apparatus=findViewById(R.id.apparatus_tv);
+        apparatus.setText(apparatus_text);
+        equipment=findViewById(R.id.equipment_tv);
+        equipment.setText(equipment_text);
+        appartus_setup=findViewById(R.id.apparatus_image_iv);
+        appartus_setup.setImageResource(R.drawable.st_green_1);
+        internal=findViewById(R.id.internal_iv_id);
+        internal.setImageResource(R.drawable.shelltubeinternal);
+
+
+
 
     }
 
@@ -340,11 +460,19 @@ public class ShellAndTube extends AppCompatActivity {
         theory_tv = findViewById(R.id.theory_text_tv);
         theory2_title = findViewById(R.id.thoery2_title_tv);
         theory2_tv = findViewById(R.id.theory2_tv_id);
+        obj_tv.setText(objective_text);
+        aim_tv.setText(aim_text);
+        theory_tv.setText(theory_text);
+        theory2_tv.setVisibility(View.GONE);
+        theory2_title.setVisibility(View.GONE);
+        intro_text_tv.setText(intro_text);
     }
+
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        countDown.cancel();
+        if(countDown != null)
+            countDown.cancel();
     }
 }
