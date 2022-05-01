@@ -8,20 +8,159 @@
     app:layout_constraintVertical_chainStyle="spread">
 
 
+    <View
+        android:id="@+id/powerBtn"
+        android:layout_width="27dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="260dp"
+        android:layout_marginTop="44dp"
+        android:onClick="onStart"
+        app:layout_constraintStart_toStartOf="@+id/simul_setup"
+        app:layout_constraintTop_toTopOf="@+id/simul_setup" />
+
     <ImageView
         android:id="@+id/simul_setup"
-        android:layout_width="375dp"
-        android:layout_height="235dp"
-        android:layout_marginTop="92dp"
-        android:scaleType="centerCrop"
+        android:layout_width="390dp"
+        android:layout_height="380dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/wateroffhex" />
 
-    
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/simul_setup">
 
+        <TextView
+            android:id="@+id/m_hot_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="m(hot) = "
+            android:textSize="20sp" />
 
+        <TextView
+            android:id="@+id/m_cold_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="m(cold) = "
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/t_hi_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="T(h,i) = "
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/t_ho_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="T(h,o) = "
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/t_ci_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="T(c,i) = "
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/t_co_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="T(c,o) = "
+                android:textSize="20sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginBottom="16dp"
+        android:text="Readings Taken: "
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/record_btn_id"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/numReadings_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="0"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView7"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+    <Button
+        android:id="@+id/record_btn_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="onRecordBtnClicked"
+        android:text="Record"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/delete_btn_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:layout_marginRight="52dp"
+        android:layout_marginBottom="24dp"
+        android:onClick="onDeleteBtnClicked"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

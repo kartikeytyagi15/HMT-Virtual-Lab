@@ -141,14 +141,14 @@
                 android:layout_marginTop="34dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_android_24" />
+                app:srcCompat="@drawable/forced_red" />
 
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Experiment 2"
+                android:text="Forced Convection"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView"
@@ -163,7 +163,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:text="Aim of experiment"
+                android:text="Find the heat transfer\ncoefficient in forced\nconvection."
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView"
@@ -351,7 +351,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Experiment 4"
+                android:text="Double Pipe Heat Exchanger"
                 android:textColor="#000000"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toTopOf="@+id/imageView"

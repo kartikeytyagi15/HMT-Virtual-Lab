@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    android:id="@+id/menu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/parallel"
+        android:title="Parallel Flow"
+        app:showAsAction="never"
+        >
+        <menu>
+            <item
+                android:id="@+id/parallel_op1"
+                android:title="60 hot and 62 cold"
+                />
+            <item
+                android:id="@+id/parallel_op2"
+                android:title="74 hot and 36 cold"
+                />
+            <item
+                android:id="@+id/parallel_op3"
+                android:title="72 hot and 90 cold"
+                />
+
+        </menu>
+
+    </item>
+
+    <item
+        android:id="@+id/counter"
+        android:title="Counter Flow"
+        app:showAsAction="never"
+        >
+        <menu>
+            <item
+                android:id="@+id/counter_op1"
+                android:title="52 hot and 56 cold"
+                />
+            <item
+                android:id="@+id/counter_op2"
+                android:title="46 hot and 42 cold"
+                />
+            <item
+                android:id="@+id/counter_op3"
+                android:title="74 hot and 88 cold"
+                />
+        </menu>
+
+    </item>
+
+</menu>

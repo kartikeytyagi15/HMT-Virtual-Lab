@@ -68,22 +68,16 @@ public class DoublePipeHex extends AppCompatActivity {
     TextView simul_procedure;
 
     ImageView simulation_iv;
-    TextView powerBtn;
-    boolean POWER_ON = false;
     TextView temp_title_tv;
     TextView temp_tv;
     TextView voltage_tv;
     TextView current_tv;
     int thermocouple_number = 0;
-    TextView timer_tv;
-    FloatingActionButton startBtn, pauseBtn, resetBtn;
-    Handler customHandler = new Handler();
-    long startTime = 0L, timeInMillis = 0L, updateTime = 0L, millisPassed = 0L;
-    boolean isRunning;
-    boolean wasRunning;
+
+
+
     boolean voltageFlag=true;
 
-    CountDownTimer countDown = null;
     double thermocouple_1 ;
     double thermocouple_2 ;
     double thermocouple_3 ;
@@ -94,8 +88,19 @@ public class DoublePipeHex extends AppCompatActivity {
     double thermocouple_8 ;
 
 
-    double avg_temp = 30.0;
+    //Double pipe HeX
+    boolean POWER_ON = false;
+    View powerButton;
+    TextView mHotTv, mColdTv;
+    TextView t_hi_tv, t_ho_tv, t_ci_tv, t_co_tv;
+    boolean PARALLEL = true;
+    int set_number = 1;
+    CountDownTimer countDown;
+    double thi,tho,tci,tco;
     double time_elapsed = 0;
+
+
+    double avg_temp = 30.0;
     int pulses = 4;
     double curr_voltage=50.0;
     double curr_current=0.923;
@@ -104,7 +109,6 @@ public class DoublePipeHex extends AppCompatActivity {
     boolean LED_ON = false;
     double LED_time = 0;
     double LED_interval = 0;
-    boolean graph_voltage=false;
 
     SQLiteDatabase db;
     TableLayout table;
@@ -263,157 +267,6 @@ public class DoublePipeHex extends AppCompatActivity {
         simul_procedure.setText(simulation_procedure);
     }
 
-    public double calculateTemp1(double time)
-    {
-        Random rand = new Random();
-        double value = rand.nextDouble() / 2.0;
-        if(rand.nextInt(2) == 0) //negative
-            value *= -1;
-        if(voltageFlag) {
-            return 0.00000067016317 * Math.pow(time, 4) - 0.00009459984460 * Math.pow(time, 3) -
-                    0.00204836829838 * time * time + 0.76482128982337 * time +  32.91841491837450 + value;
-        }
-        else
-        {
-            return -0.00000323426573 * Math.pow(time, 4) +  0.00051327376327 * Math.pow(time, 3)
-                    - 0.03172397047399 * time * time + 1.59047526547822 * time + 31.23387723382090 + value;
-        }
-    }
-    public double calculateTemp2(double time)
-    {
-        Random rand = new Random();
-        double value = rand.nextDouble() / 2.0;
-        if(rand.nextInt(2) == 0) //negative
-            value *= -1;
-        if(voltageFlag) {
-            return 0.00000081585082 * Math.pow(time, 4) - 0.00010865060865 * Math.pow(time, 3) -
-                    0.00158896658898 * time * time + 0.74062419062626 * time +  33.00388500384490 + value;
-        }
-        else
-        {
-            return -0.00000361305361* Math.pow(time, 4) + 0.00056293706294* Math.pow(time, 3) - 0.03370629370631* Math.pow(time, 2) + 1.59055944056232* Math.pow(time, 1) + 31.04195804190320+ value;
-        }
-    }
-    public double calculateTemp3(double time)
-    {
-        Random rand = new Random();
-        double value = rand.nextDouble() / 2.0;
-        if(rand.nextInt(2) == 0) //negative
-            value *= -1;
-        if(voltageFlag) {
-            return 0.00000046620047* Math.pow(time, 4) - 0.00004597254597* Math.pow(time, 3) - 0.00521173271174* Math.pow(time, 2) + 0.79948847449052* Math.pow(time, 1) + 32.90986790982830+value;
-        }
-        else
-        {
-            return -0.00000492424242* Math.pow(time, 4) + 0.00078703703704* Math.pow(time, 3) - 0.04614898989900* Math.pow(time, 2) + 1.80740740741022* Math.pow(time, 1) + 30.08080808075440+value;
-        }
-    }
-    public double calculateTemp4(double time)
-    {
-        Random rand = new Random();
-        double value = rand.nextDouble() / 2.0;  //random value generated between 0 and 0.5 (about 1.5% of 35)
-        if(rand.nextInt(2) == 0) //negative
-            value *= -1;
-        if(voltageFlag) {
-            return 0.00000072843823* Math.pow(time, 4) - 0.00010560735561* Math.pow(time, 3) - 0.00118783993785* Math.pow(time, 2) + 0.74921652421867* Math.pow(time, 1) + 33.94250194246030+value;
-        }
-        else
-        {
-            return -0.00000463286713* Math.pow(time, 4) + 0.00072358197358* Math.pow(time, 3) - 0.04288170163172* Math.pow(time, 2) + 1.85421522921823* Math.pow(time, 1) + 31.10023310017580+value;
-        }
-    }
-    public double calculateTemp5(double time)
-    {
-        Random rand = new Random();
-        double value = rand.nextDouble() / 2.0;
-        if(rand.nextInt(2) == 0) //negative
-            value *= -1;
-        if(voltageFlag) {
-            return -0.00000040792541* Math.pow(time, 4) + 0.00007705257705* Math.pow(time, 3) - 0.00496309246309* Math.pow(time, 2) + 0.12438487438592* Math.pow(time, 1) + 30.04351204349100+value;
-        }
-        else
-        {
-            return -0.00000014568765* Math.pow(time, 4) + 0.00002246827247* Math.pow(time, 3) - 0.00146950271951* Math.pow(time, 2) + 0.07133514633623* Math.pow(time, 1) + 30.10644910642740+value;
-        }
-    }
-    public double calculateTemp6(double time)
-    {
-        Random rand = new Random();
-        double value = rand.nextDouble() / 2.0;
-        if(rand.nextInt(2) == 0) //negative
-            value *= -1;
-        if(voltageFlag) {
-            return 0.00000032051282* Math.pow(time, 4) - 0.00002855477856* Math.pow(time, 3) - 0.00615093240094* Math.pow(time, 2) + 0.87360139860358* Math.pow(time, 1) + 33.98601398597170+value;
-        }
-        else
-        {
-            return -0.00000469114219* Math.pow(time, 4) + 0.00072617197617* Math.pow(time, 3) - 0.04265637140639* Math.pow(time, 2) + 1.87495467495775* Math.pow(time, 1) + 31.06604506598650+value;
-        }
-    }
-    public double calculateTemp7(double time)
-    {
-        Random rand = new Random();
-        double value = rand.nextDouble() / 2.0;
-        if(rand.nextInt(2) == 0) //negative
-            value *= -1;
-        if(voltageFlag) {
-            return 0.00000072843823* Math.pow(time, 4) - 0.00010560735561* Math.pow(time, 3) - 0.00118783993785* Math.pow(time, 2) + 0.74921652421867* Math.pow(time, 1) + 33.94250194246030+value;
-        }
-        else
-        {
-            return -0.00000230186480* Math.pow(time, 4) + 0.00036914011914* Math.pow(time, 3) - 0.02505147630149* Math.pow(time, 2) + 1.53886298886603* Math.pow(time, 1) + 31.06371406365620+value;
-        }
-    }
-    public double calculateTemp8(double time)
-    {
-        Random rand = new Random();
-        double value = rand.nextDouble() / 2.0;  //random value generated between 0 and 0.5 (about 1.5% of 35)
-        if(rand.nextInt(2) == 0) //negative
-            value *= -1;
-        if(voltageFlag) {
-            return 0.00000046620047* Math.pow(time, 4) - 0.00005607355607* Math.pow(time, 3) - 0.00399961149962* Math.pow(time, 2) + 0.79292281792493* Math.pow(time, 1) + 32.87956487952400+value;
-        }
-        else
-        {
-            return -0.00000352564103* Math.pow(time, 4) + 0.00052790727791* Math.pow(time, 3) - 0.03019327894329* Math.pow(time, 2) + 1.48844858845147* Math.pow(time, 1) + 31.02253302247820+value;
-        }
-    }
-
-    public double calculatePulses(double time){
-        return 3.41253344420811E-05*Math.pow(time,4) - 3.92624735874136E-03*Math.pow(time,3) +
-                1.64034123337430E-01*time*time - 3.04057480429492E+00*time + 6.08993773891020E+01;
-    }
-
-
-    public void setTemperature_tv() {
-        if(thermocouple_number == 0) {
-            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_1));
-        }
-        else if(thermocouple_number ==1) {
-            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_2));
-        }
-        else if(thermocouple_number ==2) {
-            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_3));
-        }
-        else if(thermocouple_number ==3) {
-            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_4));
-        }
-        else if(thermocouple_number ==4) {
-            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_5));
-        }
-        else if(thermocouple_number ==5) {
-            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_6));
-        }
-        else if(thermocouple_number ==6) {
-            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_7));
-        }
-
-        else {
-            temp_tv.setText(String.format(Locale.getDefault(),"%.2f", thermocouple_8));
-            thermocouple_number = -1;
-        }
-    }
-
     public void setVoltage_tv() {
         voltage_tv.setText(String.format(Locale.getDefault(),"%.0f", curr_voltage));
     }
@@ -468,71 +321,71 @@ public class DoublePipeHex extends AppCompatActivity {
         }
     }
 
-    public void turnOnHeater(View v)
-    {
-//        Log.v("LOGGED MESSAGE", "POWER BUTTON CLICKED");
-        if(!POWER_ON)
-        {  //Power on
-            POWER_ON = true;
-            simulation_iv.setImageResource(R.drawable.wateronhex);
-            temp_title_tv.setVisibility(View.VISIBLE);
-            temp_tv.setVisibility(View.VISIBLE);
-            setTemperature_tv();
-            time_elapsed = 0;
-            countDown = new CountDownTimer(4800000, 500) {  //80 minutes count down, updates every half second
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    time_elapsed += 0.5;
-                    setTemperature_tv();
-                    thermocouple_1 = calculateTemp1(time_elapsed / 60.0);
-                    thermocouple_2 = calculateTemp2(time_elapsed / 60.0);
-                    thermocouple_3 = calculateTemp3(time_elapsed / 60.0);
-                    thermocouple_4 = calculateTemp4(time_elapsed / 60.0);
-                    thermocouple_5 = calculateTemp5(time_elapsed / 60.0);
-                    thermocouple_6 = calculateTemp6(time_elapsed / 60.0);
-                    thermocouple_7 = calculateTemp7(time_elapsed / 60.0);
-                    thermocouple_8 = calculateTemp8(time_elapsed / 60.0);
-                }
-
-                @Override
-                public void onFinish() {
-                    Log.v("Temp","time khatam :"+thermocouple_1);
-                }
-            }.start();
-        }
-        else
-        {
-            //Power off
-            new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setTitle("Warning!")
-                    .setMessage("Are you sure you want to turn off the setup?")
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            powerOff();
-                        }
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-        }
-    }
-    public void powerOff()
-    {
-        POWER_ON = false;
-        time_elapsed = 0;
-        countDown.cancel();
-        simulation_iv.setImageResource(R.drawable.wateroffhex);
-        temp_title_tv.setVisibility(View.INVISIBLE);
-
-        temp_tv.setVisibility(View.INVISIBLE);
-        setInitialtemp(voltageFlag);
-        avg_temp = 29.0;
-        LED_count = 0;
-        LED_ON = false;
-        LED_time = 0;
-        LED_interval = 0;
-    }
+//    public void turnOnHeater(View v)
+//    {
+////        Log.v("LOGGED MESSAGE", "POWER BUTTON CLICKED");
+//        if(!POWER_ON)
+//        {  //Power on
+//            POWER_ON = true;
+//            simulation_iv.setImageResource(R.drawable.wateronhex);
+//            temp_title_tv.setVisibility(View.VISIBLE);
+//            temp_tv.setVisibility(View.VISIBLE);
+//            setTemperature_tv();
+//            time_elapsed = 0;
+//            countDown = new CountDownTimer(4800000, 500) {  //80 minutes count down, updates every half second
+//                @Override
+//                public void onTick(long millisUntilFinished) {
+//                    time_elapsed += 0.5;
+//                    setTemperature_tv();
+////                    thermocouple_1 = calculateTemp1(time_elapsed / 60.0);
+////                    thermocouple_2 = calculateTemp2(time_elapsed / 60.0);
+////                    thermocouple_3 = calculateTemp3(time_elapsed / 60.0);
+////                    thermocouple_4 = calculateTemp4(time_elapsed / 60.0);
+////                    thermocouple_5 = calculateTemp5(time_elapsed / 60.0);
+////                    thermocouple_6 = calculateTemp6(time_elapsed / 60.0);
+////                    thermocouple_7 = calculateTemp7(time_elapsed / 60.0);
+////                    thermocouple_8 = calculateTemp8(time_elapsed / 60.0);
+//                }
+//
+//                @Override
+//                public void onFinish() {
+//                    Log.v("Temp","time khatam :"+thermocouple_1);
+//                }
+//            }.start();
+//        }
+//        else
+//        {
+//            //Power off
+//            new AlertDialog.Builder(this)
+//                    .setIcon(android.R.drawable.ic_dialog_alert)
+//                    .setTitle("Warning!")
+//                    .setMessage("Are you sure you want to turn off the setup?")
+//                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            powerOff();
+//                        }
+//                    })
+//                    .setNegativeButton("No", null)
+//                    .show();
+//        }
+//    }
+//    public void powerOff()
+//    {
+//        POWER_ON = false;
+//        time_elapsed = 0;
+//        countDown.cancel();
+//        simulation_iv.setImageResource(R.drawable.wateroffhex);
+//        temp_title_tv.setVisibility(View.INVISIBLE);
+//
+//        temp_tv.setVisibility(View.INVISIBLE);
+//        setInitialtemp(voltageFlag);
+//        avg_temp = 29.0;
+//        LED_count = 0;
+//        LED_ON = false;
+//        LED_time = 0;
+//        LED_interval = 0;
+//    }
     public void change_temp(View v)
     {
         if(POWER_ON) {
@@ -575,22 +428,6 @@ public class DoublePipeHex extends AppCompatActivity {
         }
     }
 
-    Runnable updateTimerThread = new Runnable() {
-        @Override
-        public void run() {
-            timeInMillis = SystemClock.uptimeMillis() - startTime;
-            updateTime = timeInMillis + millisPassed;
-            int secs = (int)(updateTime/1000);
-            int mins = secs/60;
-            secs %= 60;
-            int millis = (int)(updateTime%1000);
-            millis /= 10;
-            String dispTime = ""+mins+":"+String.format(Locale.getDefault(), "%02d",secs) + ":" +
-                    String.format(Locale.getDefault(), "%02d", millis);
-            timer_tv.setText(dispTime);
-            customHandler.postDelayed(this, 0);
-        }
-    };
 
     public void onRecordBtnClicked(View v)
     {
@@ -603,8 +440,8 @@ public class DoublePipeHex extends AppCompatActivity {
 //        String input_txt = num_pulses.getText().toString();
 //        pulses = Integer.parseInt(input_txt);
             numReadings_tv.setText(String.valueOf(numReadings));
-            Log.v("Temp",""+pulses);
-            Log.v("Temp", ""+updateTime);
+//            Log.v("Temp",""+pulses);
+//            Log.v("Temp", ""+updateTime);
 
             db.execSQL("INSERT INTO "
                     + "NCTable"
@@ -668,103 +505,103 @@ public class DoublePipeHex extends AppCompatActivity {
         }
     }
 
-    public void downloadExcel(View v)
-    {
-//        String destPath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
-//        File filePath = new File(destPath+ "/TestingApp/TCL Table.xlsx");
-        File filePath = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+File.separator+"/HMT Virtual Lab/NC Table.xlsx");
-        }
-
-        if(numReadings == 0)
-        {
-            Toast.makeText(getApplicationContext(),"No readings to save!",Toast.LENGTH_LONG).show();
-            return;
-        }
-        Toast.makeText(getApplicationContext(),"Excel file named 'NC Table' is saved to device internal storage.",Toast.LENGTH_LONG).show();
-
-        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
-        HSSFSheet hssfSheet = hssfWorkbook.createSheet();
-
-        HSSFRow hssfRow = hssfSheet.createRow(0);
-        HSSFCell hssfCell = hssfRow.createCell(0);
-        hssfCell.setCellValue("S.No.");
-        HSSFCell hssfCell1 = hssfRow.createCell(1);
-        hssfCell1.setCellValue("Voltage");
-        HSSFCell hssfCell2 = hssfRow.createCell(2);
-        hssfCell2.setCellValue("Time");
-        HSSFCell hssfCell3 = hssfRow.createCell(3);
-        hssfCell3.setCellValue("T1");
-        HSSFCell hssfCell4 = hssfRow.createCell(4);
-        hssfCell4.setCellValue("T2");
-        HSSFCell hssfCell5 = hssfRow.createCell(5);
-        hssfCell5.setCellValue("T3");
-        HSSFCell hssfCell6 = hssfRow.createCell(6);
-        hssfCell6.setCellValue("T4");
-        HSSFCell hssfCell7 = hssfRow.createCell(7);
-        hssfCell7.setCellValue("T5");
-        HSSFCell hssfCell8 = hssfRow.createCell(8);
-        hssfCell8.setCellValue("T6");
-        HSSFCell hssfCell9 = hssfRow.createCell(9);
-        hssfCell9.setCellValue("T7");
-        HSSFCell hssfCell10 = hssfRow.createCell(10);
-        hssfCell10.setCellValue("T8");
-
-        try {
-            Cursor c = db.rawQuery("SELECT * FROM " + "NCTable", null);
-            ArrayList<Integer> indexArr = new ArrayList<>();
-            indexArr.add(c.getColumnIndex("Sno"));
-            indexArr.add(c.getColumnIndex("Volt"));
-            indexArr.add(c.getColumnIndex("Time"));
-            indexArr.add(c.getColumnIndex("Temp1"));
-            indexArr.add(c.getColumnIndex("Temp2"));
-            indexArr.add(c.getColumnIndex("Temp3"));
-            indexArr.add(c.getColumnIndex("Temp4"));
-            indexArr.add(c.getColumnIndex("Temp5"));
-            indexArr.add(c.getColumnIndex("Temp6"));
-            indexArr.add(c.getColumnIndex("Temp7"));
-            indexArr.add(c.getColumnIndex("Temp8"));
-
-            c.moveToFirst();
-            int rowNum = 1;
-            while(!c.isAfterLast()){
-                HSSFRow row = hssfSheet.createRow(rowNum);
-                for(int itr = 0; itr<indexArr.size(); itr++)
-                {
-                    String value;
-                    if(itr <= 1)
-                        value =  String.valueOf(c.getInt(indexArr.get(itr)));
-                    else
-                        value = String.valueOf(c.getFloat(indexArr.get(itr)));
-                    HSSFCell cell = row.createCell(itr);
-                    cell.setCellValue(value);
-                }
-                c.moveToNext();
-                rowNum++;
-            }
-            c.close();
-        }
-        catch(Exception e) {
-            Log.e("Error", "Error", e);
-        }
-
-        try {
-            if (!filePath.exists()){
-                filePath.createNewFile();
-            }
-
-            FileOutputStream fileOutputStream= new FileOutputStream(filePath);
-            hssfWorkbook.write(fileOutputStream);
-
-            if (fileOutputStream!=null){
-                fileOutputStream.flush();
-                fileOutputStream.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    public void downloadExcel(View v)
+//    {
+////        String destPath = getApplicationContext().getExternalFilesDir(null).getAbsolutePath();
+////        File filePath = new File(destPath+ "/TestingApp/TCL Table.xlsx");
+//        File filePath = null;
+//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+//            filePath = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+File.separator+"/HMT Virtual Lab/NC Table.xlsx");
+//        }
+//
+//        if(numReadings == 0)
+//        {
+//            Toast.makeText(getApplicationContext(),"No readings to save!",Toast.LENGTH_LONG).show();
+//            return;
+//        }
+//        Toast.makeText(getApplicationContext(),"Excel file named 'NC Table' is saved to device internal storage.",Toast.LENGTH_LONG).show();
+//
+//        HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+//        HSSFSheet hssfSheet = hssfWorkbook.createSheet();
+//
+//        HSSFRow hssfRow = hssfSheet.createRow(0);
+//        HSSFCell hssfCell = hssfRow.createCell(0);
+//        hssfCell.setCellValue("S.No.");
+//        HSSFCell hssfCell1 = hssfRow.createCell(1);
+//        hssfCell1.setCellValue("Voltage");
+//        HSSFCell hssfCell2 = hssfRow.createCell(2);
+//        hssfCell2.setCellValue("Time");
+//        HSSFCell hssfCell3 = hssfRow.createCell(3);
+//        hssfCell3.setCellValue("T1");
+//        HSSFCell hssfCell4 = hssfRow.createCell(4);
+//        hssfCell4.setCellValue("T2");
+//        HSSFCell hssfCell5 = hssfRow.createCell(5);
+//        hssfCell5.setCellValue("T3");
+//        HSSFCell hssfCell6 = hssfRow.createCell(6);
+//        hssfCell6.setCellValue("T4");
+//        HSSFCell hssfCell7 = hssfRow.createCell(7);
+//        hssfCell7.setCellValue("T5");
+//        HSSFCell hssfCell8 = hssfRow.createCell(8);
+//        hssfCell8.setCellValue("T6");
+//        HSSFCell hssfCell9 = hssfRow.createCell(9);
+//        hssfCell9.setCellValue("T7");
+//        HSSFCell hssfCell10 = hssfRow.createCell(10);
+//        hssfCell10.setCellValue("T8");
+//
+//        try {
+//            Cursor c = db.rawQuery("SELECT * FROM " + "NCTable", null);
+//            ArrayList<Integer> indexArr = new ArrayList<>();
+//            indexArr.add(c.getColumnIndex("Sno"));
+//            indexArr.add(c.getColumnIndex("Volt"));
+//            indexArr.add(c.getColumnIndex("Time"));
+//            indexArr.add(c.getColumnIndex("Temp1"));
+//            indexArr.add(c.getColumnIndex("Temp2"));
+//            indexArr.add(c.getColumnIndex("Temp3"));
+//            indexArr.add(c.getColumnIndex("Temp4"));
+//            indexArr.add(c.getColumnIndex("Temp5"));
+//            indexArr.add(c.getColumnIndex("Temp6"));
+//            indexArr.add(c.getColumnIndex("Temp7"));
+//            indexArr.add(c.getColumnIndex("Temp8"));
+//
+//            c.moveToFirst();
+//            int rowNum = 1;
+//            while(!c.isAfterLast()){
+//                HSSFRow row = hssfSheet.createRow(rowNum);
+//                for(int itr = 0; itr<indexArr.size(); itr++)
+//                {
+//                    String value;
+//                    if(itr <= 1)
+//                        value =  String.valueOf(c.getInt(indexArr.get(itr)));
+//                    else
+//                        value = String.valueOf(c.getFloat(indexArr.get(itr)));
+//                    HSSFCell cell = row.createCell(itr);
+//                    cell.setCellValue(value);
+//                }
+//                c.moveToNext();
+//                rowNum++;
+//            }
+//            c.close();
+//        }
+//        catch(Exception e) {
+//            Log.e("Error", "Error", e);
+//        }
+//
+//        try {
+//            if (!filePath.exists()){
+//                filePath.createNewFile();
+//            }
+//
+//            FileOutputStream fileOutputStream= new FileOutputStream(filePath);
+//            hssfWorkbook.write(fileOutputStream);
+//
+//            if (fileOutputStream!=null){
+//                fileOutputStream.flush();
+//                fileOutputStream.close();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     public void openObservation()
     {
@@ -812,67 +649,266 @@ public class DoublePipeHex extends AppCompatActivity {
     }
 
 
+    void setFlowRates(){
+        if(PARALLEL){
+            if(set_number == 1){
+                mHotTv.setText("m(hot) = 60lph");
+                mColdTv.setText("m(cold) = 62lph");
+            }else if(set_number == 2){
+                mHotTv.setText("m(hot) = 74lph");
+                mColdTv.setText("m(cold) = 36lph");
+            }else{
+                mHotTv.setText("m(hot) = 72lph");
+                mColdTv.setText("m(hot) = 90lph");
+            }
+        }
+        else{
+            if(set_number == 1){
+                mHotTv.setText("m(hot) = 52lph");
+                mColdTv.setText("m(cold) = 56lph");
+            }else if(set_number == 2){
+                mHotTv.setText("m(hot) = 46lph");
+                mColdTv.setText("m(cold) = 42lph");
+            }else{
+                mHotTv.setText("m(hot) = 74lph");
+                mColdTv.setText("m(hot) = 88lph");
+            }
+        }
+    }
+
+    void setTemperatureTv(){
+        String text = "T(h,i) = "+String.format(Locale.getDefault(),"%.2f", thi);
+        t_hi_tv.setText(text);
+        text = "T(h,o) = "+String.format(Locale.getDefault(),"%.2f", tho);
+        t_ho_tv.setText(text);
+
+        text = "T(c,i) = "+String.format(Locale.getDefault(),"%.2f", tci);
+        t_ci_tv.setText(text);
+        text = "T(c,o) = "+String.format(Locale.getDefault(),"%.2f", tco);
+        t_co_tv.setText(text);
+    }
+
+    double calculate_parallel_set1_tho(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return -0.04500*time*time + 1.35000*time + 47.00000 + value;
+    }
+    double calculate_parallel_set1_tco(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return -0.02000*time*time + 0.60000*time + 32.00000 + value;
+    }
+
+    double calculate_parallel_set2_tho(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return 0.05000*time*time - 1.05000*time + 56.75000 + value;
+    }
+    double calculate_parallel_set2_tco(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return 0.00267*Math.pow(time,3) - 0.06000*time*time + 0.23333*time + 37.00000 + value;
+    }
+
+    double calculate_parallel_set3_tho(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return value + 50.0;
+    }
+
+    double calculate_parallel_set3_tco(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return value + 32.0;
+    }
+
+
+
+    double calculate_counter_set1_tho(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return -0.00500*time*time + 0.15000*time + 55.00000 + value;
+    }
+    double calculate_counter_set1_tco(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return -0.00500*time*time + 0.15000*time + 36.00000 + value;
+    }
+
+    double calculate_counter_set2_tho(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return 0.00500*time*time - 0.15000*time + 61.00000 + value;
+    }
+    double calculate_counter_set2_tco(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return 41.0 + value;
+    }
+
+    double calculate_counter_set3_tho(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return 0.01000*time*time - 0.30000*time + 53.00000 + value;
+
+    }
+    double calculate_counter_set3_tco(double time){
+        Random rand = new Random();
+        double value = rand.nextDouble() / 10.0;
+        if(rand.nextInt(2) == 0) //negative
+            value *= -1;
+        return 0.00500*time*time - 0.15000*time + 33.00000 + value;
+    }
+
+
+
+
     void openSimulation()
     {
-//        MenuItem item = menu.findItem(R.id.pulses_menu_item_id);
-//        item.setVisible(true);
-        //  menuVisible =  ;
-        // invalidateOptionsMenu();
-
+        menuVisible =true;
+        invalidateOptionsMenu();
+        powerButton = findViewById(R.id.powerBtn);
         simulation_iv = findViewById(R.id.simul_setup);
-        powerBtn = findViewById(R.id.power_button);
-        temp_title_tv = findViewById(R.id.temp_title_tv);
-        current_tv = findViewById(R.id.current_tv);
-        voltage_tv=findViewById(R.id.voltage_tv);
-        temp_tv=findViewById(R.id.temp_tv);
-
-        timer_tv = findViewById(R.id.timer_tv);
-        startBtn = findViewById(R.id.start_btn);
-        pauseBtn = findViewById(R.id.pause_btn);
-        resetBtn = findViewById(R.id.reset_btn);
-        temp_tv = findViewById(R.id.temp_tv);
-        numReadings_tv = findViewById(R.id.numReadings_id);
-
-        numReadings_tv.setText(String.valueOf(numReadings));
-//        simulation_iv.setImageResource(R.drawable.tcl_green_black);
-
-        startBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(!isRunning) {
-                    isRunning = true;
-                    startTime = SystemClock.uptimeMillis();
-                    customHandler.postDelayed(updateTimerThread, 0);
-                }
-            }
-        });
-        pauseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                wasRunning = isRunning;
-                isRunning = false;
-                Log.v("LOGGED MESSAGE", ""+millisPassed);
-                if(wasRunning)
-                    millisPassed = updateTime;
-
-                customHandler.removeCallbacks(updateTimerThread);
-            }
-        });
-
-        resetBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isRunning = false;
-                wasRunning = false;
-                millisPassed = 0L;
-                updateTime = 0;
-                timeInMillis = 0;
-                String def = "0:00:00";
-                timer_tv.setText(def);
-                customHandler.removeCallbacks(updateTimerThread);
-            }
-        });
+        mHotTv = findViewById(R.id.m_hot_id);
+        mColdTv = findViewById(R.id.m_cold_id);
+        t_hi_tv = findViewById(R.id.t_hi_id);
+        t_ho_tv = findViewById(R.id.t_ho_id);
+        t_ci_tv = findViewById(R.id.t_ci_id);
+        t_co_tv = findViewById(R.id.t_co_id);
     }
+
+    void tempInit(){
+        if(PARALLEL){
+            if(set_number == 1){
+                thi = 66.0;
+                tho = 47.0;
+                tco = 29.0;
+                tci = 32.0;
+            }
+            else if(set_number == 2){
+                thi = 57.0;
+                tho = 57.0;
+                tci = 29.0;
+                tco = 37.0;
+            }
+            else{
+                thi = 57.0;
+                tho = 50.0;
+                tci = 29.0;
+                tco = 32.0;
+            }
+        }
+        else{
+            if(set_number == 1){
+                thi = 67.0;
+                tho = 55.0;
+                tci = 29.0;
+                tco = 36.0;
+            }
+            else if(set_number == 2){
+                thi = 76.0;
+                tho = 61.0;
+                tci = 29.0;
+                tco = 41.0;
+            }
+            else{
+                thi = 56.0;
+                tho = 53.0;
+                tci = 29.0;
+                tco = 33.0;
+            }
+        }
+    }
+
+    public void onStart(View v){
+        if(!POWER_ON){
+            POWER_ON = true;
+            tempInit();
+            simulation_iv.setImageResource(R.drawable.wateronhex);
+
+            setFlowRates();
+            tempInit();
+
+            menu.findItem(R.id.parallel).setEnabled(false);
+            menu.findItem(R.id.counter).setEnabled(false);
+
+            time_elapsed = 0;
+            countDown = new CountDownTimer(600000, 500) {  // 10 minutes count down, updates every half second
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    time_elapsed += 0.5;
+                    setTemperatureTv();
+                    if(PARALLEL){
+                        if(set_number == 1){
+                            tho = calculate_parallel_set1_tho(time_elapsed/60.0);
+                            tco = calculate_parallel_set1_tco(time_elapsed/60.0);
+                        }
+                        else if(set_number == 2){
+                            tho = calculate_parallel_set2_tho(time_elapsed/60.0);
+                            tco = calculate_parallel_set2_tco(time_elapsed/60.0);
+                        }
+                        else {
+                            tho = calculate_parallel_set3_tho(time_elapsed/60.0);
+                            tco = calculate_parallel_set3_tco(time_elapsed/60.0);
+                        }
+                    }
+                    else{
+                        if(set_number == 1){
+                            tho = calculate_counter_set1_tho(time_elapsed/60.0);
+                            tco = calculate_counter_set1_tco(time_elapsed/60.0);
+                        }
+                        else if(set_number == 2){
+                            tho = calculate_counter_set2_tho(time_elapsed/60.0);
+                            tco = calculate_counter_set2_tco(time_elapsed/60.0);
+                        }
+                        else {
+                            tho = calculate_counter_set3_tho(time_elapsed / 60.0);
+                            tco = calculate_counter_set3_tco(time_elapsed / 60.0);
+                        }
+                    }
+
+//                    Log.v("Shell And Tube", "t1 = "+ t1);
+//                    Log.v("Shell And Tube", "t2 = "+ t2);
+                }
+                @Override
+                public void onFinish() {
+                    Log.v("Temp","Time over");
+                }
+            }.start();
+
+        }
+        else{
+            POWER_ON = false;
+            simulation_iv.setImageResource(R.drawable.wateroffhex);
+            menu.findItem(R.id.parallel).setEnabled(true);
+            menu.findItem(R.id.counter).setEnabled(true);
+            countDown.cancel();
+        }
+    }
+
+
 
     private void openAboutSetup()
     {
@@ -884,328 +920,10 @@ public class DoublePipeHex extends AppCompatActivity {
         apparatus_tv.setText(apparatus_desc);
     }
 
-    private class CustomDataEntry extends ValueDataEntry {
-
-        CustomDataEntry(String x, Number value, Number value2, Number value3, Number value4, Number value5, Number value6, Number value7,Number value8) {
-            super(x, value);
-            setValue("value2", value2);
-            setValue("value3", value3);
-            setValue("value4", value4);
-            setValue("value5", value5);
-            setValue("value6", value6);
-            setValue("value7", value7);
-            setValue("value8", value8);
-
-        }
-
-    }
-
-//    private void openGraphs() {
-//
-//
-//
-//        if(graph_voltage)
-//        {
-//            menuVisible =true;
-//            invalidateOptionsMenu();
-//            AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-//            anyChartView.setProgressBar(findViewById(R.id.progress_bar));
-//
-//            Cartesian cartesian = AnyChart.line();
-//
-//            cartesian.animation(true);
-//
-//            cartesian.padding(10d, 20d, 10d, 20d);
-//
-//            cartesian.crosshair().enabled(true);
-//            cartesian.crosshair()
-//                    .yLabel(true)
-//                    .yStroke((Stroke) null, null, null, (String) null, (String) null);
-//
-//            cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-//
-//            cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
-//            cartesian.xAxis(0).title("time in minutes");
-//            cartesian.removeAllSeries();
-////        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d)
-//            List<DataEntry> seriesData = new ArrayList<>();
-//            seriesData.clear();
-//            //seriesData.clear();
-//            Toast.makeText(this, "inside if condition", Toast.LENGTH_SHORT).show();
-//            seriesData.add(new NaturalConvection.CustomDataEntry("0", 33, 33, 33,34, 30, 34, 34,33));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("10", 40, 40, 40, 41, 31, 42, 41, 40));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("20", 47, 47, 47,48, 31, 49, 48,47));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("30", 52, 51, 51,53, 31, 54, 53,52));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("40", 56, 55, 55,57, 31, 58, 57,56));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("50", 58, 58, 57,60, 31, 61, 60,58));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("60", 60, 59, 58,61, 31, 62, 61,60));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("70", 60, 59, 59,62, 31, 63, 62,61));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("80", 60, 60, 59,62, 31, 63, 62,61));
-//            Set set = Set.instantiate();
-//            set.data(seriesData);
-//            Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-//            Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
-//            Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
-//            Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
-//            Mapping series5Mapping = set.mapAs("{ x: 'x', value: 'value5' }");
-//            Mapping series6Mapping = set.mapAs("{ x: 'x', value: 'value6' }");
-//            Mapping series7Mapping = set.mapAs("{ x: 'x', value: 'value7' }");
-//            Mapping series8Mapping = set.mapAs("{ x: 'x', value: 'value8' }");
-//            Line series1 = cartesian.line(series1Mapping);
-//            series1.name("Temperature 1");
-//            series1.hovered().markers().enabled(true);
-//            series1.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series1.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series2 = cartesian.line(series2Mapping);
-//            series2.name("Temperature 2");
-//            series2.hovered().markers().enabled(true);
-//            series2.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series2.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series3 = cartesian.line(series3Mapping);
-//            series3.name("Temperature 3");
-//            series3.hovered().markers().enabled(true);
-//            series3.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series3.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//            Line series4 = cartesian.line(series4Mapping);
-//            series4.name("Temperature 4");
-//            series4.hovered().markers().enabled(true);
-//            series4.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series4.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series5 = cartesian.line(series5Mapping);
-//            series5.name("Temperature 5");
-//            series5.hovered().markers().enabled(true);
-//            series5.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series5.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series6 = cartesian.line(series6Mapping);
-//            series6.name("Temperature 6");
-//            series6.hovered().markers().enabled(true);
-//            series6.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series6.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series7 = cartesian.line(series7Mapping);
-//            series7.name("Temperature 7");
-//            series7.hovered().markers().enabled(true);
-//            series7.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series7.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series8 = cartesian.line(series8Mapping);
-//            series8.name("Temperature 8");
-//            series8.hovered().markers().enabled(true);
-//            series8.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series8.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//            cartesian.legend().enabled(true);
-//            cartesian.legend().fontSize(15d);
-//            cartesian.legend().padding(0d, 0d, 10d, 0d);
-//            anyChartView.setChart(cartesian);
-//        }
-//        else
-//        {
-//            menuVisible =true;
-//            invalidateOptionsMenu();
-//            AnyChartView anyChartView = findViewById(R.id.any_chart_view);
-//            anyChartView.setProgressBar(findViewById(R.id.progress_bar));
-//
-//            Cartesian cartesian = AnyChart.line();
-//
-//            cartesian.animation(true);
-//
-//            cartesian.padding(10d, 20d, 10d, 20d);
-//
-//            cartesian.crosshair().enabled(true);
-//            cartesian.crosshair()
-//                    .yLabel(true)
-//                    .yStroke((Stroke) null, null, null, (String) null, (String) null);
-//
-//            cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
-//
-//            cartesian.yAxis(0).title("Temperature("+(char)0x00B0+"C)");
-//            cartesian.xAxis(0).title("time in minutes");
-//            cartesian.removeAllSeries();
-////        cartesian.xAxis(0).labels().padding(5d, 5d, 5d, 5d)
-//            Toast.makeText(this, "inside else condition", Toast.LENGTH_SHORT).show();
-//            List<DataEntry> seriesData = new ArrayList<>();
-//            seriesData.clear();
-//            seriesData.add(new NaturalConvection.CustomDataEntry("0", 31, 31, 30,31, 30, 31, 31,31));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("10", 45, 44, 44, 46, 31, 46, 44,43));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("20", 54, 54, 55,57, 31, 58, 56,54));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("30", 61, 60, 58,63, 31, 63, 61,58));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("40", 68, 67, 66,70, 32, 72, 70,67));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("50", 77, 75, 74,80, 32, 81, 78,75));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("60", 81, 80, 79,84, 32, 86, 84,80));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("70", 85, 83, 81,87, 32, 89, 86,83));
-//            seriesData.add(new NaturalConvection.CustomDataEntry("80", 86, 83, 81,86, 32, 88, 89,83));
-//            Set set = Set.instantiate();
-//            set.data(seriesData);
-//            Mapping series1Mapping = set.mapAs("{ x: 'x', value: 'value' }");
-//            Mapping series2Mapping = set.mapAs("{ x: 'x', value: 'value2' }");
-//            Mapping series3Mapping = set.mapAs("{ x: 'x', value: 'value3' }");
-//            Mapping series4Mapping = set.mapAs("{ x: 'x', value: 'value4' }");
-//            Mapping series5Mapping = set.mapAs("{ x: 'x', value: 'value5' }");
-//            Mapping series6Mapping = set.mapAs("{ x: 'x', value: 'value6' }");
-//            Mapping series7Mapping = set.mapAs("{ x: 'x', value: 'value7' }");
-//            Mapping series8Mapping = set.mapAs("{ x: 'x', value: 'value8' }");
-//            Line series1 = cartesian.line(series1Mapping);
-//            series1.name("Temperature 1");
-//            series1.hovered().markers().enabled(true);
-//            series1.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series1.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series2 = cartesian.line(series2Mapping);
-//            series2.name("Temperature 2");
-//            series2.hovered().markers().enabled(true);
-//            series2.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series2.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series3 = cartesian.line(series3Mapping);
-//            series3.name("Temperature 3");
-//            series3.hovered().markers().enabled(true);
-//            series3.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series3.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//            Line series4 = cartesian.line(series4Mapping);
-//            series4.name("Temperature 4");
-//            series4.hovered().markers().enabled(true);
-//            series4.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series4.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series5 = cartesian.line(series5Mapping);
-//            series5.name("Temperature 5");
-//            series5.hovered().markers().enabled(true);
-//            series5.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series5.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series6 = cartesian.line(series6Mapping);
-//            series6.name("Temperature 6");
-//            series6.hovered().markers().enabled(true);
-//            series6.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series6.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series7 = cartesian.line(series7Mapping);
-//            series7.name("Temperature 7");
-//            series7.hovered().markers().enabled(true);
-//            series7.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series7.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//
-//            Line series8 = cartesian.line(series8Mapping);
-//            series8.name("Temperature 8");
-//            series8.hovered().markers().enabled(true);
-//            series8.hovered().markers()
-//                    .type(MarkerType.CIRCLE)
-//                    .size(4d);
-//            series8.tooltip()
-//                    .position("right")
-//                    .anchor(Anchor.LEFT_CENTER)
-//                    .offsetX(0d)
-//                    .offsetY(5d);
-//            cartesian.legend().enabled(true);
-//            cartesian.legend().fontSize(15d);
-//            cartesian.legend().padding(0d, 0d, 10d, 0d);
-//            anyChartView.setChart(cartesian);
-//
-//        }
-//
-//    }
-
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu_) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.voltage_menu, menu_);
+        inflater.inflate(R.menu.dp_hex_menu, menu_);
         if (!menuVisible)
         {
             for (int i = 0; i < menu_.size(); i++)
@@ -1219,15 +937,41 @@ public class DoublePipeHex extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.fiftysix) {
-            Toast.makeText(this, "Graph For Voltage Set To 56V", Toast.LENGTH_SHORT).show();
-            graph_voltage = true;
-            //openGraphs();
+        if (itemId == R.id.parallel_op1) {
+            PARALLEL = true;
+            set_number = 1;
+            setFlowRates();
+            Toast.makeText(this, "Parallel op1", Toast.LENGTH_SHORT).show();
             return true;
-        } else if (itemId == R.id.seventyone) {
-            Toast.makeText(this, "Graph For Voltage Set To 71V", Toast.LENGTH_SHORT).show();
-            graph_voltage = false;
-           // openGraphs();
+        }else if (itemId == R.id.parallel_op2) {
+            set_number = 2;
+            PARALLEL = true;
+            setFlowRates();
+            Toast.makeText(this, "Parallel op2", Toast.LENGTH_SHORT).show();
+            return true;
+        }else if (itemId == R.id.parallel_op3) {
+            set_number = 3;
+            PARALLEL = true;
+            setFlowRates();
+            Toast.makeText(this, "Parallel op3", Toast.LENGTH_SHORT).show();
+            return true;
+        } else if (itemId == R.id.counter_op1) {
+            set_number = 1;
+            PARALLEL = false;
+            setFlowRates();
+            Toast.makeText(this, "Counter Flow Arrangement", Toast.LENGTH_SHORT).show();
+            return true;
+        }else if (itemId == R.id.counter_op2) {
+            set_number = 2;
+            PARALLEL = false;
+            setFlowRates();
+            Toast.makeText(this, "Counter Flow Arrangement", Toast.LENGTH_SHORT).show();
+            return true;
+        }else if (itemId == R.id.counter_op3) {
+            set_number = 3;
+            PARALLEL = false;
+            setFlowRates();
+            Toast.makeText(this, "Counter Flow Arrangement", Toast.LENGTH_SHORT).show();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -1236,7 +980,7 @@ public class DoublePipeHex extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_natural_convection);
+        setContentView(R.layout.activity_double_pipe_hex);
 
         try {
             db = this.openOrCreateDatabase("NCDB", MODE_PRIVATE, null);
@@ -1270,7 +1014,7 @@ public class DoublePipeHex extends AppCompatActivity {
             openProcedure();
         } else if (viewClicked != null && viewClicked.equals("observationTable")) {
             setTitle("Observation Table");
-            setContentView(R.layout.observation_layout_nc);
+            setContentView(R.layout.observation_layout);
             openObservation();
         } else if (viewClicked != null && viewClicked.equals("graphs")) {
             setTitle("Graphs");
@@ -1280,7 +1024,7 @@ public class DoublePipeHex extends AppCompatActivity {
         else if (viewClicked != null && viewClicked.equals("quiz")) {
             setTitle("Quiz");
             Intent intent1 = new Intent(DoublePipeHex.this, DashboardActivity.class);
-            intent1.putExtra("exp", 3);
+            intent1.putExtra("exp", 4);
             startActivity(intent1);
             finish();
         }

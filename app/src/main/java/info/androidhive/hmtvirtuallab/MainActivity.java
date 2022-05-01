@@ -115,16 +115,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeQuestionsList() {
         exp1_list = new ArrayList<>();
-        exp1_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
-        exp1_list.add(new ModelClass("kjbkvjb aiubfi aoiahe oa aoaf","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
-        exp1_list.add(new ModelClass("qvjawbvkjabvt iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
-        exp1_list.add(new ModelClass("aeff qwekjbekwjv t iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
-        exp1_list.add(new ModelClass("f fefrgqwffaert uohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
-        exp1_list.add(new ModelClass("jiahfi aifbi efbqwertyuiiu a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
-        exp1_list.add(new ModelClass("faiubfia  iab uytr qwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
-        exp1_list.add(new ModelClass("aefkqwertyu uahrfi iauh iert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
-        exp1_list.add(new ModelClass("ai oaih aqwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
-        exp1_list.add(new ModelClass("qwertyuiiuytreqwert iunbfj ijn auohfa a iuhab","hbebab","fkajebfa","fkhabef","fjaef","fkajebfa"));
+        exp1_list.add(new ModelClass("What is the liquid, that is used in the experiment, whose thermal conductivity we have to measure -", "Water", "Glycerine", "Rubbing Alcohol", "Distilled water", "Glycerine"));
+        exp1_list.add(new ModelClass("When there exists a temperature gradient, heat transfer occurs  -", "From high temperature region to low temperature region","From low temperature region to high temperature region", "Heat transfer does not occur", "None of the above", "From high temperature region to low temperature region"));
+        exp1_list.add(new ModelClass("According to the Fourier’s law of heat conduction the rate of heat transfer through a material is directly proportional to the -", "Area of the surface", "Temperature difference", "Thickness of the sample", "Both a and b", "Both a and b"));
+        exp1_list.add(new ModelClass("In the experiment energy transfer occurs through -", "Convection", "Radiation", "Conduction", "Both Conduction and Convection", "Conduction"));
+        exp1_list.add(new ModelClass("The number of pulses measured for the experiment -", "1", "2", "3", "4", "4"));
+        exp1_list.add(new ModelClass("Flow of energy from the heater is -", "Unidirectional", "Bidirectional", "Both of the above", "None of the above", "Unidirectional"));
+        exp1_list.add(new ModelClass("The purpose of cooling plate of water is-", "To ensure unidirectional heat flow through liquid layer", "To keep the apparatus clean", "Both a and b", "It serves no purpose", "To ensure unidirectional heat flow through liquid layer"));
+        exp1_list.add(new ModelClass("What is the unit of thermal conductivity (k) -", "W.m/"+(char) 0x00B0+"C", "W/"+ (char) 0x00B0+"C", "W/m"+ (char) 0x00B0+"C", "J", "W/m"+ (char) 0x00B0+"C"));
+        exp1_list.add(new ModelClass("In the experiment thermocouple is used to measure the temperature of", "Heater", "Glycerine film", "Water", "Both a and b", "Both a and b"));
+        exp1_list.add(new ModelClass("Which of the following assumptions are required to be made for the experiment -", "Heat transfer is 1D along the thickness of the cavity (radially)", "Temperature Gradient across the heater is the same", "Heat transfer happens only through conduction", "All of the above", "All of the above"));
 
 
         exp2_list = new ArrayList<>();
