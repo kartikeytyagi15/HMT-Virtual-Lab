@@ -596,7 +596,7 @@ public class ForcedConvection extends AppCompatActivity {
 
         eqp_tv.setText(exp_reqd_text);
         apparatus_tv.setText(apparatus_text);
-        apparatus_iv.setImageResource(R.drawable.forced_red);
+        apparatus_iv.setImageResource(R.drawable.apparatus_forced);
         apparatus_iv.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
     }

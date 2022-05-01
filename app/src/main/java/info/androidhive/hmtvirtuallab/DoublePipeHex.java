@@ -149,8 +149,8 @@ public class DoublePipeHex extends AppCompatActivity {
             "inner concentric pipe and cool water flows in the annular region of concentric pipe.\n<br>"
             +
             " <br>$\\bullet$By operating 4 valves in a particular order, we are generating parallel and counter flows.\n" +
-            "Like if we open valve_1 ,valve_2 and close valve_3,valve_4 then parallel flow is generated and vice versa. \n<br>" +"<br>"+
-            "LMTD METHOD:-\n" +
+            "Like if we open valve_1 ,valve_2 and close valve_3,valve_4 then parallel flow is generated and vice versa. \n<br>" +"<br>"+"<br>"+
+            "$\\bullet$LMTD METHOD:-\n" +
             "This method is used when the inlet and outlet temperatures of both hot and cold streams\n" +
             "are known\n" +
             "$$Q = UA\\Delta T{m}$$\n" +
@@ -175,7 +175,7 @@ public class DoublePipeHex extends AppCompatActivity {
             "With ro and ri being the outer and inner radii of the inner tube of the double pipe heat\n" +
             "exchanger Ao is the outer surface area of the inner tube And L is the length of the inner\n" +
             "tube.\n"+"<br>"+"<br>"+
-            "ε-NTU METHOD:-\n" +
+            "$\\bullet$ ε-NTU METHOD:-\n" +
             "This method is used when only the inlet temperatures of the two streams are given Heat\n" +
             "Exchanger Effectiveness is given by\n" +
             "$$\\epsilon= \\frac{Q{actual}}{Q{maximum}}$$\n" +
@@ -203,10 +203,19 @@ public class DoublePipeHex extends AppCompatActivity {
             "<br>$\\bullet$ Pipe network with valves - For controlling type of flow arrangement (Parallel or Counter flow)..\n</br>" ;
 
     String apparatus_desc = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
-            "$\\bullet$ The apparatus consists of a heater; it heats a thin layer of liquid. A cooling plate removes heat through the liquid layer, ensuring unidirectional heat flow.\n<br>" +
-            "<br>$\\bullet$ A PID controller is provided for varying the input to the heater and measurement of input power is carried out by a digital energy meter and stopwatch. \n</br>" +
-            "<br>$\\bullet$ Funnel is provided with a valve to fill the liquid. Overflow pipe is given to maintain the liquid level. Plate is for circulation of water. A valve is provided to control the flow of water. \n</br>" +
-            "<br>$\\bullet$ Four temperature sensors are provided to measure the temperature across the liquid layer .\n</br>";
+            "$\\bullet$ Inner(Copper) tube internal and external diameter(di & do)\n" +
+            "10.3mm and 12.7mm\n" +
+            "\n\n<br>" +
+            "<br>$\\bullet$Outer (GI) tube internal and external diameter(Di & Do)\n" +
+            "27.5mm and 33.8mm\n" +
+            "\n\n</br>" +
+            "<br>$\\bullet$Length of heat exchanger (L)\n" +
+            "1m\n" +
+            "\n \n</br>" +
+            "<br>$\\bullet$ $ Thermometers .\n</br>"+
+            "<br>$\\bullet$ $ Digital Stopwatch .\n</br>"+
+            "<br>$\\bullet$ $ Instant water heater(Geyser) .\n</br>"+
+            "<br>$\\bullet$ $ 2 Rotameters .\n</br>";
 
     String start_procedure_text="1.Following experiment is performed for parallel and counter flow heat exchanger\n" +
             "arrangements. Three readings are taken for each type of heat exchanger over three sets of\n" +
@@ -841,6 +850,19 @@ public class DoublePipeHex extends AppCompatActivity {
             }
         }
     }
+    private void openAboutSetup()
+    {
+        MathJaxView equipment_tv = findViewById(R.id.equipment_tv);
+        MathJaxView apparatus_tv = findViewById(R.id.apparatus_tv);
+        ImageView apparatus_iv =findViewById(R.id.apparatus_image_iv);
+        apparatus_iv.setImageResource(R.drawable.doublehexsetup);
+        equipment_tv.setText(apparatus_desc);
+        apparatus_tv.setText(equipment_reqd);
+        ImageView internal=findViewById(R.id.internal_iv_id);
+        internal.setImageResource(R.drawable.counter_flow);
+        TextView intertitle=findViewById(R.id.internal_title_id);
+        intertitle.setText("Flow Arrangements");
+    }
 
     public void onStart(View v){
         if(!POWER_ON){
@@ -910,15 +932,15 @@ public class DoublePipeHex extends AppCompatActivity {
 
 
 
-    private void openAboutSetup()
-    {
-        MathJaxView equipment_tv = findViewById(R.id.equipment_tv);
-        MathJaxView apparatus_tv = findViewById(R.id.apparatus_tv);
-        ImageView apparatus_iv =findViewById(R.id.apparatus_image_iv);
-
-        equipment_tv.setText(equipment_reqd);
-        apparatus_tv.setText(apparatus_desc);
-    }
+//    private void openAboutSetup()
+//    {
+//        MathJaxView equipment_tv = findViewById(R.id.equipment_tv);
+//        MathJaxView apparatus_tv = findViewById(R.id.apparatus_tv);
+//        ImageView apparatus_iv =findViewById(R.id.apparatus_image_iv);
+//
+//        equipment_tv.setText(equipment_reqd);
+//        apparatus_tv.setText(apparatus_desc);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu_) {

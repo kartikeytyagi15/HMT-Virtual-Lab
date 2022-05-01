@@ -36,6 +36,8 @@
 
         <activity android:name=".DoublePipeHex" />
 
+<!--        <activity android:name=".Experiment4Activity" />-->
+<!--        <activity android:name=".Experiment5Activity" />-->
         <activity android:name=".MainActivity" />
     </application>
 
