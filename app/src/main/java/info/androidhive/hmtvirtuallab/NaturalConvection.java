@@ -143,18 +143,18 @@ public class NaturalConvection extends AppCompatActivity {
 
 
     String equipment_reqd = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
-            "$\\bullet$ Electricity Supply: Single Phase, 220 V AC, 50 Hz, 5-15 Amp combined socket with earth connection.\n<br>" +
-            "<br>$\\bullet$ Water Supply: Continuous @ 2 LPM at 1 Bar.\n</br>" +
-            "<br>$\\bullet$ Floor drain required.\n</br>" +
-            "<br>$\\bullet$ Bench area required: 1 m x 1 m.\n</br>" +
-            "<br>$\\bullet$ Glycerin: 250 ml.\n</br>" +
-            "<br>$\\bullet$ Stop watch.\n</br>";
+            "$\\bullet$ Vertical brass pipe\n<br>" +
+            "<br>$\\bullet$ Nichrome heating element\n</br>" +
+            "<br>$\\bullet$ Thermocouples. \n</br>" +
+            "<br>$\\bullet$ Voltmeter .\n</br>" +
+            "<br>$\\bullet$ Ammeter.\n</br>" +
+            "<br>$\\bullet$ Dimmerstat.\n</br>";
 
     String apparatus_desc = "<p align=\"justify\" style = \"font-family: Arial Rounded MT; font-size: 18px; font-style:bold; font-weight: 400;color:#707070\">\n"+
-            "$\\bullet$ The apparatus consists of a heater; it heats a thin layer of liquid. A cooling plate removes heat through the liquid layer, ensuring unidirectional heat flow.\n<br>" +
-            "<br>$\\bullet$ A PID controller is provided for varying the input to the heater and measurement of input power is carried out by a digital energy meter and stopwatch. \n</br>" +
-            "<br>$\\bullet$ Funnel is provided with a valve to fill the liquid. Overflow pipe is given to maintain the liquid level. Plate is for circulation of water. A valve is provided to control the flow of water. \n</br>" +
-            "<br>$\\bullet$ Four temperature sensors are provided to measure the temperature across the liquid layer.\n</br>";
+            "$\\bullet$ The apparatus consists of a vertical brass pipe fitted in a large enclosure with top and bottom open to facilitate the undisturbed natural convection conditions. \n<br>" +
+            "<br>$\\bullet$ For a visual display of the pipe, an acrylic sheet is fitted on the front side of the enclosure. One heating element (nichrome wire) is fitted inside the pipe to heat the wall of the pipe uniformly. \n</br>" +
+            "<br>$\\bullet$ Heat is dissipated from the outer surface by natural convection to ambient air. Seven thermocouples are embedded in the wall of the pipe to measure the surface temperatures (T1-T7) and another thermocouple is provided to measure the ambient air temperature (Ts). \n</br>" +
+            "<br>$\\bullet$ The input power of the heater is controlled by a dimmerstat and the power is measured by voltmeter and ammeter.\n</br>";
 
     String start_procedure_text="1. Turn the heater switch to the 'on' position.\n\n" +
             "2. Using the dimmerstat, set the heater's input power to a desired level (approximately 75 V).\n\n" +

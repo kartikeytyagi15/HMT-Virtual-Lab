@@ -209,13 +209,13 @@ public class DoublePipeHex extends AppCompatActivity {
             "<br>$\\bullet$Outer (GI) tube internal and external diameter(Di & Do)\n" +
             "27.5mm and 33.8mm\n" +
             "\n\n</br>" +
-            "<br>$\\bullet$Length of heat exchanger (L)\n" +
-            "1m\n" +
-            "\n \n</br>" +
-            "<br>$\\bullet$ $ Thermometers .\n</br>"+
-            "<br>$\\bullet$ $ Digital Stopwatch .\n</br>"+
-            "<br>$\\bullet$ $ Instant water heater(Geyser) .\n</br>"+
-            "<br>$\\bullet$ $ 2 Rotameters .\n</br>";
+            "<br>$\\bullet$Length of heat exchanger (L)= \n" +
+            "1m" +
+            "</br>" +
+            "<br>$\\bullet$ Thermometers .</br>"+
+            "<br>$\\bullet$ Digital Stopwatch </br>"+
+            "<br>$\\bullet$ Instant water heater(Geyser)</br>"+
+            "<br>$\\bullet$ 2 Rotameters.</br>";
 
     String start_procedure_text="1.Following experiment is performed for parallel and counter flow heat exchanger\n" +
             "arrangements. Three readings are taken for each type of heat exchanger over three sets of\n" +

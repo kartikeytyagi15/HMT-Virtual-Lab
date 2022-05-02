@@ -71,6 +71,9 @@ public class ForcedConvection extends AppCompatActivity {
     ImageView apparatus_iv;
     TextView internal_title;
     ImageView internal_iv;
+    TextView start_procedure;
+    TextView close_procedure;
+    TextView simul_procedure;
 
     //Timer
     TextView timer_tv;
@@ -146,6 +149,17 @@ public class ForcedConvection extends AppCompatActivity {
             "There is a blower which blows the air. A valve is attached to the blower. By the help of the valve we control the flow of air through the pipe which is attached to the heater . " +
             "Heater heats the air. There are a total 8 thermocouples, 2 of which give the temperature of the connected inlet and outlet of the air(placed at location of inlet and outlet of the air)and 6 " +
             "other thermocouples are attached to different locations to give the temperature of the heater.";
+    String start_procedure_text="1. Switch on the main switch of the unit to supply power.\n\n" +
+            "2. Start the blower and adjust the air flow rate to the pipe with the valve so that you get an appreciable difference in manometer level. \n\n" +
+            "3. Start the heater of the test pipe and adjust the input power with the dimmerstat.\n\n" +
+            "4. Note down the heater input power in terms of voltage and current.\n\n" +
+            "5. Note down the readings of all 8 thermocouples at an interval of 5 minutes until the steady state is reached.\n\n" +
+            "6. Repeat the experiment for another higher flow rate of air.\n\n" +
+            "7. Bring the dimmerstat to zero position and switch off the heater.\n\n" ;
+    String close_procedure_text="1. When experiment is over switch OFF the heater switch.\n\n" +
+            "2. Switch OFF the mains ON/OFF switch.\n\n" +
+            "3. Switch OFF electric supply to the set up.\n\n" +
+            "4. Stop flow of water by closing the valve V1";
 
 
     private class CustomDataEntry extends ValueDataEntry {
@@ -299,6 +313,12 @@ public class ForcedConvection extends AppCompatActivity {
     }
 
     private void openProcedure() {
+        start_procedure = findViewById(R.id.start);
+        close_procedure = findViewById(R.id.close);
+        simul_procedure = findViewById(R.id.simulation_procedure_id);
+        start_procedure.setText(start_procedure_text);
+        close_procedure.setText(close_procedure_text);
+        simul_procedure.setVisibility(View.GONE);
     }
 
     public double calculateTemp1(double time) {

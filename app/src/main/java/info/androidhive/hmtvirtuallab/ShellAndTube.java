@@ -35,6 +35,8 @@ public class ShellAndTube extends AppCompatActivity {
     MathJaxView equipment;
     ImageView appartus_setup;
     ImageView internal;
+    TextView simulation_procedure;
+    TextView simulation_title;
 
     ImageView setup_img;
     View start_btn;
@@ -206,7 +208,11 @@ public class ShellAndTube extends AppCompatActivity {
         starting_procedure=findViewById(R.id.start);
         starting_procedure.setText(starting_procedure_text);
         closing_procedure=findViewById(R.id.close);
+        simulation_title=findViewById(R.id.textView6);
         closing_procedure.setText(close_procedure_text);
+        simulation_procedure=findViewById(R.id.simulation_procedure_id);
+        simulation_procedure.setVisibility(View.GONE);
+        simulation_title.setVisibility(View.GONE);
 
     }
 
